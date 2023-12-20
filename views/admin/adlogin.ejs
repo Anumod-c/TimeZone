@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('user_assets/img/mainlogin.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        #login-container {
+            background-color: rgba(255, 255, 255, 0.598);
+            padding: 30px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;          
+        }
+
+        #login-container h5 {
+            margin-bottom: 20px;
+        }
+
+        #login-container h2 {
+            margin-bottom: 20px;
+        }
+
+        #login-container .form-group {
+            margin-bottom: 15px;
+            color: rgb(92, 90, 90);
+        }
+
+        #login-container button {
+            margin-top: 15px;
+            background: linear-gradient(to right,rgb(13, 186, 217),rgb(146, 235, 214));
+            width: 100px;
+        }
+
+        @media (min-width: 768px) {
+            /* Medium devices and above */
+            #login-container {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (min-width: 992px) {
+            /* Large devices and above */
+            #login-container {
+                margin-left: 900px;
+                margin-right: 0;
+            }
+        }
+    </style>
+    <title>Login Page</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4" id="login-container">
+                <h5>Welcome to Time Zone</h5>
+                <h2> ADMIN LOGIN</h2>
+                <form method="post" action="admin/adloginpost">
+                    <div class="form-group">
+                        Enter Username
+                        <input type="email" name="email" class="form-control" placeholder="Email " required>
+                        <% if(locals.passworderror){%>
+                            <div class="alter text-danger text-start"><%=passworderror%></div>
+                
+                        <%}%>
+                    </div>
+                    <div class="form-group">
+                        Enter Password
+                        <input type="password" name="password" class="form-control" placeholder="Password" required>
+                        <% if(locals.passworderror){%>
+                            <div class="alter text-danger text-start"><%=passworderror%></div>
+                
+                        <%}%>
+                    </div>
+                    <button type="submit" class="btn btn-success ">Login</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (jQuery and Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

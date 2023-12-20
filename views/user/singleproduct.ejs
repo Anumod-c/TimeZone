@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Watch shop | eCommers</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="user_assets/img/favicon.ico">
+
+    <!-- CSS here -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
+    <link rel="stylesheet" href="/user_assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/user_assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/user_assets/css/flaticon.css">
+    <link rel="stylesheet" href="/user_assets/css/slicknav.css">
+    <link rel="stylesheet" href="/user_assets/css/animate.min.css">
+    <link rel="stylesheet" href="/user_assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="/user_assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/user_assets/css/themify-icons.css">
+    <link rel="stylesheet" href="/user_assets/css/slick.css">
+    <link rel="stylesheet" href="/user_assets/css/nice-select.css">
+    <link rel="stylesheet" href="/user_assets/css/style.css">
+   
+
+
+
+
+
+    <!-- <script>
+        function getStars(rating) {
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 !== 0;
+    
+            const stars = '★'.repeat(fullStars) + (halfStar ? '½' : '');
+    
+            return stars;
+        }
+    </script> -->
+    <style>
+
+
+.user-name {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+
+
+
+
+hr {
+  border: 0.5px solid #ddd;
+}
+
+
+ 
+
+  .product-details-section {
+            width: calc(55% - 25px); /* Adjusted width with right margin */
+            padding: 20px;
+            text-align: left;
+            background-color: #fff; /* Set the background color you want */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Optional: Add box shadow for a card-like appearance */
+            margin-right: 25px; /* Right margin */
+            z-index: 2; /* Ensure the product details card is above the images */
+        }
+
+        /* Tiny Slider Container */
+        #product-slider {
+            position: relative;
+            overflow: hidden;
+        }
+
+   
+
+
+
+
+
+
+        .product-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin: 20px;
+        }
+
+        
+
+       
+       
+
+        .product-details {
+            width: 55%;
+            padding: 20px;
+            text-align: left;
+        }
+
+       
+
+       
+        
+
+        .product-details {
+            padding: 20px;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .category-options {
+            display: none;
+        }
+
+        .search-bar {
+            background-color: #3b5d50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 35px;
+            margin: 0;
+            border: 2px solid #efeeee;
+            border-radius: 30px;
+            overflow: hidden;
+        }
+
+        .search-input {
+            border: none;
+            padding: 10px;
+            width: 800px;
+            background-color: #3b5d50;
+            color: white;
+        }
+
+        .search-button {
+            background-color: #3d5d50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            cursor: pointer;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            color: #e44d26;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            line-height: 1.5;
+        }
+
+        .fa-star {
+            color: #f39c12;
+        }
+
+        nav {
+            background-color: white;
+            padding: 10px;
+            color: white;
+            text-align: center;
+        }
+
+        .det {
+            padding-top: 2cm;
+        }
+
+        footer {
+            padding: 10px;
+            color: white;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .fulldiv {
+            width: 100vw;
+        }
+
+        .product-image {
+            width: 500px;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            border-radius: 4px;
+            transition: border 0.3s ease-in-out;
+        }
+
+.product-item {
+    text-decoration: none;
+    color: #333;
+}
+
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-img-top {
+    border-bottom: 1px solid #ddd;
+}
+
+.card-body {
+    padding: 10px;
+    text-align: center;
+}
+
+.product-title {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.product-price {
+    font-size: 1rem;
+    color: #e44d26;
+    margin-bottom: 0;
+}
+
+    </style>
+</head>
+
+<body>
+
+    <%-include('userpartial/nav')%>
+    <div>
+    <div style="margin: 30px 30px 30px 30px ;" class="fulldiv my-5 d-flex justify-content-center">
+        <div class="product-container">
+            <div class="product-image" >
+                  
+                <div id="product-slider">
+                    <% product.images.forEach((image, index) => { %>
+                        <div>
+                            <img src="/<%= image %>" alt="<%= product.name %> Image" class="img-fluid"/>
+                        </div>
+                    <% }); %>
+                </div>
+                
+               
+            </div>
+
+
+
+            
+
+
+
+            <!-- Product Details Section -->
+            
+                <div class="product-details-section">
+                    <h1><%= product.name %></h1>
+                    <p class="price"><span style="text-decoration: line-through;color: #857b79;">Rs.<%= product.mrp.toFixed(2) %></span>&nbsp;&nbsp;&nbsp;Rs.<%= product.price.toFixed(2) %></p>
+                    <div class="description">
+                        <p><strong>Description:</strong></p>
+                        <p><%= product.descriptions %></p>
+                    </div>
+                
+
+                <div class="description">
+                    <p><strong>Description:</strong></p>
+                    <p><%= product.descriptions %></p>
+                </div>
+
+<!-- Specifications Section -->
+<div class="specifications">
+    <p><strong>Specifications:</strong></p>
+    <ul>
+        <% if (product.dimensions) { %>
+        <li><strong>Weight:</strong> <%= product.dimensions %> kg</li>
+    <% } %>
+        <% if (product.dialcolour) { %>
+            <li><strong>Weight:</strong> <%= product.dialcolour %> kg</li>
+        <% } %>
+        <% if (product.strapcolour) { %>
+            <li><strong>color:</strong> <%= product.strapcolour %> </li>
+        <% } %>
+        <% if (product.framematerial) { %>
+            <li><strong>Materials:</strong> <%= product.framematerial %> </li>
+        <% } %>
+        <% if (product.strapmaterial) { %>
+            <li><strong>manufacturer:</strong> <%= product.strapmaterial %> </li>
+        <% } %>
+        <% if (product.manufacture) { %>
+            <li><strong>manufacturer:</strong> <%= product.manufacture %> </li>
+        <% } %>
+        <!-- Add more specifications as needed -->
+    </ul>
+</div>
+
+                <div class="buttons-row">
+                    <% if (product.stock > 0) { %>
+                        <a href="/addtocart/<%= product._id %>"><button class="btn btn-primary">
+                                <span class="fas fa-shopping-cart"></span> Add to Cart
+                            </button></a>
+                    <% } else { %>
+                        <button class="btn btn-danger" disabled>
+                            Out of Stock
+                        </button>
+                    <% } %>
+                    <a href="/addtofavourites/<%=product._id%>"><button class="btn btn-secondary">
+                            <span class="fas fa-heart"></span> Add to Wishlist
+                        </button></a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
+    </div>
+    <%-include('userpartial/footer')%>
+
+    
+
+
+    
+
+    
+        <!-- End Footer Section -->
+
+        
+  
+        <script src="/user_assets/js/vendor/modernizr-3.5.0.min.js"></script>
+        <!-- Jquery, Popper, Bootstrap -->
+        <script src="/user_assets/js/vendor/jquery-1.12.4.min.js"></script>
+        <script src="/user_assets/js/popper.min.js"></script>
+        <script src="/user_assets/js/bootstrap.min.js"></script>
+        <!-- Jquery Mobile Menu -->
+        <script src="/user_assets/js/jquery.slicknav.min.js"></script>
+    
+        <!-- Jquery Slick , Owl-Carousel Plugins -->
+        <script src="/user_assets/js/owl.carousel.min.js"></script>
+        <script src="/user_assets/js/slick.min.js"></script>
+    
+        <!-- One Page, Animated-HeadLin -->
+        <script src="/user_assets/js/wow.min.js"></script>
+        <script src="/user_assets/js/animated.headline.js"></script>
+        <script src="/user_assets/js/jquery.magnific-popup.js"></script>
+    
+        <!-- Scrollup, nice-select, sticky -->
+        <script src="/user_assets/js/jquery.scrollUp.min.js"></script>
+        <script src="/user_assets/js/jquery.nice-select.min.js"></script>
+        <script src="/user_assets/js/jquery.sticky.js"></script>
+        
+        <!-- contact js -->
+        <script src="/user_assets/js/contact.js"></script>
+        <script src="/user_assets/js/jquery.form.js"></script>
+        <script src="/user_assets/js/jquery.validate.min.js"></script>
+        <script src="/user_assets/js/mail-script.js"></script>
+        <script src="/user_assets/js/jquery.ajaxchimp.min.js"></script>
+        
+        <!-- Jquery Plugins, main Jquery -->	
+        <script src="/user_assets/js/plugins.js"></script>
+        <script src="/user_assets/js/main.js"></script>
+        
+   
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/tiny-slider.js"></script>
+        <script src="https://cdn.rawgit.com/elevateweb/elevatezoom/master/src/jquery.elevatezoom.js"></script>
+        
+        <script src="/js/custom.js"></script>
+    
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/min/tiny-slider.js"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var slider = tns({
+                    container: '#product-slider',
+                    items: 1,
+                    slideBy: 'page',
+                    autoplay: false,
+                    controls: true,
+                    nav: false,
+                    prevButton: document.querySelector('.custom-prev-control'),
+            nextButton: document.querySelector('.custom-next-control'),
+      
+                 
+                });
+                 var prevButton = document.querySelector('.tns-controls button[data-controls="prev"]');
+        var nextButton = document.querySelector('.tns-controls button[data-controls="next"]');
+    
+        if (prevButton) {
+            prevButton.innerHTML = '<'; 
+        }
+    
+        if (nextButton) {
+            nextButton.innerHTML = '>'; 
+        }
+            });
+    
+    
+           
+        </script>
+        <script>
+            var ratingsSection = document.getElementById('ratingsSection');
+            var toggleRatingsBtn = document.getElementById('toggleRatingsBtn');
+        
+            toggleRatingsBtn.addEventListener('click', function () {
+                if (ratingsSection.style.display === 'none') {
+                    ratingsSection.style.display = 'block';
+                } else {
+                    ratingsSection.style.display = 'none';
+                }
+            });
+        </script>
+    
+
+    
+       
+</body>
+
+</html>

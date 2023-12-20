@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url('user_assets/img/mainlogin.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        #login-container {
+            background-color: rgba(255, 255, 255, 0.598);
+            padding: 30px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;          
+        }
+
+        #login-container h5 {
+            margin-bottom: 20px;
+        }
+
+        #login-container h3 {
+            margin-bottom: 20px;
+        }
+
+        #login-container .form-group {
+            margin-bottom: 15px;
+            color: rgb(92, 90, 90);
+
+        }
+
+        #login-container button {
+            margin-top: 15px;
+            background: linear-gradient(to right,rgb(13, 186, 217),rgb(146, 235, 214));
+            width: 100px;
+        }
+
+        @media (min-width: 768px) {
+            /* Medium devices and above */
+            #login-container {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        @media (min-width: 992px) {
+            /* Large devices and above */
+            #login-container {
+                margin-left: 900px;
+                margin-right: 0;
+            }
+        }
+    </style>
+    <title>Login Page</title>
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4" id="login-container">
+                <h5>Welcome to Time Zone</h5>
+                <h3>Registration Here</h3>
+                <form  action="/registration_otp" method="post">
+                    <div class="form-group">
+                        Enter First Name
+                        <input type="text" class="form-control" name="firstname" placeholder="First Name" required>
+                        <% if(locals.fnameerror){%>
+                            <div class="alter text-danger text-start"><%= fnameerror%></div>
+            
+                        <%}%>
+                    </div>
+                    <div class="form-group">
+                        Enter last Name
+                        <input type="text" class="form-control" name="lastname" placeholder="Last Name" required>
+                        <% if(locals.lnameerror){%>
+                            <div class="alter text-danger text-start"><%= lnameerror%></div>
+            
+                        <%}%>
+                    </div>
+                    <div class="form-group">
+                        Enter Email
+                        <input type="email" class="form-control" name="email" placeholder="Email" required>
+                    </div>
+                    <% if(locals.emailexist){%>
+                        <div class="alter text-danger text-start"><%= emailexist%></div>
+        
+                    <%}%>                   
+                    <div class="form-group">
+                        Enter Mobile no
+                        <input type="tel" class="form-control" name="phone" placeholder="phone" required>
+                    </div>
+                    
+                    <% if(locals.phoneerror){%>
+                        <div class="alter text-danger text-start"><%= phoneerror%></div>
+        
+                    <%}%>
+
+                    <div class="form-group">
+                        Enter Password
+                        <input type="password" class="form-control" name="password" placeholder="Password" required>
+                        <% if(locals.passworderror){%>
+                            <div class="alter text-danger text-start"><%= passworderror%></div>
+            
+                        <%}%>
+                    </div>
+                    <div class="form-group">
+                        Confirm Password
+                        <input type="password" class="form-control" name="cpassword" placeholder=" Confirm Password" required>
+                        <% if(locals.cpassworderror){%>
+                            <div class="alter text-danger text-start"><%= cpassworderror%></div>
+            
+                        <%}%>
+                    </div>
+                    <button type="submit" class="btn btn-success "  >REGISTER</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies (jQuery and Popper.js) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
