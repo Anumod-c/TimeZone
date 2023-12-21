@@ -15,7 +15,7 @@ const product = async (req, res) => {
         console.log('product rendering error', err);
     }
 };
-//==============================adding product page================================
+//==============================         adding product page    ================================================
 const newproduct = async (req, res) => {
     try {
         const categories = await categoryModel.find();
@@ -26,7 +26,7 @@ const newproduct = async (req, res) => {
     }
 }
 
-//===================================addproduct post============================
+//===================================         addproduct post      ===============================================
 const addproduct = async (req, res) => {
     try {
         const { productName, categories, images, mrp, price, stock, descriptions, dialcolour, strapcolour, framematerial, strapmaterial, dimensions, manufacture } = req.body;
@@ -35,7 +35,7 @@ const addproduct = async (req, res) => {
         const newproduct = await productModel.create({
             name: productName,
             categories: categories,
-            // type: productType,
+            // type: productType, ==> can be useful when veiwng similar products in sigle product page
             images: req.files.map(file => file.path),
             mrp: mrp,
             price: price,
@@ -55,10 +55,9 @@ const addproduct = async (req, res) => {
         console.log('add product post error', err);
     }
 }
-//===============================================EDIT PRODUCT RENDERING===========================================
 
 
-//================================LISTING AND UNLISTING===================================
+//================================       LISTING AND UNLISTING        ===================================
 const unlist =async(req,res)=>{
     try{
         const id =req.params.id;
@@ -72,7 +71,7 @@ const unlist =async(req,res)=>{
     }
 }
 
-//=============================UPDATE PRODUCT=======================
+//====================================           UPDATE PRODUCT         =========================================
 const updateproduct=async(req,res)=>{
     try{
         const id=req.params.id;
@@ -84,7 +83,7 @@ const updateproduct=async(req,res)=>{
     }
 }
 
-//==============================UPDATE IMG================================
+//=======================================       UPDATE IMG       ===========================================
 const editimage =async(req,res)=>{
     try{
         const id=req.params.id;
@@ -98,7 +97,7 @@ const editimage =async(req,res)=>{
     }
 }
 
-//======================EDIT IMAGE POST===================
+//===========================================     EDIT IMAGE POST      ============================================
 const editimagepost =async(req,res)=>{
     try{
         const id = req.params.id;
@@ -112,7 +111,7 @@ const editimagepost =async(req,res)=>{
         console.log('edit image post error',err);
     }
 }
-//=====================DELETE IMAGE==========================
+//========================================           DELETE IMAGE     ====================================
 const delimage=async(req,res)=>{
     try{
         const pid = req.query.pid;
@@ -133,13 +132,11 @@ const delimage=async(req,res)=>{
             console.log('Images not found');
         }
     } 
-                                                                  //remaining
     catch(err){
         console.log(' second try block delete img error',err);
     }
 }
 
-//=======resize img============================================
 
 //=============================UPDATE PRODUCT POST=======================
     const updateproductpost= async(req,res)=>{
@@ -180,13 +177,13 @@ const delimage=async(req,res)=>{
             const id=req.params.id;
             const products=await productModel.deleteOne({_id:id})
             
-            res.redirect('/admin/product')                                ///NOT COMPLETE
+            res.redirect('/admin/product')                                ///NOT COMPLETE need to add js
         }
         catch(err){
             console.log('delete product error',err);
         }
     }
-//========================================================
+//======================================================== EXPORTING ============================
 module.exports={
     product,
     newproduct,

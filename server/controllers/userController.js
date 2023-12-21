@@ -14,7 +14,7 @@ const productModel = require('../models/productmodel')
 
 
 
-//otp generating function
+//=====================================    otp generating function   ===============================================
 const generatorotp =()=>{
     const otp=otpgenerator.generate(6,{
         upperCaseAlphabets:false,
@@ -26,7 +26,7 @@ const generatorotp =()=>{
     return otp
     
 }
-//otp email sending funtion
+//=====================================     otp email sending funtion    ======================================
 const sendmail=async(email,otp)=>{
     try{
         var transporter=nodemailer.createTransport({
@@ -52,7 +52,7 @@ const sendmail=async(email,otp)=>{
 }
 
 
-//home page rendering 
+//=====================================     home page rendering     ============================================ 
 const index=async(req,res)=>{
 try{
     const categories= await categoryModel.find({status:true});
@@ -65,13 +65,13 @@ console.log(err,"homepage error");
 }}
 
 
-//user signup
+//==================================        user signup   =========================================================
 const registration =async(req,res)=>{
     req.session.otppressed=true;
     await res.render("user/registration")
 }
 
-//user otp sending
+//======================================    user otp sending    =================================================
 const signotp = async(req,res)=>{
     try{       
         console.log('datas in body:',req.body)
@@ -127,9 +127,6 @@ const signotp = async(req,res)=>{
             req.session.user = user;
             req.session.signup = true;
             req.session.forgot = false;
-
-           // await user.save();
-            //res.redirect('/regotp')
             
             const otp = generatorotp();
             console.log(otp,"otp function evoked")
@@ -156,7 +153,7 @@ const signotp = async(req,res)=>{
 
 
 
-//user signup otp
+//==========================================    user signup otp      ===============================================
 const otp =async(req,res)=>{
     try{
         res.render("user/registration_otp")
@@ -168,7 +165,7 @@ const otp =async(req,res)=>{
     
 }
 
-//otp verifying page
+//===============================================     otp verifying page     ======================================
 const verifyotp =async(req,res)=>{
     try{
         const enteredotp =req.body.otp;
@@ -216,7 +213,7 @@ const verifyotp =async(req,res)=>{
     }
 }
 
-//resend otp page
+//===================================      resend otp page     ===================================================
 const resendotp =async(req,res)=>{
     try{
         console.log("resend otp is working");
@@ -239,7 +236,7 @@ const resendotp =async(req,res)=>{
     }
 };
 
-//forgot password
+//====================================     forgot password    ==================================================
 const forgotpassword=async (req,res)=>{
     try{
         res.render('user/forgot_password')
@@ -248,7 +245,7 @@ const forgotpassword=async (req,res)=>{
         console.log(err,"forgot password error")
     }
 }
-//forgotpasswrod action
+//=====================================    forgotpasswrod action    ============================================
 const forgotpasspost =async (req,res)=>{
     try{
         email =req.body.email;
@@ -290,7 +287,7 @@ const forgotpasspost =async (req,res)=>{
         console.log(err,"forgotpost error");
     }
 }
-//resett password page
+//==============================       resett password page      ===================================================
 const resetpassword =async (req,res)=>{
     try{
 
@@ -301,7 +298,7 @@ const resetpassword =async (req,res)=>{
     }
 }
 
-//reset password post
+//=====================================     reset password post     ==========================================
 const resetpasspost =async(req,res)=>{
     try{
         const password=req.body.password;
@@ -334,7 +331,7 @@ const resetpasspost =async(req,res)=>{
 
 
 
-//profile page
+//=========================================     profile page    ===================================================
 const profile = async (req, res) => {
     try {
         console.log("User ID from session:", req.session.userId);
@@ -355,14 +352,14 @@ const profile = async (req, res) => {
 };
 
 
-//login  action page
+//========================================    login  action page     ===============================================
 
-const loginaction=async(req,res)=>{ //the whole profile page should be changed ,and check the route of login page and profile page as it is changed
+const loginaction=async(req,res)=>{ 
     try{
         const email =req.body.email;
         const  user = await userModel.findOne({email:email});
         //checking whether the user exist ir not
-        if(!user){ //    (!user)
+        if(!user){ 
             console.log("throwing error")
             throw new Error('User Not Found')
         }
@@ -376,7 +373,7 @@ const loginaction=async(req,res)=>{ //the whole profile page should be changed ,
             res.redirect('/')
         }
         else if(user.status){
-           res.render('user/login',{blockerror:'SORRY! Your Account has been suspended !!!'})
+            res.render('user/login',{blockerror:'SORRY! Your Account has been suspended !!!'})
         }
         else{
             res.render('user/login',{passworderror:"invalid password"})  
@@ -389,7 +386,7 @@ const loginaction=async(req,res)=>{ //the whole profile page should be changed ,
     }
 }
 
-//======================SHOP PAGE RENDERING========================
+
 
 
 //logout

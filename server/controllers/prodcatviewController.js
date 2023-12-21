@@ -2,7 +2,7 @@ const productModel=require('../models/productmodel');
 const categoryModel=require('../models/categorymodel');
 
 
-//================================NEWEST ARRIVAL(BY DEFA)=================================
+//================================     NEWEST ARRIVAL(BY DEFAULT)     =============================================
 const newarrival =async (req,res)=>{ //by default it will be newest arrival
     try{
         const products =await productModel.find({status:true}).sort({_id:-1})
@@ -15,7 +15,7 @@ const newarrival =async (req,res)=>{ //by default it will be newest arrival
         res.status(500).send("Internal server error")
     }
 }
-//================================PRICE HIGH TO LOW===============================
+//===================================     PRICE HIGH TO LOW    =====================================================
 const pricehightolow = async(req,res)=>{
     try{
         const products =await productModel.find({}).sort({price:-1})
@@ -32,7 +32,7 @@ const pricehightolow = async(req,res)=>{
 }
 
 
-/////===========================CATEGORIES VIEW PAGE====================================
+/////===========================     CATEGORIES VIEW PAGE     ==========================================
 
 const catagorysort =async(req,res)=>{
     try{
@@ -54,7 +54,7 @@ const catagorysort =async(req,res)=>{
         console.log('catgorysort page errror',err);
     }
 }
-//============================== SINGLE PRODUCT PAGE==============
+//========================================     SINGLE PRODUCT PAGE        ==================================
 const singleproduct = async(req,res)=>{
     try{
         const id =req.params.id;

@@ -1,14 +1,14 @@
 const bcrypt=require('bcrypt')
 const userModel=require('../models/usermodel');
 const  categoryModel  = require('../models/categorymodel');
-// const adrouter = require('../router/admin');
+
 
 
 
 //=============================================   admin login    =================================================
 const adlogin =(req,res)=>{
     try{
-        console.log("adnmin rendered")
+        console.log("admin rendered")
         res.render("admin/adlogin");
     }
     catch(err){
@@ -58,7 +58,6 @@ const adminpannel=async(req,res)=>{
 const userlist =async(req,res)=>{
 try{
 
-    console.log('hyy');
     const users =await userModel.find({isAdmin:false})
     console.log(users);
     res.render('admin/users_list',{users:users})
@@ -224,7 +223,7 @@ const updatecatpost =async(req,res)=>{
     }
 }
 
-//=====================================UNLIST==============================
+//========================================      UNLIST   ==========================================================
 const unlistcat =async(req,res)=>{
     try{
         const id =req.params.id;
