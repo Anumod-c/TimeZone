@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
-    <link rel="shortcut icon" type="image/x-icon" href="user_assets/img/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/user_assets/img/favicon.ico">
 
     <!-- CSS here -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tiny-slider/2.9.3/tiny-slider.css">
@@ -56,7 +56,7 @@ hr {
 }
 
 
- 
+
 
   .product-details-section {
             width: calc(55% - 25px); /* Adjusted width with right margin */
@@ -74,7 +74,6 @@ hr {
             overflow: hidden;
         }
 
-   
 
 
 
@@ -88,10 +87,6 @@ hr {
             margin: 20px;
         }
 
-        
-
-       
-       
 
         .product-details {
             width: 55%;
@@ -99,15 +94,18 @@ hr {
             text-align: left;
         }
 
-       
 
-       
         
 
         .product-details {
             padding: 20px;
             text-align: left;
         }
+
+        .specifications ul li {
+        margin-bottom: 20px; 
+        }
+
 
         h1 {
             font-size: 2rem;
@@ -139,15 +137,32 @@ hr {
             color: white;
         }
 
-        .search-button {
-            background-color: #3d5d50;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-top-right-radius: 20px;
-            border-bottom-right-radius: 20px;
-            cursor: pointer;
+        .buttons-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px; /* Adjust the top margin as needed */
         }
+
+        .buttons-row button {
+            margin-right: 10px; /* Add some space between the buttons if needed */
+        }
+
+        /* Style for Tiny Slider controls (previous and next buttons) */
+.tns-controls button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+.tns-controls button:hover {
+    background-color: #555;
+}
+
 
         .price {
             font-size: 1.5rem;
@@ -251,7 +266,6 @@ hr {
     <div style="margin: 30px 30px 30px 30px ;" class="fulldiv my-5 d-flex justify-content-center">
         <div class="product-container">
             <div class="product-image" >
-                  
                 <div id="product-slider">
                     <% product.images.forEach((image, index) => { %>
                         <div>
@@ -260,7 +274,6 @@ hr {
                     <% }); %>
                 </div>
                 
-               
             </div>
 
 
@@ -280,32 +293,27 @@ hr {
                     </div>
                 
 
-                <div class="description">
-                    <p><strong>Description:</strong></p>
-                    <p><%= product.descriptions %></p>
-                </div>
-
 <!-- Specifications Section -->
 <div class="specifications">
     <p><strong>Specifications:</strong></p>
     <ul>
         <% if (product.dimensions) { %>
-        <li><strong>Weight:</strong> <%= product.dimensions %> kg</li>
+        <li><strong>Dimensions:</strong> <%= product.dimensions %>mm</li>
     <% } %>
         <% if (product.dialcolour) { %>
-            <li><strong>Weight:</strong> <%= product.dialcolour %> kg</li>
+            <li><strong>Dail Colour:</strong> <%= product.dialcolour %> </li>
         <% } %>
         <% if (product.strapcolour) { %>
-            <li><strong>color:</strong> <%= product.strapcolour %> </li>
+            <li><strong>Strap Color:</strong> <%= product.strapcolour %> </li>
         <% } %>
         <% if (product.framematerial) { %>
-            <li><strong>Materials:</strong> <%= product.framematerial %> </li>
+            <li><strong> Frame Materials:</strong> <%= product.framematerial %> </li>
         <% } %>
         <% if (product.strapmaterial) { %>
-            <li><strong>manufacturer:</strong> <%= product.strapmaterial %> </li>
+            <li><strong>Strap Material:</strong> <%= product.strapmaterial %> </li>
         <% } %>
         <% if (product.manufacture) { %>
-            <li><strong>manufacturer:</strong> <%= product.manufacture %> </li>
+            <li><strong>Manufacturer:</strong> <%= product.manufacture %> </li>
         <% } %>
         <!-- Add more specifications as needed -->
     </ul>
@@ -313,7 +321,7 @@ hr {
 
                 <div class="buttons-row">
                     <% if (product.stock > 0) { %>
-                        <a href="/addtocart/<%= product._id %>"><button class="btn btn-primary">
+                        <a href="/addtocart/<%= product._id %>"><button class="btn btn-danger">
                                 <span class="fas fa-shopping-cart"></span> Add to Cart
                             </button></a>
                     <% } else { %>
@@ -321,7 +329,7 @@ hr {
                             Out of Stock
                         </button>
                     <% } %>
-                    <a href="/addtofavourites/<%=product._id%>"><button class="btn btn-secondary">
+                    <a href="/addtofavourites/<%=product._id%>"><button class="btn btn-danger">
                             <span class="fas fa-heart"></span> Add to Wishlist
                         </button></a>
                 </div>

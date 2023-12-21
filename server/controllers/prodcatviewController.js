@@ -20,6 +20,7 @@ const pricehightolow = async(req,res)=>{
         const products =await productModel.find().sort({price:-1})
         const categories =await categoryModel.find();
         res.render('/shop',{products:products,categories:categories})
+        // const product = await productModel.findOne({ _id: mongoose.Types.ObjectId(id) });==>or can use this to sole te cast error
     }
     catch(err){
         console.log('price hight to low error',err);
