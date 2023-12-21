@@ -374,9 +374,12 @@ const loginaction=async(req,res)=>{ //the whole profile page should be changed ,
             req.session.firstname=user.firstname;
             req.session.isAuth=true;
             res.redirect('/')
-        } // there is additional else if statement which i ignore cause i didnt do session
+        }
+        else if(user.status){
+           res.render('user/login',{blockerror:'SORRY! Your Account has been suspended !!!'})
+        }
         else{
-            res.render('user/login',{passworderror:"invalid password"}) ///should change to redirect(/profile) 
+            res.render('user/login',{passworderror:"invalid password"})  
         }
     }
     catch(err){

@@ -8,7 +8,6 @@
     clip-path: polygon(100% 0%, 93% 100%, 7% 100%, 0% 0%);    
     overflow: hidden;
     position: relative;
-    /* clip-path: polygon(97% 0%,100% 50%,97% 100%, 3% 100%,0% 50%, 3% 0%); */
     z-index: 1;
     
     border-top: 1px solid #ddd; /* Optional: Add a border at the top for separation */
@@ -41,4 +40,7 @@
     margin: 0 10px;
     display: inline-block; /* Display items inline */
 }
+
+
+    
 

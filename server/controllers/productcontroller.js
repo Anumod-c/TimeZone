@@ -84,7 +84,6 @@ const updateproduct=async(req,res)=>{
     }
 }
 
-
 //==============================UPDATE IMG================================
 const editimage =async(req,res)=>{
     try{
@@ -139,6 +138,8 @@ const delimage=async(req,res)=>{
         console.log(' second try block delete img error',err);
     }
 }
+
+//=======resize img============================================
 
 //=============================UPDATE PRODUCT POST=======================
     const updateproductpost= async(req,res)=>{

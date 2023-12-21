@@ -17,9 +17,10 @@ const newarrival =async (req,res)=>{ //by default it will be newest arrival
 //================================PRICE HIGH TO LOW===============================
 const pricehightolow = async(req,res)=>{
     try{
-        const products =await productModel.find().sort({price:-1})
+        const products =await productModel.find({}).sort({price:-1})
         const categories =await categoryModel.find();
-        res.render('/shop',{products:products,categories:categories})
+        console.log(products,"dddddddddddddddddddddddd");
+        res.render('user/shop',{products:products,categories:categories})
         // const product = await productModel.findOne({ _id: mongoose.Types.ObjectId(id) });==>or can use this to sole te cast error
     }
     catch(err){

@@ -23,8 +23,9 @@
     <link rel="stylesheet" href="/user_assets/css/slick.css">
     <link rel="stylesheet" href="/user_assets/css/nice-select.css">
     <link rel="stylesheet" href="/user_assets/css/style.css">
+    <link rel="stylesheet" href="/user_assets/css/magiczoom.css">
    
-
+    <script src="/user_assets/js/magiczoom.js"></script>
 
 
 
@@ -211,8 +212,8 @@ hr {
         }
 
         .product-image img {
-            width: 100%;
-            height: auto;
+            width: auto;
+            height: 500px;
             margin-bottom: 10px;
             cursor: pointer;
             border: 2px solid transparent;
@@ -256,6 +257,44 @@ hr {
     margin-bottom: 0;
 }
 
+/* media query */
+     /* Media Queries */
+     @media only screen and (max-width: 576px) {
+            .fulldiv {
+                margin: 10px;
+            }
+
+            .product-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .product-image {
+                width: 100%;
+            }
+
+            .product-image img {
+                height: auto;
+                width: 100%;
+            }
+
+            .product-details-section {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+
+        @media only screen and (max-width: 768px) {
+            /* Add styles for medium-sized devices */
+            /* Adjust styles as needed */
+        }
+
+        @media only screen and (max-width: 992px) {
+            /* Add styles for large-sized devices */
+            /* Adjust styles as needed */
+        }
+
+
     </style>
 </head>
 
@@ -266,11 +305,11 @@ hr {
     <div style="margin: 30px 30px 30px 30px ;" class="fulldiv my-5 d-flex justify-content-center">
         <div class="product-container">
             <div class="product-image" >
-                <div id="product-slider">
-                    <% product.images.forEach((image, index) => { %>
-                        <div>
-                            <img src="/<%= image %>" alt="<%= product.name %> Image" class="img-fluid"/>
-                        </div>
+                <div id="product-slider" class="tns-slider">
+                    <% product.images.forEach((image, index) => { %>                        
+                        <a href="/<%= image %>"  class="MagicZoom" id="Mag">
+                            <img src="/<%= image %>" alt="<%= product.name %> Image" class="img-fluid">
+                        </a>                        
                     <% }); %>
                 </div>
                 

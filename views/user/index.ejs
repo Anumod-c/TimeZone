@@ -270,6 +270,25 @@
     <!-- Jquery Plugins, main Jquery -->	
     <script src="./user_assets/js/plugins.js"></script>
     <script src="./user_assets/js/main.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var subcategoryItems = document.querySelectorAll('.subcategory-item');
+    
+            subcategoryItems.forEach(function (item) {
+                item.addEventListener('click', function () {
+                    // Remove the "active-category" class from all items
+                    subcategoryItems.forEach(function (item) {
+                        item.classList.remove('active-category');
+                    });
+    
+                    // Add the "active-category" class to the clicked item
+                    item.classList.add('active-category');
+                });
+            });
+        });
+    </script>
+    
     
 </body>
 </html>
