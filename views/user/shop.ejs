@@ -48,7 +48,11 @@
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="hero-cap text-center">
-                                <h2>Watch Shop</h2>
+                                <h2>
+                                    <% if (categoriesbanner ) { %>
+                                        <%= categoriesbanner.name?categoriesbanner.name:categoriesbanner %>
+                                    <% } %>
+                                </h2>
                             </div>
                         </div>
                     </div>
@@ -64,9 +68,9 @@
                         <!--Nav Button  -->
                         <nav>                                                      
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="/newesarrival" role="tab" aria-controls="nav-home" aria-selected="true">NewestArrivals</a>
-                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="/pricehightolow" role="tab" aria-controls="nav-profile" aria-selected="false"> Price high to low</a>
-                                <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false"> Most populer </a>
+                                <a class="nav-item nav-link" id="nav-home-tab"  href="/newarrival" >NewestArrivals</a>
+                                <a class="nav-item nav-link" id="nav-profile-tab"  href="/pricehightolow"  > Price high to low</a>
+                                <a class="nav-item nav-link" id="nav-contact-tab"  href="#nav-contact" > Most populer </a>
                             </div>
                         </nav>
                         <!--End Nav Button  -->
@@ -234,6 +238,9 @@
     <!-- Jquery Plugins, main Jquery -->	
     <script src="./user_assets/js/plugins.js"></script>
     <script src="./user_assets/js/main.js"></script>
+
+
+    
     
 </body>
 </html>

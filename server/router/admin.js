@@ -4,71 +4,72 @@ const adminController =require('./../controllers/adminController');
 const productController =require('../controllers/productcontroller')
 adrouter.use(express.urlencoded({extended:true}));
 const multer =require('multer');
+const auth =require('../../middleware/isAuth')
 const upload=multer({dest:'uploads/'})  
 
 
 
 //admin login page
-adrouter.get("/",adminController.adlogin)
+adrouter.get("/",auth.logoutadmin,adminController.adlogin)
 
 
 //admin loginpost
 adrouter.post('/adloginpost',adminController.adloginpost)
 
 //admin home
-adrouter.get('/adminpannel',adminController.adminpannel)
+adrouter.get('/adminpannel',auth.loggedadmin,adminController.adminpannel)
 
 //userlist
-adrouter.get('/userslist',adminController.userlist)
+adrouter.get('/userslist',auth.loggedadmin,adminController.userlist)
 
 //update user
-adrouter.get('/update/:email',adminController.userupdate)
+adrouter.get('/update/:email',auth.loggedadmin,adminController.userupdate)
 
 //search user
-adrouter.post('/searchuser',adminController.searchuser)
+adrouter.post('/searchuser',auth.loggedadmin,auth.loggedadmin,adminController.searchuser)
 
 //view user
-adrouter.get('/searchview',adminController.searchview)
+adrouter.get('/searchview',auth.loggedadmin,adminController.searchview)
 
 //filter
-adrouter.get('/filter/:options',adminController.filter)
+adrouter.get('/filter/:options',auth.loggedadmin,adminController.filter)
 
 //============================================= CATOGORIES============================================
 
 
-adrouter.get('/Category',adminController.category)
+adrouter.get('/Category',auth.loggedadmin,adminController.category)
 
-adrouter.get('/newcat',adminController.newcat)
+adrouter.get('/newcat',auth.loggedadmin,adminController.newcat)
 
-adrouter.post('/add-category',adminController.addcategory)
+adrouter.post('/add-category',auth.loggedadmin,adminController.addcategory)
 
-adrouter.get('/updatecat/:id',adminController.updatecat)
+adrouter.get('/updatecat/:id',auth.loggedadmin,adminController.updatecat)
 
-adrouter.post('/update-category/:id',adminController.updatecatpost)
+adrouter.post('/update-category/:id',auth.loggedadmin,adminController.updatecatpost)
 
-adrouter.get('/unlistcat/:id',adminController.unlistcat)
+adrouter.get('/unlistcat/:id',auth.loggedadmin,adminController.unlistcat)
 
 
 
 //============================================PRODUCT====================================================
-adrouter.get('/product',productController.product)
-adrouter.get('/newproduct',productController.newproduct)
-adrouter.post('/addproduct',upload.array('images'),productController.addproduct)
+adrouter.get('/product',auth.loggedadmin,productController.product)
+adrouter.get('/newproduct',auth.loggedadmin,productController.newproduct)
+adrouter.post('/addproduct',auth.loggedadmin,upload.array('images'),productController.addproduct)
 
-adrouter.get('/unlist/:id',productController.unlist)
-adrouter.get('/updateproduct/:id',productController.updateproduct)
-adrouter.get('/editimage/:id',productController.editimage)
-adrouter.get('/delimage',productController.delimage)
-adrouter.post('/editimagepost/:id',upload.array('images'),productController.editimagepost)
-adrouter.post('/updateproductpost/:id',productController.updateproductpost)
-adrouter.post('/deleteproduct/:id',productController.delproduct)
+adrouter.get('/unlist/:id',auth.loggedadmin,productController.unlist)
+adrouter.get('/updateproduct/:id',auth.loggedadmin,productController.updateproduct)
+adrouter.get('/editimage/:id',auth.loggedadmin,productController.editimage)
+adrouter.get('/delimage',auth.loggedadmin,productController.delimage)
+adrouter.post('/editimagepost/:id',auth.loggedadmin,upload.array('images'),productController.editimagepost)
+adrouter.post('/updateproductpost/:id',auth.loggedadmin,productController.updateproductpost)
+adrouter.post('/deleteproduct/:id',auth.loggedadmin,productController.delproduct)
 
 
 
 
 //====================================================LOGOUT =======================================================
 //admin logout
-adrouter.get('/adlogout', adminController.adlogout)
+adrouter.get('/adlogout', auth.logouting,adminController.adlogout)
 
 //exports 
 module.exports =adrouter;

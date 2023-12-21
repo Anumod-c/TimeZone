@@ -34,6 +34,27 @@ const iflogged=async(req,res,next)=>{
         }
       };
     };
+    const loggedadmin=(req,res,next)=>{
+      if(req.session.isadAuth){
+        next()
+      }
+      else{
+        res.redirect('/admin')
+      }
+    }
+
+    const logoutadmin= (req,res,next)=>{
+      if(!req.session.isadAuth){
+        next()
+      }
+      else{
+        res.redirect('/admin/adminpannel')
+      }
+    }
+    const logouting =(req,res,next)=>{
+      req.session.destroy();
+      res.redirect('/admin')
+    }
   
 
     module.exports={
@@ -41,5 +62,8 @@ const iflogged=async(req,res,next)=>{
         islogged,
         loggedout,
         checkSessionVariable,
+        loggedadmin,
+        logoutadmin,
+        logouting
         
     }

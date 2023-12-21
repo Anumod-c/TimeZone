@@ -7,7 +7,8 @@ const newarrival =async (req,res)=>{ //by default it will be newest arrival
     try{
         const products =await productModel.find({status:true}).sort({_id:-1})
         const categories=await categoryModel.find({status:true});
-        res.render('user/shop',{categories:categories,products:products})
+        const categoriesbanner="The Shop"
+        res.render('user/shop',{categories:categories,products:products,categoriesbanner})
     }
     catch(err){
         console.log('shop page rendering error',err);
@@ -20,7 +21,8 @@ const pricehightolow = async(req,res)=>{
         const products =await productModel.find({}).sort({price:-1})
         const categories =await categoryModel.find();
         console.log(products,"dddddddddddddddddddddddd");
-        res.render('user/shop',{products:products,categories:categories})
+        const categoriesbanner='The Shop'
+        res.render('user/shop',{products:products,categories:categories,categoriesbanner})
         // const product = await productModel.findOne({ _id: mongoose.Types.ObjectId(id) });==>or can use this to sole te cast error
     }
     catch(err){
@@ -34,6 +36,8 @@ const pricehightolow = async(req,res)=>{
 
 const catagorysort =async(req,res)=>{
     try{
+
+        const categoriesbanner =await categoryModel.findOne({_id:req.query.category})
         let products;
         if(req.query.category){
             products =await  productModel.find({ categories: req.query.category, status: true });
@@ -44,7 +48,7 @@ const catagorysort =async(req,res)=>{
         }
         const categories = await categoryModel.find({ status: true });
         
-        res.render('user/shop', { products, categories });
+        res.render('user/shop', { products, categories,categoriesbanner });
     }
     catch(err){
         console.log('catgorysort page errror',err);
