@@ -8,9 +8,10 @@ const {nameValid,
     passwordValid,
     confirmpasswordValid}=require('../../utils/validators/usersignupvalidator')
 const otpModel = require('../models/userotpmodel')
-const {Email,pass}=require('../../.env')
 const categoryModel = require('../models/categorymodel')
 const productModel = require('../models/productmodel')
+const Email=process.env.Email
+const pass=process.env.pass
 
 
 
