@@ -14,7 +14,6 @@ const Email=process.env.Email
 const pass=process.env.pass
 
 
-
 //=====================================    otp generating function   ===============================================
 const generatorotp =()=>{
     const otp=otpgenerator.generate(6,{
@@ -44,7 +43,8 @@ const sendmail=async(email,otp)=>{
             subject:"E-Mail Verifications",
             text:"Your OTP is " + otp,
         };
-        transporter.sendMail(mailOptions);
+
+        await transporter.sendMail(mailOptions);
         console.log('E-mail sent Succesfully');
     }
     catch (err){

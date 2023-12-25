@@ -1,7 +1,8 @@
 const express =require("express");
 const usrouter =express.Router()
 const userController=require('./../controllers/userController');
-const prodcatviewController =require('../controllers/prodcatviewController')
+const prodcatviewController =require('../controllers/prodcatviewController');
+const profileController = require('../controllers/profileController')
 const auth =require('../../middleware/isAuth')
 
 usrouter.use(express.urlencoded({extended:true}))
@@ -63,8 +64,32 @@ usrouter.get('/pricehightolow',prodcatviewController.pricehightolow)
 usrouter.get('/shop',prodcatviewController.catagorysort)
 usrouter.get('/singleproduct/:id',prodcatviewController.singleproduct)
 
+
+
+
+
+
+//===================================    PROFILE   =============================================
+usrouter.get('/userdetails',profileController.userdetials)
+usrouter.get('/editprofile',profileController.editprofile)
+usrouter.post('/updateprofile',profileController.updateprofile)
+usrouter.get('/addnewaddress',profileController.addnewaddress)
+usrouter.post('/saveAddress',profileController.addnewaddresspost)
+
+
+
+
+
+
+
+
+
+
 //===================================
 usrouter.get('/logout',auth.islogged,userController.logout)
+
+
+
 
 //exporting
 module.exports=usrouter

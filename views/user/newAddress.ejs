@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+      <!-- Bootstrap CSS -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="css/tiny-slider.css" rel="stylesheet">
+  <link href="css/style.css" rel="stylesheet">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="shortcut icon" type="image/x-icon" href="user_assets/img/favicon.ico">
+
+
+  <link rel="stylesheet" href="user_assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="user_assets/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="user_assets/css/flaticon.css">
+  <link rel="stylesheet" href="user_assets/css/slicknav.css">
+  <link rel="stylesheet" href="user_assets/css/animate.min.css">
+  <link rel="stylesheet" href="user_assets/css/magnific-popup.css">
+  <link rel="stylesheet" href="user_assets/css/fontawesome-all.min.css">
+  <link rel="stylesheet" href="user_assets/css/themify-icons.css">
+  <link rel="stylesheet" href="user_assets/css/slick.css">
+  <link rel="stylesheet" href="user_assets/css/nice-select.css">
+  <link rel="stylesheet" href="user_assets/css/style.css">
+  <style>
+        .personal-details p{
+      font-size: large;
+      color: black;
+      font-weight: 400;
+    }
+    .address-section {
+    border: 1px solid #000000;
+    min-width: 69vh;
+    border-radius: 10px; 
+    margin-bottom: 10px;
+    padding: 10px;
+    position: relative; /* Position relative for absolute positioning of icons */
+}
+
+.address-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.address-list {
+    font-size: 12px;
+    margin-bottom: 10px;
+}
+
+.address-list p {
+    font-size: 30px;
+    font-weight: 200;
+    margin: 0;
+}
+
+.edit {
+    margin-right: 20px;
+}
+
+
+.section-container {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 1px;
+}
+.passwordForm{
+  margin-top: 12vh;
+}
+
+@media (min-width: 768px) {
+    .section-half {
+        flex: 0 0 calc(50% - 15px);
+        margin-right: 30px;
+        margin-bottom: 20px;
+    }
+}
+
+#lineone {
+    min-height: 50vh;
+}
+
+.section-container {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+@media (min-width: 768px) {
+    .section-container {
+        display: flex;
+        flex-wrap: wrap;
+        margin-left: -15px; /* Adjust the left margin */
+        margin-right: -15px; /* Adjust the right margin */
+    }
+
+    .section-half {
+        flex: 0 0 calc(50% - 15px); /* Two sections in one row with margin */
+        margin-right: 30px; /* Adjust the gap between sections */
+        margin-bottom: 20px; /* Adjust the bottom margin */
+    }
+}
+
+.category-options {
+    display: none;
+}
+
+.search-bar {
+    background-color: #3b5d50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 35px;
+    margin: 0;
+    border: 2px solid #efeeee;
+    border-radius: 30px;
+    overflow: hidden;
+}
+
+.search-input {
+    border: none;
+    padding: 10px;
+    width: 800px;
+    background-color: #3b5d50;
+    color: white;
+}
+
+.search-button {
+    background-color: #3d5d50;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    cursor: pointer;
+}
+
+  </style>
+
+
+    <title>Edit Profile</title>
+</head>
+<body>
+    <!-- header -->
+    <%-include('userpartial/nav',{categories:categories})%> 
+      <!-- Start Hero Section -->
+
+
+
+      <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        Add New Address
+                    </div>
+                    <div class="card-body">
+                        <form action="/saveAddress" method="POST" class="address-form">
+                            <!-- Address Fields -->
+                            <div class="form-group">
+                                <label for="fullName">Full Name:</label>
+                                <input type="text" id="fullName" name="fullName" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="addressLine1">Address Line 1:</label>
+                                <input type="text" id="addressLine1" name="addressLine1" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="addressLine2">Address Line 2:</label>
+                                <input type="text" id="addressLine2" name="addressLine2" class="form-control">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="city">City:</label>
+                                <input type="text" id="city" name="city" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="state">State:</label>
+                                <input type="text" id="state" name="state" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="zipCode">Zip Code:</label>
+                                <input type="text" id="zipCode" name="zipCode" class="form-control" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="country">Country:</label>
+                                <input type="text" id="country" name="country" class="form-control" required>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Save Address</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- footer -->
+    <%-include('userpartial/footer')%>
+        <!-- Footer End-->
+
+        		<!-- End Footer Section -->	
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/tiny-slider.js"></script>
+  <script src="js/custom.js"></script>
+</body>
+<script src="./user_assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<!-- Jquery, Popper, Bootstrap -->
+<script src="./user_assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="./user_assets/js/popper.min.js"></script>
+<script src="./user_assets/js/bootstrap.min.js"></script>
+<!-- Jquery Mobile Menu -->
+<script src="./user_assets/js/jquery.slicknav.min.js"></script>
+
+<!-- Jquery Slick , Owl-Carousel Plugins -->
+<script src="./user_assets/js/owl.carousel.min.js"></script>
+<script src="./user_assets/js/slick.min.js"></script>
+
+<!-- One Page, Animated-HeadLin -->
+<script src="./user_assets/js/wow.min.js"></script>
+<script src="./user_assets/js/animated.headline.js"></script>
+<script src="./user_assets/js/jquery.magnific-popup.js"></script>
+
+<!-- Scrollup, nice-select, sticky -->
+<script src="./user_assets/js/jquery.scrollUp.min.js"></script>
+<script src="./user_assets/js/jquery.nice-select.min.js"></script>
+<script src="./user_assets/js/jquery.sticky.js"></script>
+
+<!-- contact js -->
+<script src="./user_assets/js/contact.js"></script>
+<script src="./user_assets/js/jquery.form.js"></script>
+<script src="./user_assets/js/jquery.validate.min.js"></script>
+<script src="./user_assets/js/mail-script.js"></script>
+<script src="./user_assets/js/jquery.ajaxchimp.min.js"></script>
+
+<!-- Jquery Plugins, main Jquery -->	
+<script src="./user_assets/js/plugins.js"></script>
+<script src="./user_assets/js/main.js"></script>
+
+
+
+
+<script>
+    function togglePasswordForm() {
+    var passwordForm = document.getElementById('passwordForm');
+    passwordForm.style.display = (passwordForm.style.display === 'block') ? 'none' : 'block';
+}
+
+  </script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/tiny-slider.js"></script>
+    <script src="js/custom.js"></script>
+
+    </footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

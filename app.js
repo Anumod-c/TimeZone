@@ -1,15 +1,19 @@
+require('dotenv').config()
 const express = require("express");
 const session = require("express-session"); // Correct import statement
 const app = express();
+const mongoose=require('mongoose')
 const usrouter = require("./server/router/user");
 const adrouter = require("./server/router/admin");
 const path = require("path");
 const nocache = require("nocache");
 const multer = require("multer");
-require('dotenv').config()
+const PORT=process.env.PORT
+const MONGO_URL=process.env.MONGO_URL
 
-console.log(process.env.Email);
-console.log(process.env.pass);
+mongoose.connect(MONGO_URL)
+.then( console.log("mongodb connected"))
+.catch((err)=>console.log(err))
 
 app.use(
   session({
@@ -50,6 +54,6 @@ app.use("/", usrouter);
 
 //host
 
-app.listen(3000, () => {
-  console.log("http://localhost:3000");
+app.listen(PORT, () => {
+  console.log(`http://localhost:${PORT}`);
 });
