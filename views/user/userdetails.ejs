@@ -1,224 +1,226 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="css/tiny-slider.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
-      <!-- Bootstrap CSS -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link href="css/tiny-slider.css" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="user_assets/img/favicon.ico">
 
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="shortcut icon" type="image/x-icon" href="user_assets/img/favicon.ico">
+    <link rel="stylesheet" href="user_assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="user_assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="user_assets/css/flaticon.css">
+    <link rel="stylesheet" href="user_assets/css/slicknav.css">
+    <link rel="stylesheet" href="user_assets/css/animate.min.css">
+    <link rel="stylesheet" href="user_assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="user_assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="user_assets/css/themify-icons.css">
+    <link rel="stylesheet" href="user_assets/css/slick.css">
+    <link rel="stylesheet" href="user_assets/css/nice-select.css">
+    <link rel="stylesheet" href="user_assets/css/style.css">
+    <style>
+        .personal-details p {
+            font-size: large;
+            color: black;
+            font-weight: 400;
+        }
 
+        .address-section {
+            border: 1px solid #000000;
+            min-width: 69vh;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
+            
+            position: relative; 
+        }
 
-  <link rel="stylesheet" href="user_assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="user_assets/css/owl.carousel.min.css">
-  <link rel="stylesheet" href="user_assets/css/flaticon.css">
-  <link rel="stylesheet" href="user_assets/css/slicknav.css">
-  <link rel="stylesheet" href="user_assets/css/animate.min.css">
-  <link rel="stylesheet" href="user_assets/css/magnific-popup.css">
-  <link rel="stylesheet" href="user_assets/css/fontawesome-all.min.css">
-  <link rel="stylesheet" href="user_assets/css/themify-icons.css">
-  <link rel="stylesheet" href="user_assets/css/slick.css">
-  <link rel="stylesheet" href="user_assets/css/nice-select.css">
-  <link rel="stylesheet" href="user_assets/css/style.css">
-  <style>
-        .personal-details p{
-      font-size: large;
-      color: black;
-      font-weight: 400;
-    }
-    .address-section {
-    border: 1px solid #000000;
-    min-width: 69vh;
-    border-radius: 10px; 
-    margin-bottom: 10px;
-    padding: 10px;
-    position: relative; /* Position relative for absolute positioning of icons */
+        .address-box {
+            border: 1px solid grey; /* Grey border for each address box */
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px; /* Add a gap between address boxes */
+        }
+
+        .address-list {
+            font-size: 12px;
+            margin-bottom: 10px;
+        }
+
+        .address-list p {
+            font-size: 30px;
+            font-weight: 200;
+            margin: 0;
+        }
+
+        .edit {
+            margin-right: 20px;
+        }
+
+        .section-container {
+            background-color: #ffffff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 1px;
+        }
+
+        .passwordForm {
+            margin-top: 12vh;
+        }
+
+        @media (min-width: 768px) {
+            .section-half {
+                flex: 0 0 calc(50% - 15px);
+                margin-right: 30px;
+                margin-bottom: 20px;
+            }
+
+            #lineone {
+                min-height: 50vh;
+            }
+
+            .section-container {
+                background-color: #ffffff;
+                padding: 20px;
+                margin-bottom: 20px;
+                border-radius: 10px;
+            }
+        }
+
+        .category-options {
+            display: none;
+        }
+        .btn.btn-delete {
+            background-color: #dc3545;
+            color: white;
 }
+        .search-bar {
+            background-color: #3b5d50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 35px;
+            margin: 0;
+            border: 2px solid #efeeee;
+            border-radius: 30px;
+            overflow: hidden;
+        }
 
-.address-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+        .search-input {
+            border: none;
+            padding: 10px;
+            width: 800px;
+            background-color: #3b5d50;
+            color: white;
+        }
 
-.address-list {
-    font-size: 12px;
-    margin-bottom: 10px;
-}
+        .search-button {
+            background-color: #3d5d50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-top-right-radius: 20px;
+            border-bottom-right-radius: 20px;
+            cursor: pointer;
+        }
 
-.address-list p {
-    font-size: 30px;
-    font-weight: 200;
-    margin: 0;
-}
-
-.edit {
-    margin-right: 20px;
-}
-
-
-.section-container {
-    background-color: #ffffff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 1px;
-}
-.passwordForm{
-  margin-top: 12vh;
-}
-
-@media (min-width: 768px) {
-    .section-half {
-        flex: 0 0 calc(50% - 15px);
-        margin-right: 30px;
-        margin-bottom: 20px;
-    }
-}
-
-#lineone {
-    min-height: 50vh;
-}
-
-.section-container {
-    background-color: #ffffff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 10px;
-}
-
-@media (min-width: 768px) {
-    .section-container {
-        display: flex;
-        flex-wrap: wrap;
-        margin-left: -15px; /* Adjust the left margin */
-        margin-right: -15px; /* Adjust the right margin */
-    }
-
-    .section-half {
-        flex: 0 0 calc(50% - 15px); /* Two sections in one row with margin */
-        margin-right: 30px; /* Adjust the gap between sections */
-        margin-bottom: 20px; /* Adjust the bottom margin */
-    }
-}
-
-.category-options {
-    display: none;
-}
-
-.search-bar {
-    background-color: #3b5d50;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 35px;
-    margin: 0;
-    border: 2px solid #efeeee;
-    border-radius: 30px;
-    overflow: hidden;
-}
-
-.search-input {
-    border: none;
-    padding: 10px;
-    width: 800px;
-    background-color: #3b5d50;
-    color: white;
-}
-
-.search-button {
-    background-color: #3d5d50;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    cursor: pointer;
-}
-.btn{
-    background-color: rgb(24, 153, 234);
-}
-
-  </style>
-
+        .btn {
+            background-color: rgb(24, 153, 234);
+        }
+    </style>
 
     <title>Document</title>
 </head>
+
 <body>
     <!-- header -->
-    <%-include('userpartial/nav',{categories:categories})%> 
-      <!-- Start Hero Section -->
+    <%-include('userpartial/nav',{categories:categories})%>
+    <!-- Start Hero Section -->
 
-
-
-<div class="container mt-4">
-    <div class="row">
-        <!-- User Details Section -->
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    User Details
-                </div>
-                <div class="card-body">
-                    <p><strong>FirstName:</strong> <%= userData.firstname %></p>
-                    <p><strong> LastName:</strong> <%= userData.lastname %></p>
-                    <p><strong>Email:</strong> <%= userData.email %></p>
-                    <% if (userData.gender) { %>
+    <div class="container mt-4">
+        <div class="row">
+            <!-- User Details Section -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        User Details
+                    </div>
+                    <div class="card-body">
+                        <p><strong>FirstName:</strong> <%= userData.firstname %></p>
+                        <p><strong> LastName:</strong> <%= userData.lastname %></p>
+                        <p><strong>Email:</strong> <%= userData.email %></p>
+                        <% if (userData.gender) { %>
                         <p><strong>Gender:</strong> <%= userData.gender %></p>
-                    <% } else { %>
+                        <% } else { %>
                         <p><strong>Gender:</strong> N/A</p>
-                    <% } %>
-                    <% if (userData.age) { %>
+                        <% } %>
+                        <% if (userData.age) { %>
                         <p><strong>Age:</strong> <%= userData.age %></p>
-                    <% } else { %>
+                        <% } else { %>
                         <p><strong>Age:</strong> N/A</p>
-                    <% } %>
-                    <p><strong>Phone:</strong> <%= userData.phone %></p>
-                    <a href="/editprofile" class="btn">Edit Profile</a>
+                        <% } %>
+                        <p><strong>Phone:</strong> <%= userData.phone %></p>
+                        <a href="/editprofile" class="btn">Edit Profile</a>
+                        <a href="/pswdmanagement" class="btn">Manage Password</a>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Address Section -->
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    Address
-                </div>
-                <div class="card-body">
-                    <!-- Add your address fields here -->
-                    <!-- ++++++++++++++++paste here++++++++++++++++++++ -->
-                    <!-- Add other address fields as needed -->
-                    <a href="/editAddress" class="btn">Edit Address</a>
-                </div>
-                <div class="card-footer">
-                    <a href="/addnewaddress" class="btn">Add New Address</a>
-                </div>
-            </div>
+<!-- Address Section -->
+<div class="col-md-6">
+    <div class="card">
+        <div class="card-header">
+            Address
+        </div>
+        <div class="card-body">
+            <% if (userData.address.length > 0) { %>
+                <% userData.address.forEach(function(addr) { %>
+                    <div class="address-box text-center">
+                        <p><strong>Save As:</strong> <%= addr.saveas %></p>
+                        <p><strong>Street:</strong> <%= addr.street %></p>
+                        <p><strong>City:</strong> <%= addr.city %></p>
+                        <p><strong>State:</strong> <%= addr.state %></p>
+                        <p><strong>Pincode:</strong> <%= addr.pincode %></p>
+                        <!-- Edit and delete buttons with actual address ID -->
+                        <a href="/editAddress/<%= addr._id %>" class="btn btn-primary">Edit Address</a>
+                        <a href="/deleteAddress/<%= addr._id %>" class="btn btn-delete">Delete Address</a>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <p>No address added yet.</p>
+            <% } %>
+            
+        </div>
+        <div class="card-footer text-center">
+            <!-- Add New Address button -->
+            <a href="/addnewaddress" class="btn">Add New Address</a>
         </div>
     </div>
 </div>
 
-<!-- Bootstrap JS and other scripts -->
-<script src="js/bootstrap.bundle.min.js"></script>
-<!-- Add other scripts as needed -->
+        </div>
+    </div>
 
-
+    <!-- Bootstrap JS and other scripts -->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <!-- Add other scripts as needed -->
 
     <!-- footer -->
     <%-include('userpartial/footer')%>
-        <!-- Footer End-->
+    <!-- Footer End -->
 
-        		<!-- End Footer Section -->	
+    <!-- End Footer Section -->
 
-  <script src="js/bootstrap.bundle.min.js"></script>
-  <script src="js/tiny-slider.js"></script>
-  <script src="js/custom.js"></script>
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/tiny-slider.js"></script>
+    <script src="js/custom.js"></script>
 </body>
 <script src="./user_assets/js/vendor/modernizr-3.5.0.min.js"></script>
 <!-- Jquery, Popper, Bootstrap -->
@@ -249,24 +251,18 @@
 <script src="./user_assets/js/mail-script.js"></script>
 <script src="./user_assets/js/jquery.ajaxchimp.min.js"></script>
 
-<!-- Jquery Plugins, main Jquery -->	
+<!-- Jquery Plugins, main Jquery -->
 <script src="./user_assets/js/plugins.js"></script>
 <script src="./user_assets/js/main.js"></script>
 
-
-
-
 <script>
     function togglePasswordForm() {
-    var passwordForm = document.getElementById('passwordForm');
-    passwordForm.style.display = (passwordForm.style.display === 'block') ? 'none' : 'block';
-}
+        var passwordForm = document.getElementById('passwordForm');
+        passwordForm.style.display = (passwordForm.style.display === 'block') ? 'none' : 'block';
+    }
+</script>
+<script src="user_assets/js/bootstrap.bundle.min.js"></script>
+<script src="user_assets/js/tiny-slider.js"></script>
+<script src="user_assets/js/custom.js"></script>
 
-  </script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/tiny-slider.js"></script>
-    <script src="js/custom.js"></script>
-
-    </footer>
-</body>
 </html>

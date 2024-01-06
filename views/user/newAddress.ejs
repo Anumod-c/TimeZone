@@ -15,22 +15,22 @@
   <link rel="shortcut icon" type="image/x-icon" href="user_assets/img/favicon.ico">
 
 
-  <link rel="stylesheet" href="user_assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="user_assets/css/owl.carousel.min.css">
-  <link rel="stylesheet" href="user_assets/css/flaticon.css">
-  <link rel="stylesheet" href="user_assets/css/slicknav.css">
-  <link rel="stylesheet" href="user_assets/css/animate.min.css">
-  <link rel="stylesheet" href="user_assets/css/magnific-popup.css">
-  <link rel="stylesheet" href="user_assets/css/fontawesome-all.min.css">
-  <link rel="stylesheet" href="user_assets/css/themify-icons.css">
-  <link rel="stylesheet" href="user_assets/css/slick.css">
-  <link rel="stylesheet" href="user_assets/css/nice-select.css">
-  <link rel="stylesheet" href="user_assets/css/style.css">
+  <link rel="stylesheet" href="/user_assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/user_assets/css/owl.carousel.min.css">
+  <link rel="stylesheet" href="/user_assets/css/flaticon.css">
+  <link rel="stylesheet" href="/user_assets/css/slicknav.css">
+  <link rel="stylesheet" href="/user_assets/css/animate.min.css">
+  <link rel="stylesheet" href="/user_assets/css/magnific-popup.css">
+  <link rel="stylesheet" href="/user_assets/css/fontawesome-all.min.css">
+  <link rel="stylesheet" href="/user_assets/css/themify-icons.css">
+  <link rel="stylesheet" href="/user_assets/css/slick.css">
+  <link rel="stylesheet" href="/user_assets/css/nice-select.css">
+  <link rel="stylesheet" href="/user_assets/css/style.css">
   <style>
         .personal-details p{
       font-size: large;
       color: black;
-      font-weight: 400;
+      font-weight: 400;/
     }
     .address-section {
     border: 1px solid #000000;
@@ -164,18 +164,23 @@
                         <form action="/saveAddress" method="POST" class="address-form">
                             <!-- Address Fields -->
                             <div class="form-group">
-                                <label for="fullName">Full Name:</label>
-                                <input type="text" id="fullName" name="fullName" class="form-control" required>
+                                <label for="saveas">Save as:</label>
+                                <input type="text" id="saveas" name="saveas" class="form-control" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="fullname">Full Name:</label>
+                                <input type="text" id="fullname" name="fullname" class="form-control" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="addressLine1">Address Line 1:</label>
-                                <input type="text" id="addressLine1" name="addressLine1" class="form-control" required>
+                                <label for="adname">House Name/Flat No :</label>
+                                <input type="text" id="adname" name="adname" class="form-control" required>
                             </div>
 
                             <div class="form-group">
-                                <label for="addressLine2">Address Line 2:</label>
-                                <input type="text" id="addressLine2" name="addressLine2" class="form-control">
+                                <label for="street">Street:</label>
+                                <input type="text" id="street" name="street" class="form-control">
                             </div>
 
                             <div class="form-group">
@@ -189,8 +194,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="zipCode">Zip Code:</label>
-                                <input type="text" id="zipCode" name="zipCode" class="form-control" required>
+                                <label for="pincode">Pin Code:</label>
+                                <input type="text" id="pincode" name="pincode" class="form-control" required>
                             </div>
 
                             <div class="form-group">
@@ -262,9 +267,7 @@
 }
 
   </script>
-    <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/tiny-slider.js"></script>
-    <script src="js/custom.js"></script>
+    
 
     </footer>
 </body>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="css/tiny-slider.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="user_assets/img/favicon.ico">
+
+    <link rel="stylesheet" href="user_assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="user_assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="user_assets/css/flaticon.css">
+    <link rel="stylesheet" href="user_assets/css/slicknav.css">
+    <link rel="stylesheet" href="user_assets/css/animate.min.css">
+    <link rel="stylesheet" href="user_assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="user_assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="user_assets/css/themify-icons.css">
+    <link rel="stylesheet" href="user_assets/css/slick.css">
+    <link rel="stylesheet" href="user_assets/css/nice-select.css">
+    <link rel="stylesheet" href="user_assets/css/style.css">
+    <style>
+      .alert {
+          color: rgb(179, 49, 49);
+          text-align: center;
+          font-size: 44px;
+      }
+
+      .cart-buttons {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-top: 20px;
+      }
+
+      .cart-buttons button {
+          background-color: black;
+          color: white;
+          font-weight: bold;
+          font-size: 1rem;
+          padding: 10px 20px;
+          margin: 0 10px;
+      }
+
+      /* Additional styles for responsiveness */
+      @media only screen and (max-width: 768px) {
+          .hero {
+              padding: 80px 0;
+          }
+
+          .intro-excerpt h1 {
+              font-size: 5vw;
+          }
+
+          .product-thumbnail img {
+              max-height: 100px;
+              width: auto;
+          }
+      }
+
+      @media only screen and (max-width: 576px) {
+          .hero {
+              padding: 60px 0;
+          }
+
+          .intro-excerpt h1 {
+              font-size: 4vw;
+          }
+
+          .cart-buttons {
+              flex-direction: column;
+          }
+
+          .cart-buttons button {
+              margin: 10px 0;
+          }
+      }
+  </style>
+
+    <title>Change Password</title>
+</head>
+    <!-- Header -->
+    <%- include('userpartial/nav', { categories: categories }) %>
+
+    <!-- Start Hero Section -->
+    <div style="background-color: #ffffff; margin-bottom: 1px; padding-bottom: 1px;" class="hero">
+      <div class="container">
+          <div class="row justify-content-between">
+              <div class="col-lg-12 text-center">
+                  <div class="intro-excerpt">
+                      <h1 style="font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;font-size: 7vw; color:#ff0000;">Cart</h1>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  
+    <!-- End Hero Section -->
+
+    <div style="padding-top: 2px;" class="untree_co-section before-footer-section">
+        <div class="container">
+            <div style="display: inline;" class="row mb-5">
+                <form method="post">
+                    <div class="site-blocks-table">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th class="product-thumbnail">Image</th>
+                                        <th class="product-name">Product</th>
+                                        <th class="product-price">Price</th>
+                                        <th class="product-quantity">Quantity</th>
+                                        <th class="product-total">Total</th>
+                                        <th class="product-remove">Remove</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if(locals.message){%>
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <div class="alert"><%= message %></div>
+                                        </td>
+                                    </tr>
+                                    <%}%>
+                                    <% if (cart && cart.item && cart.item.length > 0) { %>
+                                    <% cart.item.forEach((item, index) => { %>
+                                    <tr>
+                                        <td class="product-thumbnail">
+                                            <img style="max-height: 6vw; width: auto;" src="<%= item.productId.images[0] %>" alt="Image"
+                                                class="img-fluid">
+                                        </td>
+                                        <td class="product-name"><%= item.productId.name %></td>
+                                        <td><%= item.productId.price %></td>
+                                        <td>
+                                            <div class="product_count">
+                                                <input type="text" name="qty" id="sst<%= index%>" maxlength="12" value="<%= item.quantity %>"
+                                                    title="Quantity:" class="input-text qty">
+                                                <button style="background-color: black;"
+                                                    onclick="updateQuantity('<%= cart._id %>','<%= item._id %>','<%= item.price %>','<%= index %>' , 1 )"
+                                                    class="increase items-count" type="button">
+                                                    <span class="lnr lnr-chevron-up"
+                                                        style="font-weight:bold;">+</span></button>
+                                                <button style="background-color: black;"
+                                                    onclick="updateQuantity('<%= cart._id %>','<%= item._id %>','<%= item.price %>', '<%= index %>', -1 )"
+                                                    class="reduced items-count" type="button"><span class="lnr lnr-chevron-down"
+                                                        style="font-weight:bold;">-</span></button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <h5 id="total<%= index%>">
+                                                <%= item.total %>
+                                            </h5>
+                                        </td>
+                                        <td><a href="/deletecart/<%= item._id %>"><span
+                                                    style="color: rgb(206, 2, 2); font-weight: 900; font-size: 1.5vw; text-decoration: none;">X</span></a>
+                                        </td>
+                                    </tr>
+                                    <% }); %>
+                                    <% } else { %>
+                                    <tr>
+                                        <td colspan="6" class="text-center">
+                                            <h1>Your cart is empty</h1>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-12 mb-5">
+        <!-- Cart Totals -->
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12 text-center border-bottom mb-3">
+                        <h3 class="text-black h4 text-uppercase">Cart Totals</h3>
+                    </div>
+                </div>
+                <div class="row mb-3 justify-content-center">
+                    <div class="col-md-12 text-center">
+                        <span class="text-black">Total</span>
+                    </div>
+                    <div class="col-md-12 text-center">
+                        <strong class="text-black" id="total"><%= cart && cart.total ? cart.total : 0 %></strong>
+                    </div>
+                </div>
+                <% if (cart && cart.item && cart.item.length > 0) { %>
+                <div class="row justify-content-center">
+                    <div class="col-md-12 text-center">
+                        <form action="/checkoutpage" method="get">
+                            <input type="hidden" name="cartId" value="<%= cart._id %>">
+                            <div class="cart-buttons">
+                                <a href="/newarrival"><button  style="background-color: red;" class="continue-shopping-button btn btn-lg py-3" type="button">Continue Shopping</button></a>
+                                <button class="btn btn-dark btn-lg py-3" type="button" onclick="proceedToCheckout()">Proceed To Checkout</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+        </div>
+        <!-- End Cart Totals -->
+    </div>
+
+
+
+
+
+
+
+
+    <!-- Bootstrap JS and other scripts -->
+   
+    <!-- Add other scripts as needed -->
+
+    <!-- footer -->
+    <%-include('userpartial/footer')%>
+    <!-- Footer End -->
+
+    <!-- End Footer Section -->
+
+    <script>
+        async function updateQuantity(cartId, productId,price, index, count) {
+                    try {
+                      
+                        let quantityInput = document.getElementById(`sst${index}`);
+                        let currentQuantity = parseInt(quantityInput.value);
+                        console.log("jjjj",cartId);
+                        const response = await fetch(`/update-cart-quantity/${productId}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                cartId:cartId,
+                                action: count,
+                                newQuantity: count + currentQuantity,
+                            })
+                        });
+                        const data = await response.json();
+
+                        if (data.success) {
+                            quantityInput.value = data.newQuantity;
+                            document.getElementById(`total${index}`).innerText = `₹ ${price * data.newQuantity}`;
+
+
+                            document.getElementById('total').innerText = `₹ ${data.total}`;
+                            enableButtons();
+                        } else {
+                            console.error('Failed to update quantity:', data.error);
+
+                        }
+
+                    } catch (error) {
+                        console.error('Error parsing cart JSON:', error);
+
+                    }
+                }
+                // Function to enable the buttons
+function enableButtons() {
+    // Enable your buttons here
+    // Example for the increase button:
+    document.querySelector('.increase.items-count').removeAttribute('disabled');
+   // Example for the reduce button:
+   document.querySelector('.reduced.items-count').removeAttribute('disabled');
+}
+
+
+  
+  </script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/tiny-slider.js"></script>
+    <script src="js/custom.js"></script>
+</body>
+<script src="./user_assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<!-- Jquery, Popper, Bootstrap -->
+<script src="./user_assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="./user_assets/js/popper.min.js"></script>
+<script src="./user_assets/js/bootstrap.min.js"></script>
+<!-- Jquery Mobile Menu -->
+<script src="./user_assets/js/jquery.slicknav.min.js"></script>
+<!-- Jquery Slick , Owl-Carousel Plugins -->
+<script src="./user_assets/js/owl.carousel.min.js"></script>
+<script src="./user_assets/js/slick.min.js"></script>
+
+<!-- One Page, Animated-HeadLin -->
+<script src="./user_assets/js/wow.min.js"></script>
+<script src="./user_assets/js/animated.headline.js"></script>
+<script src="./user_assets/js/jquery.magnific-popup.js"></script>
+
+<!-- Scrollup, nice-select, sticky -->
+<script src="./user_assets/js/jquery.scrollUp.min.js"></script>
+<script src="./user_assets/js/jquery.nice-select.min.js"></script>
+<script src="./user_assets/js/jquery.sticky.js"></script>
+
+<!-- contact js -->
+<script src="./user_assets/js/contact.js"></script>
+<script src="./user_assets/js/jquery.form.js"></script>
+<script src="./user_assets/js/jquery.validate.min.js"></script>
+<script src="./user_assets/js/mail-script.js"></script>
+<script src="./user_assets/js/jquery.ajaxchimp.min.js"></script>
+
+<!-- Jquery Plugins, main Jquery -->
+<script src="./user_assets/js/plugins.js"></script>
+<script src="./user_assets/js/main.js"></script>
+
+
+
+
+
+</html>

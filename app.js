@@ -23,7 +23,7 @@ app.use(
   })
 );
 app.use(nocache());
-
+app.use(express.json());
 // app.use(session({
 //     secret: 'your-secret-key',
 //     resave: false,

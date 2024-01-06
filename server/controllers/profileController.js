@@ -1,6 +1,13 @@
 const categoryModel = require('../models/categorymodel');
 const userModel = require('../models/usermodel');
 const productModel = require('../models/productmodel');
+const bcrypt=require('bcrypt')
+const {nameValid,
+    lnameValid, 
+    emailValid,phoneValid,
+    passwordValid,
+    confirmpasswordValid}=require('../../utils/validators/usersignupvalidator')
+
 
 //================================ USER DETAILS PAGE RENDERING   ===================================
 const userdetials =async(req,res)=>{
@@ -55,21 +62,205 @@ const addnewaddress =async(req,res)=>{
 //================================================NEW ADDRESS POST   =============================
  const addnewaddresspost =async(req,res)=>{
     try{
-        const {fullname,addressLine1,addressLine2,city,state,zipCode,country} =req.body;
+        const {saveas,fullname,adname,street,city,state,pincode,country,phone} =req.body;
         const userId =req.session.userId;
-        
+        console.log('user_id',userId);
+        const existingUser =await userModel.findOne({_id:userId});
+        if(existingUser){
+            const existingAddress =await userModel.findOne({
+                _id:userId,address:{
+                    $elemMatch :{
+                        fullname:fullname,
+                        adname:adname,
+                        street:street,
+                        pincode:pincode,
+                        city:city,
+                        state:state,
+                        country:country,
+                        phonenumber:phone
+                    }
+                }
+            });
+            if(existingAddress){
+                 return res.redirect('/addAddress')
+            }
+            existingUser.address.push({
+                saveas:saveas,
+                fullname:fullname,
+                adname:adname,
+                street:street,
+                pincode:pincode,
+                city:city,
+                state:state,
+                country:country,
+                phonenumber:phone,
+            });
+            await existingUser.save();
+            return res.redirect('/userdetails')
 
+        }
+        const newAddress =await userModel.create({
+            userId:userId,
+            address:{
+                saveas:saveas,
+                fullname:fullname,
+                adname:adname,
+                street:street,
+                pincode:pincode,
+                city:city,
+                state:state,
+                country:country,
+                phonenumber:phone
+
+            },
+        });
+        console.log(newAddress);
+        res.redirect('/userdetails');        
     }
     catch(err){
         console.log('add new address post method error',err);
     }
  }
+ //=================================   EDIT ADDRESS ==================================
+ const editaddress =async(req,res)=>{
+    try{
+        const categories= await categoryModel.find();
+        const addressId =req.params.addressId;
+        const userId=req.session.userId;
+        const userData = await userModel.findById({ _id: userId });
+        const address = userData.address.id(addressId);
+
+        res.render('user/editAddress.ejs',{categories:categories,address:address})
+
+    }
+    catch(err){
+        console.log('edit adress error:',err);
+    }
+ }
+ //==================================  EDIT ADDRESS POST ==========================
+ const editaddresspost =async (req,res)=>{
+    try{
+        const {saveas,fullname,adname,street,pincode,city,state,country,phone}= req.body;
+        const addressId =req.params.addressId;
+        const userId =req.session.userId;
+        const isAddressExists = await userModel.findOne({
+            '_id': userId,
+            'address': {
+                $elemMatch: {
+                    '_id': { $ne: addressId }, 
+                    'saveas': saveas,
+                    'fullname': fullname,
+                    'adname': adname,
+                    'street': street,
+                    'pincode': pincode,
+                    'city': city,
+                    'state': state,
+                    'country': country,
+                    'phonenumber': phone
+                }
+            }
+        });
+
+        if(isAddressExists){
+            return res.status(400).send('address alredy exist');
+        }
+
+        const result = await userModel.updateOne(
+            { '_id': userId, 'address._id': addressId },
+            {
+                $set: {
+                    'address.$.saveas': saveas,
+                    'address.$.fullname': fullname,
+                    'address.$.adname': adname,
+                    'address.$.street': street,
+                    'address.$.pincode': pincode,
+                    'address.$.city': city,
+                    'address.$.state': state,
+                    'address.$.country': country,
+                    'address.$.phonenumber': phone
+                }
+            }
+        );
+        res.redirect('/userdetails');
+    }
+    catch(err){
+        res.status(500).send('Error Occured')
+        console.log('edit address post error',err)
+    }
+ }
+ //=================================   DELETE ADDRESS ===================================
+ const deleteaddress  = async(req,res)=>{
+    try{
+        const addressId =req.params.addressId;
+        const userId =req.session.userId;
+        const data =await userModel.updateOne({_id:userId,"address._id":addressId},{$pull:{ address:{_id:addressId}}});
+        console.log('the data i rendered',data)
+        res.redirect('/userdetails')
+    }
+    catch(err){
+        console.log('delete address error',err);
+    }
+ }
+ //========================================= PASSWORD MANAGEMENT   ======================================
+ const pswdmanagement = async (req, res) => {
+    try {
+        const categories = await categoryModel.find();
+        res.render('user/changePassword', { categories: categories });
+    } catch (err) {
+        console.log('pswdmanagement error', err);
+    }
+}
+
+  //=====================================   PASSWORD MANAGEMENT POST ===============================
+  const pswdmanagementpost =async (req,res)=>{
+    try{
+        console.log('pswdmanagementpost reached')
+        const password=req.body.newPassword;
+        const cpassword =req.body.confirmPassword;
+        console.log(password,cpassword,'both passwords');
+        const ispasswordValid = passwordValid(password)
+        const iscpasswordValid = confirmpasswordValid(cpassword, password)
+        if (!ispasswordValid) {
+            res.render('user/changePassword', { perror: "Password should contain one uppercase,one lowercase,one number,one special charecter" })
+        }
+        else if (!iscpasswordValid) {
+            res.render('user/changePassword', { cperror: "Password and Confirm password should be match" })
+        }
+        else{
+            const hashedpassword = await bcrypt.hash(password, 10)
+            const userId = req.session.userId;
+            await userModel.updateOne({_id:userId},{password:hashedpassword})
+            res.redirect('/userdetails')
+        }
+
+    }
+    catch(err){
+        res.status(500).send('error occured')
+        console.log('post error in changin passsword from profile',err);
+    }
+  }
+ //======================================== EDIT ADDRESS ===============================
+
+
+
+
+
+
+
 module.exports={
     userdetials,
     editprofile,
     updateprofile,
     addnewaddress,
-    addnewaddresspost
+    editaddress,
+    addnewaddresspost,
+    deleteaddress,
+    editaddresspost,
+    pswdmanagement,
+    pswdmanagementpost
+
+
+
 
 
 

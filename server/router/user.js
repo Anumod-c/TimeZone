@@ -3,6 +3,7 @@ const usrouter =express.Router()
 const userController=require('./../controllers/userController');
 const prodcatviewController =require('../controllers/prodcatviewController');
 const profileController = require('../controllers/profileController')
+const cartController  =   require('../controllers/cartController')
 const auth =require('../../middleware/isAuth')
 
 usrouter.use(express.urlencoded({extended:true}))
@@ -75,9 +76,19 @@ usrouter.get('/editprofile',profileController.editprofile)
 usrouter.post('/updateprofile',profileController.updateprofile)
 usrouter.get('/addnewaddress',profileController.addnewaddress)
 usrouter.post('/saveAddress',profileController.addnewaddresspost)
+usrouter.get('/editaddress/:addressId',profileController.editaddress)
+usrouter.post('/updateAddress/:addressId',profileController.editaddresspost)
+usrouter.get('/deleteAddress/:addressId',profileController.deleteaddress)
+usrouter.get('/pswdmanagement',profileController.pswdmanagement)
+usrouter.post('/changepassword',profileController.pswdmanagementpost)
 
 
 
+//=================================     CART    =======================================
+usrouter.get('/cart',cartController.showcart)
+usrouter.get('/addtocart/:id',cartController.addToCart)
+usrouter.post('/update-cart-quantity/:productId', cartController.updatecart);
+usrouter.get('/deletecart/:id',cartController.deletecart)
 
 
 
