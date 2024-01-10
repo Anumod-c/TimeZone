@@ -1,7 +1,8 @@
 const express =require('express')
 const adrouter =express.Router();
 const adminController =require('./../controllers/adminController');
-const productController =require('../controllers/productcontroller')
+const productController =require('../controllers/productcontroller');
+const orderController =require('../controllers/orderController')
 adrouter.use(express.urlencoded({extended:true}));
 const multer =require('multer');
 const auth =require('../../middleware/isAuth')
@@ -63,7 +64,11 @@ adrouter.get('/delimage',auth.loggedadmin,productController.delimage)
 adrouter.post('/editimagepost/:id',auth.loggedadmin,upload.array('images'),productController.editimagepost)
 adrouter.post('/updateproductpost/:id',auth.loggedadmin,productController.updateproductpost)
 adrouter.post('/deleteproduct/:id',auth.loggedadmin,productController.delproduct)
+//===================================================orderpage========================================
 
+adrouter.get('/orderPage',orderController.orderPage)
+adrouter.post('/updateOrderStatus',orderController.updateOrderStatus)
+adrouter.get('/filterOrder/:status',orderController.filterOrder)
 
 
 

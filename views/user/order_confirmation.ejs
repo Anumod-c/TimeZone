@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="css/tiny-slider.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="user_assets/img/favicon.ico">
+
+    <link rel="stylesheet" href="user_assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="user_assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="user_assets/css/flaticon.css">
+    <link rel="stylesheet" href="user_assets/css/slicknav.css">
+    <link rel="stylesheet" href="user_assets/css/animate.min.css">
+    <link rel="stylesheet" href="user_assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="user_assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="user_assets/css/themify-icons.css">
+    <link rel="stylesheet" href="user_assets/css/slick.css">
+    <link rel="stylesheet" href="user_assets/css/nice-select.css">
+    <link rel="stylesheet" href="user_assets/css/style.css">
+    <style>
+
+  @media (min-width: 1200px) {
+/* Set the width to 110vh for devices with a minimum width of 1200px */
+.search-input {
+  width: 110vh;
+}
+}
+
+
+      body {
+      
+          background-color: #f8f9fa;
+          color: #495057;
+      }
+
+      .hero {
+          background-color: #e83737;
+          
+          padding: 100px 0;
+      }
+
+      .order_details {
+          padding: 60px 0;
+      }
+
+      .title_confirmation {
+          color: red;
+          font-size: 36px;
+          font-weight: 600;
+          margin-bottom: 30px;
+      }
+
+      .order_d_inner {
+          background-color: #fff;
+          border-radius: 10px;
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+          padding: 30px;
+      }
+
+      .details_item h4 {
+          color: #3b5d50;
+          font-size: 24px;
+          margin-bottom: 20px;
+      }
+
+      .details_item ul {
+          list-style: none;
+          padding: 0;
+          margin: 0;
+      }
+
+      .details_item ul li {
+          margin-bottom: 15px;
+      }
+      .list {
+    color: #000 !important;
+}
+
+      .order_details_table {
+          margin-top: 50px;
+      }
+
+      .order_details_table h2 {
+          color: #3a67b5;
+          font-size: 28px;
+          font-weight: 600;
+          margin-bottom: 20px;
+      }
+
+      .table th,
+      .table td {
+          border: solid 1px rgb(169, 162, 162);
+      }
+
+      .table th {
+          background-color: #3a67b5;
+          color: #fff;
+
+      }
+
+      .table tbody tr:nth-child(even) {
+          background-color: #f2f2f2;
+      }
+
+      .table-responsive {
+          overflow-x: auto;
+      }
+  </style>
+
+    <title>Change Password</title>
+</head>
+    <!-- Header -->
+    <%- include('userpartial/nav', { categories: categories }) %>
+<!-- Start Hero Section -->
+
+
+
+
+<div class="hero">
+    <div class="container">
+        <div class="row justify-content-between">
+            <div class="col-lg-5">
+                <div class="intro-excerpt">
+                    <h1 style="color: white;">Order Confirmation</h1>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <!-- ... (additional content if needed) ... -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="order_details section_gap">
+    <div class="container">
+        <h3 class="title_confirmation">Thank you. Your order has been received.</h3>
+        <div class="row order_d_inner">
+            <div class="col-lg-4">
+                <div class="details_item">
+                    <h4>Order Info</h4>
+                    <ul  class="list">
+                        <li><span>Order Id</span> : <%= order.orderId %></li>
+                        <li><span>Date</span> : <%= order.createdAt %></li>
+                        <li><span>Total</span> : <%= order.totalPrice %></li>
+                        <li style="color: #000 !important;"><span>Payment method</span> : <%= order.paymentMethod %></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="details_item">
+                    <h4>Shipping Address</h4>
+                    <ul class="list">
+                        <li><span>House Name </span> : <%= order.shippingAddress.adname %></li>
+                        <li><span>Street</span> : <%= order.shippingAddress.street %></li>
+                        <li><span>City</span> : <%= order.shippingAddress.city %></li>
+                        <li><span>Country</span> : <%= order.shippingAddress.country %></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="order_details_table">
+                <h2>Invoice</h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product</th>
+                                <th scope="col">price</th>
+                                <th scope="col">Quantity</th>
+                                <th scope="col">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% order.items.forEach(item => { %>
+                            <tr>
+                                <td>
+                                    <p><%= item.productName %></p>
+                                </td>
+                                <td>
+                                    <p><%= item.singleprice %></p>
+                                </td>
+                                <td>
+                                    <p> x <%= item.quantity %></p>
+                                </td>
+                                <td>
+                                    <p><%=item.price %></p>
+                                </td>
+                            </tr>
+                            <% }) %>
+                           
+                            <tr>
+                                <td>
+                                    <h4>Total&nbsp&nbsp:&nbsp&nbsp<span><%= order.totalPrice %></span></h4>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <a href="/newarrival" class="btn btn-danger text-white">Continue Shopping</a>
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+        
+    </div>
+    
+    
+</section>
+
+<!-- Start Footer Section -->
+<%-include('userpartial/footer')%>
+
+<!-- End Footer Section -->	
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/tiny-slider.js"></script>
+    <script src="js/custom.js"></script>
+</body>
+<script src="./user_assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<!-- Jquery, Popper, Bootstrap -->
+<script src="./user_assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="./user_assets/js/popper.min.js"></script>
+<script src="./user_assets/js/bootstrap.min.js"></script>
+<!-- Jquery Mobile Menu -->
+<script src="./user_assets/js/jquery.slicknav.min.js"></script>
+<!-- Jquery Slick , Owl-Carousel Plugins -->
+<script src="./user_assets/js/owl.carousel.min.js"></script>
+<script src="./user_assets/js/slick.min.js"></script>
+
+<!-- One Page, Animated-HeadLin -->
+<script src="./user_assets/js/wow.min.js"></script>
+<script src="./user_assets/js/animated.headline.js"></script>
+<script src="./user_assets/js/jquery.magnific-popup.js"></script>
+
+<!-- Scrollup, nice-select, sticky -->
+<script src="./user_assets/js/jquery.scrollUp.min.js"></script>
+<script src="./user_assets/js/jquery.nice-select.min.js"></script>
+<script src="./user_assets/js/jquery.sticky.js"></script>
+
+<!-- contact js -->
+<script src="./user_assets/js/contact.js"></script>
+<script src="./user_assets/js/jquery.form.js"></script>
+<script src="./user_assets/js/jquery.validate.min.js"></script>
+<script src="./user_assets/js/mail-script.js"></script>
+<script src="./user_assets/js/jquery.ajaxchimp.min.js"></script>
+
+<!-- Jquery Plugins, main Jquery -->
+<script src="./user_assets/js/plugins.js"></script>
+<script src="./user_assets/js/main.js"></script>
+
+
+
+
+
+</html>

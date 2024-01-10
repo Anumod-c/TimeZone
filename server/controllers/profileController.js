@@ -1,6 +1,7 @@
 const categoryModel = require('../models/categorymodel');
 const userModel = require('../models/usermodel');
 const productModel = require('../models/productmodel');
+const orderModel =require('../models/ordermodel')
 const bcrypt=require('bcrypt')
 const {nameValid,
     lnameValid, 
@@ -239,10 +240,80 @@ const addnewaddress =async(req,res)=>{
         console.log('post error in changin passsword from profile',err);
     }
   }
- //======================================== EDIT ADDRESS ===============================
+ //======================================== ORDER HISTORY ===============================
+
+
+const orderHistory = async(req,res)=>{
+    try{
+        const userId = req.session.userId;
+    console.log(userId);
+    const categories = await categoryModel.find();
+    const od = await orderModel.find({ userId: userId });
+    const allOrderItems = [];
+    od.forEach((order) => {
+      allOrderItems.push(...order.items);
+    });
+    const orders = await orderModel.aggregate([
+        {
+          $match: {
+            userId: userId,
+          },
+        },
+        {
+          $sort: {
+            createdAt: -1, // Sort in ascending order (use -1 for descending order)
+          },
+        },
+        {
+          $lookup: {
+            from: "products",
+            localField: "items.productId",
+            foreignField: "_id",
+            as: "productDetails",
+          },
+        },
+      ]);
+      const updatedOrders = orders.map((order) => ({
+        ...order,
+        items: order.items.map((item) => ({
+          ...item,
+          productDetails: order.productDetails.find(
+            (product) => product._id.toString() === item.productId.toString()
+          ),
+        })),
+      }));
+  
+      res.render("user/order_history", {
+        od,
+        orders: updatedOrders,
+        categories,
+        allOrderItems,
+      });
 
 
 
+    }
+    
+    catch(err){
+        console.log('order history error',err);
+    }
+}
+
+
+
+
+const singleOrderPage = async (req, res) => {
+    try {
+      const id = req.params.id;
+  
+      const order = await orderModel.findOne({ _id: id });
+      const categories = await categoryModel.find();
+      res.render("user/orderDetails", { categories, order });
+    } catch (err) {
+      console.log(err);
+        
+    }
+  };
 
 
 
@@ -257,7 +328,11 @@ module.exports={
     deleteaddress,
     editaddresspost,
     pswdmanagement,
-    pswdmanagementpost
+    pswdmanagementpost,
+    orderHistory,
+    singleOrderPage,
+
+
 
 
 

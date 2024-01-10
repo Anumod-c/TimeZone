@@ -4,6 +4,7 @@ const userController=require('./../controllers/userController');
 const prodcatviewController =require('../controllers/prodcatviewController');
 const profileController = require('../controllers/profileController')
 const cartController  =   require('../controllers/cartController')
+const checkoutController =require('../controllers/checkoutController')
 const auth =require('../../middleware/isAuth')
 
 usrouter.use(express.urlencoded({extended:true}))
@@ -71,28 +72,41 @@ usrouter.get('/singleproduct/:id',prodcatviewController.singleproduct)
 
 
 //===================================    PROFILE   =============================================
-usrouter.get('/userdetails',profileController.userdetials)
-usrouter.get('/editprofile',profileController.editprofile)
-usrouter.post('/updateprofile',profileController.updateprofile)
-usrouter.get('/addnewaddress',profileController.addnewaddress)
-usrouter.post('/saveAddress',profileController.addnewaddresspost)
-usrouter.get('/editaddress/:addressId',profileController.editaddress)
-usrouter.post('/updateAddress/:addressId',profileController.editaddresspost)
-usrouter.get('/deleteAddress/:addressId',profileController.deleteaddress)
-usrouter.get('/pswdmanagement',profileController.pswdmanagement)
-usrouter.post('/changepassword',profileController.pswdmanagementpost)
+usrouter.get('/userdetails',auth.islogged, profileController.userdetials)
+usrouter.get('/editprofile',auth.islogged,profileController.editprofile)
+usrouter.post('/updateprofile',auth.islogged,profileController.updateprofile)
+usrouter.get('/addnewaddress',auth.islogged,profileController.addnewaddress)
+usrouter.post('/saveAddress',auth.islogged,profileController.addnewaddresspost)
+usrouter.get('/editaddress/:addressId',auth.islogged,profileController.editaddress)
+usrouter.post('/updateAddress/:addressId',auth.islogged,profileController.editaddresspost)
+usrouter.get('/deleteAddress/:addressId',auth.islogged,profileController.deleteaddress)
+usrouter.get('/pswdmanagement',auth.islogged,profileController.pswdmanagement)
+usrouter.post('/changepassword',auth.islogged,profileController.pswdmanagementpost)
+usrouter.get('/orderHistory',profileController.orderHistory)
+usrouter.get('/singleOrder/:id',profileController.singleOrderPage)
 
 
 
 //=================================     CART    =======================================
-usrouter.get('/cart',cartController.showcart)
-usrouter.get('/addtocart/:id',cartController.addToCart)
-usrouter.post('/update-cart-quantity/:productId', cartController.updatecart);
-usrouter.get('/deletecart/:id',cartController.deletecart)
+usrouter.get('/cart',auth.islogged,cartController.showcart)
+usrouter.get('/addtocart/:id',auth.islogged,cartController.addToCart)
+usrouter.post('/update-cart-quantity/:productId',auth.islogged, cartController.updatecart);
+usrouter.get('/deletecart/:id',auth.islogged,cartController.deletecart)
+
+
+//=================================     Wishlist    =======================================
+usrouter.get('/favourite',auth.islogged,cartController.favouritepage)
+usrouter.get('/addtofavourite/:id',auth.islogged,cartController.addToFav)
+usrouter.get('/deletefav/:id',auth.islogged,cartController.deleteFav)
+usrouter.get('/addtocartviafav/:id',auth.islogged,cartController.addtocartviafav)
+
+
+//============================ CHECKOUtPAGE ==================
+usrouter.get('/checkoutpage',cartController.checkoutpage)
 
 
 
-
+usrouter.post('/placeOrder',auth.islogged,checkoutController.placeOrder)
 
 
 

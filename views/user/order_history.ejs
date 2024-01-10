@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="css/tiny-slider.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="user_assets/img/favicon.ico">
+
+    <link rel="stylesheet" href="user_assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="user_assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="user_assets/css/flaticon.css">
+    <link rel="stylesheet" href="user_assets/css/slicknav.css">
+    <link rel="stylesheet" href="user_assets/css/animate.min.css">
+    <link rel="stylesheet" href="user_assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="user_assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="user_assets/css/themify-icons.css">
+    <link rel="stylesheet" href="user_assets/css/slick.css">
+    <link rel="stylesheet" href="user_assets/css/nice-select.css">
+    <link rel="stylesheet" href="user_assets/css/style.css">
+    <style>
+
+        /* Default style for select-line */
+      .select-line {
+        background-color: #3b5d50;
+    }
+    
+    /* Media query for small screens (e.g., mobile devices) */
+    @media (max-width: 767px) {
+        .select-line {
+            height: 8vw; /* Set the height for small screens */
+            align-items: start;
+            margin-top: 0.1px;
+        }
+    }
+    
+    /* Media query for medium screens (e.g., tablets) */
+    @media (min-width: 768px) and (max-width: 991px) {
+        .select-line {
+            height: 6vw; /* Set the height for medium screens */
+        }
+    }
+    
+    /* Media query for large screens (e.g., desktops) */
+    @media (min-width: 992px) {
+        .select-line {
+            height: 4vw; /* Set the height for large screens */
+        }
+    }
+    
+    
+    
+    
+        .eachorder{
+          border: solid  #3b5d50;
+          border-radius: 20px;
+        }
+        
+        .username{
+            font-weight: 600;
+            color: #F0EAD6;
+        }
+    .heroprofile{
+        max-height: 100px;
+    }
+        .welcome{
+            color: #efeeee;
+            font-weight: 200;
+        }
+        .category-options {
+          display: none;
+        }
+        .search-bar {
+          background-color: #3b5d50;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 35px;
+          margin: 0;
+          display: flex;
+          border: 2px solid #efeeee;
+          border-radius: 30px;
+          overflow: hidden;
+        }
+    
+        
+        @media (min-width: 1200px) {
+      /* Set the width to 110vh for devices with a minimum width of 1200px */
+      .search-input {
+        width: 110vh;
+      }
+    }
+    
+        
+      </style>
+
+    <title>Change Password</title>
+</head>
+<body>
+    
+
+    <!-- Header -->
+    <%- include('userpartial/nav', { categories: categories }) %>
+<!-- Start Hero Section -->
+
+
+
+<div class="container mt-5">
+    <h1 class="mb-4">Order History</h1>
+    
+    <% if (orders.length === 0) { %>
+      <p>No orders found.</p>
+    <% } else { %>
+      <% orders.forEach(order => { %>
+      
+        
+          <div class="list-group-item mb-3  eachorder">
+            
+            <div class="d-flex justify-content-between">
+              <h6>Order ID: <%= order.orderId %></h6>
+              <p style="font-size: 1.5vw;margin-top: 0.5vw;"><strong><%= order.status %>&nbsp;On&nbsp;<%= order.updatedAt.toLocaleString('en-US', {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                hour12: true, 
+              });%></strong></p>
+            </div>
+            <a href="/singleorder/<%= order._id %>">
+            <p style="font-size: 1.25vw;">Amount: ₹<%= order.totalPrice %></p>
+    
+          <div class="order-section">
+<!-- Display order details here if needed -->
+<ul class="list-group">
+<% order.items.forEach(item => { %>
+<li class="list-group-item d-flex align-items-center">
+<!-- Product Image -->
+<img src="/<%= item.productDetails.images[0] %>" alt="" style="height: 4vw; width: 4vw; margin-right: 1vw;">
+
+<!-- Product Details -->
+<div class=" d-flex">
+  <p  style="font-size: 2vw;color: #3b5d50;" class="mb-0"><%= item.productDetails.name %></p>
+  <p  style="margin-left: 5vw;font-size: 1vw;" class="mb-0">Qty:<%= item.quantity %></p>
+</div>
+</li>
+<% }); %>
+</ul>
+</div>
+          </a>
+            <!-- End Order Items Section -->
+          </div>
+        </a>
+      <% }); %>
+    <% } %>
+    
+  </div>
+
+
+
+
+
+<!-- Start Footer Section -->
+<%-include('userpartial/footer')%>
+
+<!-- End Footer Section -->	
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/tiny-slider.js"></script>
+    <script src="js/custom.js"></script>
+</body>
+<script src="./user_assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<!-- Jquery, Popper, Bootstrap -->
+<script src="./user_assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="./user_assets/js/popper.min.js"></script>
+<script src="./user_assets/js/bootstrap.min.js"></script>
+<!-- Jquery Mobile Menu -->
+<script src="./user_assets/js/jquery.slicknav.min.js"></script>
+<!-- Jquery Slick , Owl-Carousel Plugins -->
+<script src="./user_assets/js/owl.carousel.min.js"></script>
+<script src="./user_assets/js/slick.min.js"></script>
+
+<!-- One Page, Animated-HeadLin -->
+<script src="./user_assets/js/wow.min.js"></script>
+<script src="./user_assets/js/animated.headline.js"></script>
+<script src="./user_assets/js/jquery.magnific-popup.js"></script>
+
+<!-- Scrollup, nice-select, sticky -->
+<script src="./user_assets/js/jquery.scrollUp.min.js"></script>
+<script src="./user_assets/js/jquery.nice-select.min.js"></script>
+<script src="./user_assets/js/jquery.sticky.js"></script>
+
+<!-- contact js -->
+<script src="./user_assets/js/contact.js"></script>
+<script src="./user_assets/js/jquery.form.js"></script>
+<script src="./user_assets/js/jquery.validate.min.js"></script>
+<script src="./user_assets/js/mail-script.js"></script>
+<script src="./user_assets/js/jquery.ajaxchimp.min.js"></script>
+
+<!-- Jquery Plugins, main Jquery -->
+<script src="./user_assets/js/plugins.js"></script>
+<script src="./user_assets/js/main.js"></script>
+
+
+
+
+
+</html>

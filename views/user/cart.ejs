@@ -203,11 +203,8 @@
                     <div class="col-md-12 text-center">
                         <form action="/checkoutpage" method="get">
                             <input type="hidden" name="cartId" value="<%= cart._id %>">
-                            <div class="cart-buttons">
-                                <a href="/newarrival"><button  style="background-color: red;" class="continue-shopping-button btn btn-lg py-3" type="button">Continue Shopping</button></a>
-                                <button class="btn btn-dark btn-lg py-3" type="button" onclick="proceedToCheckout()">Proceed To Checkout</button>
-                            </div>
-                        </form>
+                            <button class="btn btn-dark btn-lg py-3 btn-block">Proceed To Checkout</button>
+                          </form>
                     </div>
                 </div>
                 <% } %>

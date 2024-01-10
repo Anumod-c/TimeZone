@@ -18,7 +18,7 @@ const showcart = async (req, res) => {
     } else {
       cart = await cartModel.findOne({ sessionId: sessionId }).populate({
         path: "item.productId",
-        select: "images name price ",
+        select: "images name price stock",
       });
     }
     if (!cart || !cart.item) {
@@ -35,7 +35,7 @@ const showcart = async (req, res) => {
     res.status(500).send("Error occurred");
   }
 };
-//======================== addtoCart ================
+//========================================== addtoCart =============================================================
 const addToCart = async (req, res) => {
   try {
     const pid = req.params.id;
@@ -93,7 +93,7 @@ const addToCart = async (req, res) => {
     console.log("addtocart error", err);
   }
 };
-//=============================  UPDATE CART ================
+//======================================  UPDATE CART  ======================================================
 const updatecart = async (req, res) => {
   try {
     console.log("Reached updat cart");
@@ -157,7 +157,7 @@ const updatecart = async (req, res) => {
     console.log("update cart error:", err);
   }
 };
-//=============================    DELETE CART ================
+//=============================    DELETE CART       ==============================================================
 
 const deletecart = async (req, res) => {
   try {
@@ -179,10 +179,216 @@ const deletecart = async (req, res) => {
     console.log("delter cart error", err);
   }
 };
+//===========================================   WISHLIST  ======================================================== 
+const favouritepage =async(req,res)=>{
+  try{
+    const userId =req.session.userId;
+    const sessionId = req.session.id;
+    const categories= await categoryModel.find();
+    let fav;
+    if(userId){
+      fav = await  favModel.findOne({userId:userId}).populate({
+        path: 'item.productId',
+        select: 'images name price',
+      });
+    }
+    else{
+      fav = await favModel.findOne({sessionId:sessionId}).populate({
+        path: 'item.productId',
+        select: 'images name price',
+      })
+    }
+    if(!fav || !fav.item){
+      cart = new favModel({
+        sessionId:req.session.id,
+        item:[],
+        total:0,
+      })
+    }
+          res.render('user/favourite',{fav:fav,categories:categories})
+
+          console.log(fav,'==============fav')
+
+  }
+  catch(err){
+    console.log('Favoouritepage error:',err);
+  }
+}
+
+//=============================================     ADDING FAVOURITE     ========================================
+const addToFav =async(req,res)=>{
+  try{
+    const pid =req.params.id;
+    const product =await productModel.findOne({_id:pid});
+    const userId = req.session.userId;
+
+    const price = product.price;
+    let fav;
+    if(userId){
+      fav = await favModel.findOne({userId:userId});
+
+    }
+    if(!fav){
+      fav =await favModel.findOne({sessionId: req.session.id});
+
+    }
+    if(!fav){
+      fav = new favModel({
+        sessionId: req.session.id,
+        item:[],
+        total:0,
+      })
+    }
+    const productExist = fav.item.findIndex((item) => item.productId == pid);
+    if(productExist !== -1){
+      fav.item[productExist].quantity += 1;
+      fav.item[productExist].total = fav.item[productExist].quantity * price;
+    }
+    else{
+      const newitem ={
+        productId:pid,
+        price:price
+      };
+      fav.item.push(newitem)
+    }
+     if(userId && !fav.userId){
+      fav.userId = userId;
+
+     }
+     await fav.save();
+     res.redirect('/favourite')
+    
+   
+  }
+  catch(err){
+    console.log('addin fav errror',err);
+  }
+}
+//========================================= DELETE FAVOURITE ===============================================
+const deleteFav =async(req,res)=>{
+  try{
+    const userId = req.session.id;
+    const pid = req.params.id;
+    const result = await favModel.updateOne({userId:userId},{$pull:{item:{_id:pid}}});
+    const updatefav = await favModel.findOne({userId:userId});
+    await updatefav.save();
+    res.redirect('/favourite')
+
+  }
+  catch(err){
+    console.log('delteingg fav error',err);
+  }
+}
+//========================================= ADD TO CART VIA FAVOURITE ==============================================
+const addtocartviafav = async (req,res)=>{
+  try{
+    const pid = req.params.id;
+    const product = await productModel.findOne({_id:pid});
+    const userId = req.session.userId;
+    const price = product.price;
+    const stock= product.stock;
+    const quantity = 1;
+    let cart;
+    if (userId) {
+      cart = await cartModel.findOne({ userId: userId });
+    }
+    if (!cart) {
+      cart = await cartModel.findOne({ sessionId: req.session.id });
+    }
+    if (!cart) {
+      cart = new cartModel({
+        sessionId: req.session.id,
+        item: [],
+        total: 0,
+      });
+    }
+
+    const productExist = cart.item.findIndex((item) => item.productId == pid);
+    
+    if (productExist !== -1) {
+      cart.item[productExist].quantity += 1;
+      cart.item[productExist].total =
+        cart.item[productExist].quantity * price;
+    } else {
+      const newItem = {
+        productId: pid,
+        quantity: 1,
+        price: price,
+        stock :stock,
+        total: quantity * price,
+      };
+      cart.item.push(newItem);
+    }
+
+    if (userId && !cart.userId) {
+      cart.userId = userId;
+    }
+
+    cart.total = cart.item.reduce((acc, item) => acc + item.total, 0);
+
+    await cart.save();
+    res.redirect('/cart');
+
+  }
+  catch(err){
+    console.log('addtocart via fav errror',err);
+  }
+}
+
+//=============================  CHECKOUT PAGE ===================
+
+const checkoutpage =async(req,res)=>{
+  try{
+    const categories = await categoryModel.find();
+    const cartId = req.query.cartId;
+    const userId = req.session.userId;
+    const user = await userModel.findById(userId);
+    const  addresslist = await userModel.findOne({_id:userId});
+
+    if(!addresslist){
+      console.log('user not found');
+      return res.status(404).send('User not found')
+    }
+    const addresses =addresslist.address;
+    const cart = await cartModel.findById(cartId).populate('item.productId');
+    for(const cartItem of cart.item || [] ){
+      const product = await productModel.findById(cartItem.productId);
+
+      if(cartItem.quantity > product.stock){
+        console.log('Selected quantity exceeds available stock for productId:', cartItem.productId);
+        const nonitemid = cartItem.productId;
+        const theitem = await productModel.findOne({_id:nonitemid});
+        const nameitem = theitem.nameitem
+        return res.render('user/cart',{cart,categories,message:` The product ${nameitem}'s quantity Exceeds StockLimit..!!`})
+        
+      }
+    }
+    const cartItems = (cart.item || []).map((cartItem)=>({
+      productId:cartItem.productId._id,
+      productName: cartItem.productId.name,
+      price:cartItem.productId.price,
+      quantity: cartItem.quantity,
+      itemTotal: cartItem.total,
+    }));
+    console.log('Cart Total:', cart.total);
+    res.render('user/checkout', { addresses, cartItems, categories, cart,cartId });
+
+  }
+  catch(err){
+    console.log("checkout page error",err);
+  }
+}
+
 
 module.exports = {
   showcart,
   addToCart,
   updatecart,
   deletecart,
+  favouritepage,
+  addToFav,
+  deleteFav,
+  addtocartviafav,
+  checkoutpage,
+
 };
