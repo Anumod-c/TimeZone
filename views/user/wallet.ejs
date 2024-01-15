@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="css/tiny-slider.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="user_assets/img/favicon.ico">
+
+    <link rel="stylesheet" href="/user_assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/user_assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/user_assets/css/flaticon.css">
+    <link rel="stylesheet" href="/user_assets/css/slicknav.css">
+    <link rel="stylesheet" href="/user_assets/css/animate.min.css">
+    <link rel="stylesheet" href="/user_assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="/user_assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/user_assets/css/themify-icons.css">
+    <link rel="stylesheet" href="user_assets/css/slick.css">
+    <link rel="stylesheet" href="/user_assets/css/nice-select.css">
+    <link rel="stylesheet" href="/user_assets/css/style.css">
+
+    <body>
+        
+    <%- include('userpartial/nav', { categories: categories }) %>
+
+  <!-- Start Hero Section -->
+  <div class="hero">
+    <div class="container">
+      <div class="row justify-content-between">
+        <div class="col-lg-5">
+          <div class="intro-excerpt">
+            <h1 class="heroo">Furnify-Wallet</h1>
+           
+          </div>
+          <form id="orderForm" style="font-family: 'Arial', sans-serif;">
+            <input type="number" id="Amount" name="Amount" placeholder="Enter Amount .." style="border: 1px solid #ccc; padding: 8px; font-weight: bold; margin-right: 10px;">
+            <button onclick="RazorpayWallet(event)" style="background-color: #fff; color: #333; border: 1px solid #ccc; padding: 10px; font-weight: bold; cursor: pointer;">Add To Wallet</button>
+        </form>
+        
+        </div>
+        <div class="col-lg-7">
+          <!-- ... (additional content if needed) ... -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Hero Section -->
+
+  
+    <div >
+      <section class="user-details-section mt-4 section-container d-flex justify-content-center">
+        <div >
+         
+            <h1 ><span>Wallet&nbsp;Balance&nbsp;:&nbsp;Rs.&nbsp;</span><span style="font-weight: bolder;"><%= userWallet %></span></h1>
+        </div>
+        
+ 
+      </section>
+    </div>
+    <div class="d-flex justify-content-center">
+      <h1 >Wallet history</h1><br>
+      </div>
+
+      <section  class="user-details-section mt-4 section-container d-flex justify-content-center">
+            <table class="responsive-table">
+              <thead>
+                <tr>
+                  <th style="text-align: center;">Date</th>
+                  <th>Type</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% usertransactions.forEach(function(transaction) { %>
+                  <tr>
+                    <td style="text-align: center;"><%= transaction.date.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }) %></td>
+                    <td class="<%= transaction.type === 'Credited' ? 'credited' : 'debited' %>"><%= transaction.type %></td>
+                    <td class="<%= transaction.type === 'Credited' ? 'credited' : 'debited' %>"><%= transaction.type === 'Credited' ? '+' : '-' %><%= transaction.amount %></td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
+        
+      </section>
+
+    <%-include('userpartial/footer')%>
+
+
+ 
+<!-- End Footer Section -->	
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+
+
+
+
+
+
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/tiny-slider.js"></script>
+  <script src="js/custom.js"></script>
+  <script>
+    async function  RazorpayWallet()
+	{
+    event.preventDefault()
+    console.log("ivide function");
+		let amountToPay=document.getElementById('Amount').value
+    console.log(amountToPay);
+		if(!amountToPay){
+			Swal.fire({
+    text: 'please enter an amount',
+    icon: 'error',
+  confirmButtonText: 'OK',
+  customClass: {
+    title: 'text-danger',
+    popup: 'swal2-popup-custom',
+    confirmButton: 'btn btn-danger'
+  },
+  showCancelButton: false,
+  showCloseButton: true,
+  showLoaderOnConfirm: false,
+  timer: 3000 
+});
+
+		}
+		
+		
+		
+		else {
+console.log("upi total","ppppppp");
+
+var options = {
+"key": 'rzp_test_tY3tynQ51qUYZR', // Enter the Key ID generated from the Dashboard
+"amount":  amountToPay*100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+"currency": "INR",
+"name": "Furnify",
+"description": "Test Transaction",
+"image": "Urban Sole",
+"order_id": orderId, //This is a sample Order ID. Pass the id obtained in the response of Step 1
+"handler": function (response){
+alert(response.razorpay_payment_id);
+document.getElementById('orderForm').action = '/walletTopup';
+document.getElementById('orderForm').method = 'post'; // Replace with your actual URL
+
+// Submit the form
+document.getElementById('orderForm').submit();
+
+},
+
+
+"theme": {
+"color": "orange"
+},
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+    rzp1.open();
+
+
+    e.preventDefault();
+
+
+                var orderId ;
+$(document).ready(function(){
+    var settings = {
+  "url": "/walletcreate/orderId",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Content-Type": "application/json"
+  },
+  "data": JSON.stringify({
+    "amount": amountToPay*100
+  }),
+};
+
+
+$.ajax(settings).done(function (response) {
+
+  orderId=response.orderId;
+  console.log(orderId);
+  $("button").show();
+});
+});
+
+            }
+		
+		}
+
+  </script>
+
+
+
+
+
+
+</body>
+<script src="/user_assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<!-- Jquery, Popper, Bootstrap -->
+<script src="/user_assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="/user_assets/js/popper.min.js"></script>
+<script src="/user_assets/js/bootstrap.min.js"></script>
+<!-- Jquery Mobile Menu -->
+<script src="/user_assets/js/jquery.slicknav.min.js"></script>
+<!-- Jquery Slick , Owl-Carousel Plugins -->
+<script src="/user_assets/js/owl.carousel.min.js"></script>
+<script src="/user_assets/js/slick.min.js"></script>
+
+<!-- One Page, Animated-HeadLin -->
+<script src="/user_assets/js/wow.min.js"></script>
+<script src="/user_assets/js/animated.headline.js"></script>
+<script src="/user_assets/js/jquery.magnific-popup.js"></script>
+
+<!-- Scrollup, nice-select, sticky -->
+<script src="/user_assets/js/jquery.scrollUp.min.js"></script>
+<script src="/user_assets/js/jquery.nice-select.min.js"></script>
+<script src="/user_assets/js/jquery.sticky.js"></script>
+
+<!-- contact js -->
+<script src="/user_assets/js/contact.js"></script>
+<script src="/user_assets/js/jquery.form.js"></script>
+<script src="/user_assets/js/jquery.validate.min.js"></script>
+<script src="/user_assets/js/mail-script.js"></script>
+<script src="/user_assets/js/jquery.ajaxchimp.min.js"></script>
+
+<!-- Jquery Plugins, main Jquery -->
+<script src="/user_assets/js/plugins.js"></script>
+<script src="/user_assets/js/main.js"></script>
+
+</html>

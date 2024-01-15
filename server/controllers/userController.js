@@ -1,5 +1,6 @@
 const userModel =require('../models/usermodel')
 const bcrypt=require('bcrypt')
+const flash = require("express-flash")
 const otpgenerator=require('otp-generator')
 const nodemailer=require('nodemailer')
 const {nameValid,
@@ -69,19 +70,29 @@ console.log(err,"homepage error");
 //==================================        user signup   =========================================================
 const registration =async(req,res)=>{
     req.session.otppressed=true;
-    await res.render("user/registration")
+    await res.render("user/registration",{
+        expressFlash:{
+            emailexisterror:req.flash("emailexisterror"),
+            fnameerror:req.flash("fnameerror"),
+            lnameerror:req.flash("lnameerror"),
+            emailerror:req.flash("emailerror"),
+            phoneerror:req.flash("phoneerror"),
+            passworderror:req.flash("passworderror"),
+            cpassworderror:req.flash("cpassworderror"),
+        }
+    })
 }
 
 //======================================    user otp sending    =================================================
 const signotp = async(req,res)=>{
     try{       
         console.log('datas in body:',req.body)
-        firstname=req.body.firstname;
-        lastname=req.body.lastname;
-        email=req.body.email;
-        phone=req.body.phone;
-        password=req.body.password;
-        cpassword=req.body.cpassword;
+        let firstname=req.body.firstname;
+        let lastname=req.body.lastname;
+         let email=req.body.email;
+        let phone=req.body.phone;
+        let password=req.body.password;
+        let cpassword=req.body.cpassword;
         console.log( "Entered Password",password);
         console.log("Entered Email",email);
 
@@ -95,26 +106,33 @@ const signotp = async(req,res)=>{
 
         const emailExist =await userModel.findOne({email:email})
         if(emailExist){
-            res.render('user/registration',{emailexist:"E-Mail already exist"})
+              req.flash('emailexisterror',"E-Mail already exist")
+               res.redirect("/registration")
         }
         else if(!isFnameValid){
-            res.render('user/registration',{fnameerror:"Enter a Valid Name"})
+            req.flash('fnameerror',"Enter a Valid Name")
+            res.redirect("/registration")
         }
         else if(!isLnameValid){
-            res.render('user/registration',{lnameerror:"Enter a Valid Name"})
+            req.flash('lnameerror',"Enter a Valid Name");
+            res.redirect("/registration")
         }
         
         else if(!isEmailValid){
-            res.render('user/registration',{emailerror:"Enter a Valid Email"})
+            req.flash('emailerror',"Enter a Valid Email");
+            res.redirect("/registration")
         }
         else if(!isPhoneValid){
-            res.render('user/registration',{phoneerror:"Enter a Valid Phone Number"})
+            req.flash('phoneerror',"Enter a Valid Phone Number");
+            res.redirect("/registration")
         }
         else if(!isPasswordValid){
-            res.render('user/registration',{passworderror:"Enter a Valid Password"})
+            req.flash('passworderror',"Enter a Valid Password");
+            res.redirect("/registration")
         }
         else if(!isCPasswordValid){
-            res.render('user/registration',{cpassworderror:"Enter a Valid Password"})
+            req.flash('cpassworderror',"Enter a Valid Password");
+            res.redirect("/registration")
         }
         else{ console.log("Reached signotp else part");
             const hashedpassword=await bcrypt.hash(password,10);
@@ -157,7 +175,11 @@ const signotp = async(req,res)=>{
 //==========================================    user signup otp      ===============================================
 const otp =async(req,res)=>{
     try{
-        res.render("user/registration_otp")
+        res.render("user/registration_otp",{
+            expressFlash:{
+                otperror:req.flash("otperror")
+            }
+        })
     }
     catch (err){
         console.log(err)
@@ -204,7 +226,8 @@ const verifyotp =async(req,res)=>{
             }
         }
         else{
-            res.render('user/registration_otp',{otperror:"Incorrect otp/time Expired"})
+            req.flash("otperror","Incorrect otp/time Expired")
+            res.redirect("/regotp")
         }
         
         
@@ -231,6 +254,7 @@ const resendotp =async(req,res)=>{
             expiry:new Date(expiryTimestamp)}
         );
         await sendmail(email,otp)
+        res.redirect('/regotp')
     }
     catch(err){
 
@@ -240,7 +264,11 @@ const resendotp =async(req,res)=>{
 //====================================     forgot password    ==================================================
 const forgotpassword=async (req,res)=>{
     try{
-        res.render('user/forgot_password')
+        res.render('user/forgot_password',{
+            expressFlash:{
+                emailerror:req.flash("emailerror")
+            }
+        })
     }
     catch(err){
         console.log(err,"forgot password error")
@@ -249,11 +277,15 @@ const forgotpassword=async (req,res)=>{
 //=====================================    forgotpasswrod action    ============================================
 const forgotpasspost =async (req,res)=>{
     try{
-        email =req.body.email;
+        let email =req.body.email;
         console.log('forgotpassword email',email);
         const emailExist =await userModel.findOne({email:email});
         console.log(emailExist,"email exist")
-        if(emailExist){
+        if(!emailExist){
+            req.flash('emailerror','Email doesnt Exist')
+            res.redirect("/forgotpassword")
+        }
+        else{
             req.session.forgot=true;
             req.session.signup=false;
             req.session.user={email:email};
@@ -279,9 +311,7 @@ const forgotpasspost =async (req,res)=>{
 
 
         }
-        else{
-            res.redirect('/forgotpassword',{emailerror :'Email doesnt Exist'})
-        }
+        
 
     }
     catch(err){
@@ -335,7 +365,6 @@ const resetpasspost =async(req,res)=>{
 //=========================================     profile page    ===================================================
 const profile = async (req, res) => {
     try {
-        console.log("User ID from session:", req.session.userId);
         if (req.session.isAuth) {
             const userId = req.session.userId;
             const user = await userModel.findOne({ _id: userId });
@@ -345,9 +374,15 @@ const profile = async (req, res) => {
         } else {
             req.session.forgotpressed = true;
             req.session.signuppressed = true;
-            res.render('user/login');
+            res.render('user/login',{
+                expressFlash:{
+                    emailpasserror: req.flash("emailpasserror"),
+                    blockerror: req.flash("blockerror")
+                }
+            });
         }
     } catch (err) {
+        res.status(400).send("Error Occured")
         console.log("profile error", err);
     }
 };
@@ -358,11 +393,12 @@ const profile = async (req, res) => {
 const loginaction=async(req,res)=>{ 
     try{
         const email =req.body.email;
+        console.log(email,"email");
         const  user = await userModel.findOne({email:email});
         //checking whether the user exist ir not
         if(!user){ 
-            console.log("throwing error")
-            throw new Error('User Not Found')
+            req.flash("emailpasserror","Invalid Email or Password")
+             return res.redirect("/profile")
         }
         
         const passowrdmatch =await bcrypt.compare(req.body.password,user.password);
@@ -371,18 +407,22 @@ const loginaction=async(req,res)=>{
             req.session.userId=user._id;
             req.session.firstname=user.firstname;
             req.session.isAuth=true;
-            res.redirect('/')
+             return res.redirect('/')
         }
         else if(user.status){
-            res.render('user/login',{blockerror:'SORRY! Your Account has been suspended !!!'})
+            req.flash('blockerror','SORRY! Your Account has been suspended !!!')
+             return res.redirect('/profile')
         }
         else{
-            res.render('user/login',{passworderror:"invalid password"})  
+            req.flash("emailpasserror","Invalid Email or Password");
+           return res.redirect('/profile')  
         }
     }
     catch(err){
-        res.render('user/login',{emailerror:"Incorrect Email"})
-        console.log(err)
+       req.flash("emailpasserror","OOPS Something went wrong!");
+       console.log(err,"login error")
+       return res.redirect("/profile")
+        
 
     }
 }

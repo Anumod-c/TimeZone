@@ -131,7 +131,7 @@
   </div>
   <script>function submitForm(orderId) {
     const statusElement = document.getElementById('status_' + orderId);
-  const status = statusElement.value;
+    const status = statusElement.value;
 
     fetch('/admin/updateOrderStatus', {
         method: 'POST',
@@ -142,7 +142,11 @@
     })
     .then(response => {
         if (response.ok) {
-            window.location.href = '/admin/orderPage';
+            // Update the order status in the current table row without reloading the entire page
+            const statusCell = document.getElementById('status_' + orderId);
+            statusCell.innerHTML = status.charAt(0).toUpperCase() + status.slice(1);
+
+            console.log('Order status updated successfully');
         } else {
             console.error('Failed to update order status');
         }
@@ -151,6 +155,7 @@
         console.error('Error:', error);
     });
 }
+
 </script>
 <script>
 function filterOrders() {

@@ -40,6 +40,21 @@
             width: 379.98px; /* Ensure the width adjusts proportionally */
         }
         
+    @media (max-width: 768px) {
+        .nav-search {
+            flex-grow: 1;
+        }
+
+        .search-button {
+            display: inline-block;
+        }
+
+        .header-right {
+            display: none;
+        }
+    }
+
+        
 
     </style>
     
@@ -64,7 +79,7 @@
                                     <p data-animation="fadeInLeft" data-delay=".7s" data-duration="2000ms">Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat is aute irure.</p>
                                     <!-- Hero-btn -->
                                     <div class="hero__btn" data-animation="fadeInLeft" data-delay=".8s" data-duration="2000ms">
-                                        <a href="industries.html" class="btn hero-btn">Shop Now</a>
+                                        <a href="/newarrival" class="btn hero-btn">Shop Now</a>
                                     </div>
                                 </div>
                             </div>
@@ -133,12 +148,12 @@
                                         <!-- Display a placeholder image if no images are available -->
                                         <img src="path/to/placeholder-image.jpg" alt="Placeholder Image">
                                     <% } %>
-                                    <div class="img-cap">
+                                    <a href="/addtocart/<%= product._id %>"><div class="img-cap">
                                         <span>Add to cart</span>
-                                    </div>
-                                    <div class="favorit-items">
+                                    </div></a>
+                                    <a href="/addtofavourite/<%=product._id%>"><div class="favorit-items">
                                         <span class="flaticon-heart"></span>
-                                    </div>
+                                    </div></a>
                                 </div>
                                 <div class="popular-caption">
                                     <h3><%= product.name %></a></h3>
@@ -154,7 +169,7 @@
                 <!-- Button -->
                 <div class="row justify-content-center">
                     <div class="room-btn pt-70">
-                        <a href="catagori.html" class="btn view-btn1">View More Products</a>
+                        <a href="/newarrival" class="btn view-btn1">View More Products</a>
                     </div>
                 </div>
             </div>

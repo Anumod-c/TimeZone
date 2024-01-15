@@ -60,6 +60,10 @@ usrouter.post('/resetpasspost',userController.resetpasspost)
 usrouter.get('/newarrival',prodcatviewController.newarrival)
 usrouter.get('/pricehightolow',prodcatviewController.pricehightolow)
 
+usrouter.get('/pricelowtohigh',prodcatviewController.pricelowtohigh)
+
+
+usrouter.post("/search",prodcatviewController.search)
 
 //========================CATEGORY SORTING AND SHOP PAGE RENDERING================================
 
@@ -84,6 +88,7 @@ usrouter.get('/pswdmanagement',auth.islogged,profileController.pswdmanagement)
 usrouter.post('/changepassword',auth.islogged,profileController.pswdmanagementpost)
 usrouter.get('/orderHistory',profileController.orderHistory)
 usrouter.get('/singleOrder/:id',profileController.singleOrderPage)
+usrouter.get("/wallet",profileController.wallet)
 
 
 
@@ -104,6 +109,7 @@ usrouter.get('/addtocartviafav/:id',auth.islogged,cartController.addtocartviafav
 //============================ CHECKOUtPAGE ==================
 usrouter.get('/checkoutpage',cartController.checkoutpage)
 
+usrouter.post('/checkoutreload',auth.islogged,checkoutController.checkoutrelod)
 
 
 usrouter.post('/placeOrder',auth.islogged,checkoutController.placeOrder)

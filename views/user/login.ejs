@@ -71,8 +71,8 @@
                     <div class="form-group">
                         Enter Username
                         <input type="email" name="email" class="form-control" placeholder="Email " required>
-                        <% if(locals.emailerror){%>
-                            <div class="alter text-danger text-start"><%=emailerror%></div>
+                        <% if(expressFlash.emailpasserror){%>
+                            <div class="alter text-danger text-start"><%=expressFlash.emailpasserror%></div>
                 
                         <%}%>
                         
@@ -80,12 +80,12 @@
                     <div class="form-group">
                         Enter Password
                         <input type="password" name="password" class="form-control" placeholder="Password" required>
-                        <% if(locals.passworderror){%>
-                            <div class="alter text-danger text-start"><%=passworderror%></div>
+                        <% if(expressFlash.emailpasserror){%>
+                            <div class="alter text-danger text-start"><%=expressFlash.emailpasserror%></div>
                 
                         <%}%>
-                        <% if(locals.blockerror){%>
-                            <div class="alter text-danger text-start"><%=blockerror%></div>
+                        <% if(expressFlash.blockerror){%>
+                            <div class="alter text-danger text-start"><%=expressFlash.blockerror%></div>
                 
                         <%}%>
                     </div>

@@ -139,7 +139,7 @@
                                         <td><%= item.productId.price %></td>
                                         <td>
                                             <div class="product_count">
-                                                <input type="text" name="qty" id="sst<%= index%>" maxlength="12" value="<%= item.quantity %>"
+                                                <input type="text" name="qty" id="sst<%= index%>" disabled maxlength="12" value="<%= item.quantity %>"
                                                     title="Quantity:" class="input-text qty">
                                                 <button style="background-color: black;"
                                                     onclick="updateQuantity('<%= cart._id %>','<%= item._id %>','<%= item.price %>','<%= index %>' , 1 )"

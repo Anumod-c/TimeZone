@@ -4,28 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="css/tiny-slider.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
 
-      <!-- Bootstrap CSS -->
-  <link href="css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-  <link href="css/tiny-slider.css" rel="stylesheet">
-  <link href="css/style.css" rel="stylesheet">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="user_assets/img/favicon.ico">
 
-  <link rel="manifest" href="site.webmanifest">
-  <link rel="shortcut icon" type="image/x-icon" href="/user_assets/img/favicon.ico">
-
-
-  <link rel="stylesheet" href="/user_assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="./user_assets/css/owl.carousel.min.css">
-  <link rel="stylesheet" href="/user_assets/css/flaticon.css">
-  <link rel="stylesheet" href="./user_assets/css/slicknav.css">
-  <link rel="stylesheet" href="./user_assets/css/animate.min.css">
-  <link rel="stylesheet" href="./user_assets/css/magnific-popup.css">
-  <link rel="stylesheet" href="./user_assets/css/fontawesome-all.min.css">
-  <link rel="stylesheet" href="./user_assets/css/themify-icons.css">
-  <link rel="stylesheet" href="./user_assets/css/slick.css">
-  <link rel="stylesheet" href="./user_assets/css/nice-select.css">
-  <link rel="stylesheet" href="./user_assets/css/style.css">
+    <link rel="stylesheet" href="/user_assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/user_assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/user_assets/css/flaticon.css">
+    <link rel="stylesheet" href="/user_assets/css/slicknav.css">
+    <link rel="stylesheet" href="/user_assets/css/animate.min.css">
+    <link rel="stylesheet" href="/user_assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="/user_assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/user_assets/css/themify-icons.css">
+    <link rel="stylesheet" href="/user_assets/css/slick.css">
+    <link rel="stylesheet" href="/user_assets/css/nice-select.css">
+    <link rel="stylesheet" href="/user_assets/css/style.css">
   <style>
         .personal-details p{
       font-size: large;
@@ -111,35 +109,9 @@
     display: none;
 }
 
-.search-bar {
-    background-color: #3b5d50;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 35px;
-    margin: 0;
-    border: 2px solid #efeeee;
-    border-radius: 30px;
-    overflow: hidden;
-}
 
-.search-input {
-    border: none;
-    padding: 10px;
-    width: 800px;
-    background-color: #3b5d50;
-    color: white;
-}
 
-.search-button {
-    background-color: #3d5d50;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    cursor: pointer;
-}
+
 
   </style>
 
@@ -148,101 +120,8 @@
 </head>
 <body>
     <!-- header -->
-    <!--? Preloader Start -->
-<div id="preloader-active">
-    <div class="preloader d-flex align-items-center justify-content-center">
-        <div class="preloader-inner position-relative">
-            <div class="preloader-circle"></div>
-            <div class="preloader-img pere-text">
-                <img src="/user_assets/img/logo/logo.png" alt="img">
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Preloader ends -->
-<header>
-    <!-- Header Start -->
-    <div class="header-area">
-        <div class="main-header header-sticky">
-            <div class="container-fluid">
-                <div class="menu-wrapper">
-                    <!-- Logo -->
-                    <div class="logo">
-                        <a href="index.html"><img src="/user_assets/img/logo/logo.png" alt=""></a>
-                    </div>
-                    <!-- Main-menu -->
-                    <div class="main-menu d-none d-lg-block">
-                        <nav>                                                
-                            <ul id="navigation">  
-                                <li><a href="/">Home</a></li>
-                                <li><a href="/newarrival">shop</a></li>
-                                <!-- <li><a href="about.html">about</a></li> -->
-                                <li class="hot"><a href="#">Latest</a>
-                                   
-                                </li>
-                                <!-- <li><a href="blog.html">Blog</a>
-                                    <ul class="submenu">
+    <%- include('userpartial/nav', { categories: categories }) %>
 
-                                        <li><a href="blog.html">Blog</a></li>
-                                        <li><a href="blog-details.html">Blog Details</a></li>
-                                    </ul>
-                                </li> -->
-
-
-
-                                <!-- <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Categories
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <% categories.filter(category => category.status !== false).forEach(category => { %>
-                                            <li>
-                                                <a class="dropdown-item" href="/shop?category=<%= category._id %>">
-                                                    <%= category.name %>
-                                                </a>
-                                            </li>
-                                        <% }); %>
-                                    </ul>
-                                </li> -->
-
-                                
-                                <li><a href="contact.html">Contact</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <!-- Header Right -->
-                    <div class="header-right">
-                        <ul>
-                            <li>
-                                <div class="nav-search search-switch">
-                                    <span class="flaticon-search"></span>
-                                </div>
-                            </li>
-                            <li> <a href="/profile"><span class="flaticon-user"></span></a></li>
-                            <li><a href="wishlist.html"> <span class="flaticon-heart"></span></a> </li>
-                            <li><a href="cart.html"><span class="flaticon-shopping-cart"></span></a> </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Mobile Menu -->
-                <div class="col-12">
-                    <div class="mobile_menu d-block d-lg-none"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Header End -->
-
-    <!-- Sub-Navbar Start -->
-<div class="sub-navbar">
-    <ul>
-        <% categories.filter(category => category.status !== false).forEach(category => { %>
-            <li><a href="/shop?category=<%= category._id %>"><%= category.name %></a></li>
-        <% }); %>
-    </ul>
-</div>
-<!-- Sub-Navbar End -->
-</header>
       <!-- Start Hero Section -->
 
 
@@ -260,41 +139,64 @@
                             <div class="form-group">
                                 <label for="saveas">Save as:</label>
                                 <input type="text" id="saveas" name="saveas" class="form-control" value="<%= address.saveas %>" required>
+                                
+                               
                             </div>
                          
                             <div class="form-group">
                                 <label for="fullname">Full Name:</label>
                                 <input type="text" id="fullname" name="fullname" class="form-control" value="<%= address.fullname %>" required>
+                                
+                               
                             </div>
 
                             <div class="form-group">
                                 <label for="adname">House Name/Flat No :</label>
                                 <input type="text" id="adname" name="adname" class="form-control" value="<%= address.adname %>" required>
+                                
+                               
                             </div>
 
                             <div class="form-group">
                                 <label for="street">Street:</label>
                                 <input type="text" id="street" name="street" class="form-control" value="<%= address.street %>">
+                                
+                                
                             </div>
 
                             <div class="form-group">
                                 <label for="city">City:</label>
                                 <input type="text" id="city" name="city" class="form-control" value="<%= address.city %>" required>
+                                
+                                
                             </div>
 
                             <div class="form-group">
                                 <label for="state">State:</label>
                                 <input type="text" id="state" name="state" class="form-control" value="<%= address.state %>" required>
+                                
+                                
                             </div>
 
                             <div class="form-group">
                                 <label for="pincode">Pin Code:</label>
                                 <input type="text" id="pincode" name="pincode" class="form-control" value="<%= address.pincode %>" required>
+                               
+                                
                             </div>
 
                             <div class="form-group">
                                 <label for="country">Country:</label>
                                 <input type="text" id="country" name="country" class="form-control" value="<%= address.country %>" required>
+                                
+                               
+                            </div>
+                            <div class="form-group">
+                                <label for="phonenumber">Phone:</label>
+                                <input type="number" id="phonenumber" name="phonenumber" class="form-control" value="<%= address.phonenumber %>" required>
+                                
+                                
+                                
                             </div>
 
                             <button type="submit" class="btn btn-primary">Update Address</button>
@@ -340,132 +242,67 @@
             </div>
         </div>
         <!-- Shop Method End-->
-    </main>
-    <footer>
-        <!-- Footer Start-->
-        <div class="footer-area footer-padding">
-            <div class="container">
-                <div class="row d-flex justify-content-between">
-                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-6">
-                        <div class="single-footer-caption mb-50">
-                            <div class="single-footer-caption mb-30">
-                                <!-- logo -->
-                                <div class="footer-logo">
-                                    <a href="index.html"><img src="/user_assets/img/logo/logo2_footer.png" alt=""></a>
-                                </div>
-                                <div class="footer-tittle">
-                                    <div class="footer-pera">
-                                        <p>Asorem ipsum adipolor sdit amet, consectetur adipisicing elitcf sed do eiusmod tem.</p>
-                                </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-2 col-lg-3 col-md-3 col-sm-5">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>Quick Links</h4>
-                                <ul>
-                                    <li><a href="#">About</a></li>
-                                    <li><a href="#"> Offers & Discounts</a></li>
-                                    <li><a href="#"> Get Coupon</a></li>
-                                    <li><a href="#">  Contact Us</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-4 col-sm-7">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>New Products</h4>
-                                <ul>
-                                    <li><a href="#">Woman Cloth</a></li>
-                                    <li><a href="#">Fashion Accessories</a></li>
-                                    <li><a href="#"> Man Accessories</a></li>
-                                    <li><a href="#"> Rubber made Toys</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-3 col-md-5 col-sm-7">
-                        <div class="single-footer-caption mb-50">
-                            <div class="footer-tittle">
-                                <h4>Support</h4>
-                                <ul>
-                                    <li><a href="#">Frequently Asked Questions</a></li>
-                                    <li><a href="#">Terms & Conditions</a></li>
-                                    <li><a href="#">Privacy Policy</a></li>
-                                    <li><a href="#">Report a Payment Issue</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Footer bottom -->
-                <div class="row align-items-center">
-                    <div class="col-xl-7 col-lg-8 col-md-7">
-                        <div class="footer-copy-right">
-                            <p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p>                  
-                        </div>
-                    </div>
-                    <div class="col-xl-5 col-lg-4 col-md-5">
-                        <div class="footer-copy-right f-right">
-                            <!-- social -->
-                            <div class="footer-social">
-                                <a href="https://www.twiiter.com"><i class="fab fa-twitter"></i></a>
-                                <a href="https://www.facebook.com/"><i class="fab fa-facebook-f"></i></a>
-                                <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
-                                <a href="#"><i class="fas fa-globe"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- Footer End-->
-    </footer>
+        <%-include('userpartial/footer')%>
+    
         <!-- Footer End-->
 
         		<!-- End Footer Section -->	
+<!-- End Footer Section -->	
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-                <script src="./user_assets/js/bootstrap.bundle.min.js"></script>
-                <script src="./user_assets/js/tiny-slider.js"></script>
-                <script src="./user_assets/js/custom.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/tiny-slider.js"></script>
+    <script src="js/custom.js"></script>
+
 </body>
-<script src="./user_assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<script src="/user_assets/js/vendor/modernizr-3.5.0.min.js"></script>
 <!-- Jquery, Popper, Bootstrap -->
-<script src="./user_assets/js/vendor/jquery-1.12.4.min.js"></script>
-<script src="./user_assets/js/popper.min.js"></script>
-<script src="./user_assets/js/bootstrap.min.js"></script>
+<script src="/user_assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="/user_assets/js/popper.min.js"></script>
+<script src="/user_assets/js/bootstrap.min.js"></script>
 <!-- Jquery Mobile Menu -->
-<script src="./user_assets/js/jquery.slicknav.min.js"></script>
-
+<script src="/user_assets/js/jquery.slicknav.min.js"></script>
 <!-- Jquery Slick , Owl-Carousel Plugins -->
-<script src="./user_assets/js/owl.carousel.min.js"></script>
-<script src="./user_assets/js/slick.min.js"></script>
+<script src="/user_assets/js/owl.carousel.min.js"></script>
+<script src="/user_assets/js/slick.min.js"></script>
 
 <!-- One Page, Animated-HeadLin -->
-<script src="./user_assets/js/wow.min.js"></script>
-<script src="./user_assets/js/animated.headline.js"></script>
-<script src="./user_assets/js/jquery.magnific-popup.js"></script>
+<script src="/user_assets/js/wow.min.js"></script>
+<script src="/user_assets/js/animated.headline.js"></script>
+<script src="/user_assets/js/jquery.magnific-popup.js"></script>
 
 <!-- Scrollup, nice-select, sticky -->
-<script src="./user_assets/js/jquery.scrollUp.min.js"></script>
-<script src="./user_assets/js/jquery.nice-select.min.js"></script>
-<script src="./user_assets/js/jquery.sticky.js"></script>
+<script src="/user_assets/js/jquery.scrollUp.min.js"></script>
+<script src="/user_assets/js/jquery.nice-select.min.js"></script>
+<script src="/user_assets/js/jquery.sticky.js"></script>
 
 <!-- contact js -->
-<script src="./user_assets/js/contact.js"></script>
-<script src="./user_assets/js/jquery.form.js"></script>
-<script src="./user_assets/js/jquery.validate.min.js"></script>
-<script src="./user_assets/js/mail-script.js"></script>
-<script src="./user_assets/js/jquery.ajaxchimp.min.js"></script>
+<script src="/user_assets/js/contact.js"></script>
+<script src="/user_assets/js/jquery.form.js"></script>
+<script src="/user_assets/js/jquery.validate.min.js"></script>
+<script src="/user_assets/js/mail-script.js"></script>
+<script src="/user_assets/js/jquery.ajaxchimp.min.js"></script>
 
-<!-- Jquery Plugins, main Jquery -->	
-<script src="./user_assets/js/plugins.js"></script>
-<script src="./user_assets/js/main.js"></script>
+<!-- Jquery Plugins, main Jquery -->
+<script src="/user_assets/js/plugins.js"></script>
+<script src="/user_assets/js/main.js"></script>
+
+
+
+
 
 
 </html>

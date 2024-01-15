@@ -30,6 +30,10 @@
     height: 360px; /* Set the desired height */
     width: 378.98px; /* Ensure the width adjusts proportionally */
 }
+.nav-tabs .nav-link.active {
+    color: red; /* text color for the active link */
+}
+
 
 </style>
 
@@ -68,11 +72,12 @@
                         <!--Nav Button  -->
                         <nav>                                                      
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link" id="nav-home-tab"  href="/newarrival" >NewestArrivals</a>
-                                <a class="nav-item nav-link" id="nav-profile-tab"  href="/pricehightolow"  > Price high to low</a>
-                                <a class="nav-item nav-link" id="nav-contact-tab"  href="#nav-contact" > Most populer </a>
+                                <a class="nav-item nav-link" id="nav-home-tab" href="/newarrival">Newest Arrivals</a>
+                                <a class="nav-item nav-link" id="nav-profile-tab" href="/pricehightolow">Price high to low</a>
+                                <a class="nav-item nav-link" id="nav-contact-tab" href="/pricelowtohigh">Price low to high</a>
                             </div>
                         </nav>
+                        
                         <!--End Nav Button  -->
                     </div>
                     <!-- Grid and List view -->
@@ -109,12 +114,12 @@
                                                 <!-- Display a placeholder image if no images are available -->
                                                 <img src="path/to/placeholder-image.jpg" alt="Placeholder Image">
                                             <% } %>
-                                            <div class="img-cap">
+                                            <a href="/addtocart/<%= product._id %>"><div class="img-cap">
                                                 <span>Add to cart</span>
-                                            </div>
-                                            <div class="favorit-items">
+                                            </div></a>
+                                            <a href="/addtofavourite/<%=product._id%>"><div class="favorit-items">
                                                 <span class="flaticon-heart"></span>
-                                            </div>
+                                            </div></a>
                                         </div>
                                         <div class="popular-caption">
                                             <h3><%= product.name %></a></h3>
@@ -140,10 +145,10 @@
                                                 <!-- Display a placeholder image if no images are available -->
                                                 <img src="path/to/placeholder-image.jpg" alt="Placeholder Image">
                                             <% } %>
-                                            <div class="img-cap">
+                                            <a href="/addtocart/<%= product._id %>"> <div class="img-cap">
                                                 <span>Add to cart</span>
-                                            </div>
-                                            <div class="favorit-items">
+                                            </div></a>
+                                            <a href="/addtofavourite/<%=product._id%>""></a><div class="favorit-items">
                                                 <span class="flaticon-heart"></span>
                                             </div>
                                         </div>
@@ -203,6 +208,19 @@
         </div>
     </div>
     <!-- Search model end -->
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const navLinks = document.querySelectorAll('.nav-tabs .nav-link');
+
+    navLinks.forEach(link => {
+        link.addEventListener('mouseover', function() {
+            navLinks.forEach(link => link.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+});
+</script>
+
 
 <!-- JS here -->
     <!-- All JS Custom Plugins Link Here here -->

@@ -136,41 +136,10 @@
         .category-options {
           display: none;
         }
-        .search-bar {
-          background-color: #3b5d50;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          height: 35px;
-          margin: 0;
-          display: flex;
-          border: 2px solid #efeeee;
-          border-radius: 30px;
-          overflow: hidden;
-        }
+       
+
     
-        .search-input {
-          border: none;
-          padding: 10px;
-          background-color: #3b5d50;
-          color: white;
-        }
-        @media (min-width: 1200px) {
-      /* Set the width to 110vh for devices with a minimum width of 1200px */
-      .search-input {
-        width: 110vh;
-      }
-    }
-    
-        .search-button {
-          background-color: #3d5d50;
-          color: white;
-          border: none;
-          padding: 10px;
-          border-top-right-radius: 20px;
-          border-bottom-right-radius: 20px;
-          cursor: pointer;
-        }
+
         .key{
             color: #3b5d50;
             font-weight: bold;
@@ -181,260 +150,281 @@
 </head>
     <!-- Header -->
     <%- include('userpartial/nav', { categories: categories }) %>
+
+
+
+
+
 <!-- Start Hero Section -->
 <div class="hero">
-    <div class="container">
-        <div class="row justify-content-between">
-            <div class="col-lg-5">
-                <div class="intro-excerpt">
-                    <h1>Checkout</h1>
-                </div>
-            </div>
-            <div class="col-lg-7">
-                
-            </div>
+  <div class="container">
+    <div class="row justify-content-between">
+      <div class="col-lg-5">
+        <div class="intro-excerpt">
+          <h1>Checkout</h1>
         </div>
+      </div>
+      <div class="col-lg-7">
+        
+      </div>
     </div>
+  </div>
 </div>
 <!-- End Hero Section -->
 
 <div class="untree_co-section">
-<div class="container">
-  <div class="row mb-5">
-    <div class="col-md-12">
+  <div class="container">
+    <div class="row mb-5">
+      <div class="col-md-12">
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 mb-5 mb-md-0">
-      <h2 class="h3 mb-3 text-black">Select Address</h2>
-      <div class="p-3 p-lg-5 border bg-white">
-        
+    <div class="row">
+      <div class="col-md-6 mb-5 mb-md-0">
+        <h2 class="h3 mb-3 text-black">Select Address</h2>
+        <div class="p-3 p-lg-5 border bg-white">
+          
 
-        <% if (addresses && addresses.length > 0) { %>
-            <div class="address-list">
-                <% addresses.forEach(address => { %>
-                    <div class="address-item">
-                        <label>
-                            <!-- Add a data attribute to the radio button to store the address ID -->
-                        <input type="radio" name="selectedAddress" value="<%= address.id %>" class="address-radio" data-address-id="<%= address.id %>">
-
-                            <span class="larger-text"><%= address.saveas %></span>
-                        </label>
-                        <div class="address-details larger-text">
-                            <p><span class="key">Full Name: </span><%= address.fullname %></p>
-                            <p><span class="key">House name/Flat no:</span><%= address.adname %></p>
-                            <p><span class="key">Street:</span> <%= address.street %></p>
-                            <p><span class="key">City:</span> <%= address.city %></p>
-                            <p><span class="key">Pin-Code:</span><%= address.pincode %></p>
-                            <p><span class="key">State:</span><%= address.state %></p>
-                            <p><span class="key">Country:</span> <%= address.country %></p>
-                            <!-- Add other address properties as needed -->
-                        </div>
-                    </div>
-                <% }); %>
+    <% if (addresses && addresses.length > 0) { %>
+      <div class="address-list">
+        <% addresses.forEach(address => { %>
+          <div class="address-item">
+            <label>
+              <!-- Add a data attribute to the radio button to store the address ID -->
+              <input type="radio" name="selectedAddress" value="<%= address._id %>" class="address-radio" data-address-id="<%= address._id %>">
+              <span class="larger-text"><%= address.saveas %></span>
+            </label>
+            <div class="address-details larger-text">
+              <p><span class="key">Full Name: </span><%= address.fullname %></p>
+              <p><span class="key">House name/Flat no:</span><%= address.adname %></p>
+              <p><span class="key">Street:</span> <%= address.street %></p>
+              <p><span class="key">City:</span> <%= address.city %></p>
+              <p><span class="key">Pin-Code:</span><%= address.pincode %></p>
+              <p><span class="key">State:</span><%= address.state %></p>
+              <p><span class="key">Country:</span> <%= address.country %></p>
+              <!-- Add other address properties as needed -->
             </div>
-        <% } else { %>
-            <p>No addresses found.</p>
-        <% } %>
-        
+          </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <p>No addresses found.</p>
+    <% } %>
     
     
 
 
+          <div class="form-group">
+
+      <label for="c_ship_different_address" class="text-black" data-bs-toggle="collapse" href="#ship_different_address" role="button" aria-expanded="false" aria-controls="ship_different_address">
+        <input type="checkbox" value="1" id="c_ship_different_address">Add a new Address
+      </label>
+      
+            <div class="collapse" id="ship_different_address">
+      <div class="suso container mt-4">
+        <div class="edit-profile-form">
+          
+          
+          <h2>Add New Address</h2>
+          
+          <p style="font-weight: 600; color: red;">!! The Address May not be saved if you enter invalid details </p>
+        
+        
+        
+        
+        
         
 
+          
+        
+          <form action="/checkoutreload" id="addressForm" method="post" class="row">
+
+         
+          <!-- Personal details -->
+      
+          <div class="form-group col-md-6">
+            <label for="saveas">Save as</label>
+            <input type="text" id="saveas" name="saveas" class="form-control">
+           
+          </div>
+          <div class="form-group col-md-6">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" name="fullname" class="form-control">
+            
+          </div>
+        
+          <div class="form-group col-md-6">
+            <label for="adname">House Name / Flat No</label>
+            <input type="text" id="adname" name="adname" class="form-control">
+            
+          </div>
+        
+          <div class="form-group col-md-6">
+            <label for="street">Street</label>
+            <input type="text" id="street" name="street" class="form-control">
+            
+          </div>
+        
+          <div class="form-group col-md-6">
+            <label for="pincode">Pincode</label>
+            <input type="number" id="pincode" name="pincode" class="form-control">
+            
+          </div>
+        
+          <div class="form-group col-md-6">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" class="form-control">
+          
+            
+        </div>
+        
+          <div class="form-group col-md-6">
+            <label for="state">State</label>
+            <select id="state" name="state" class="form-control" required>
+              <option value="" disabled selected>Select a state</option>
+              <option value="Kerala">Kerala</option>
+              <option value="Karnataka">Karnataka</option>
+              <option value="TamilNadu">Tamil Nadu</option>
+            </select>
+            
+          </div>
+        
+            <div class="form-group col-md-6">
+            <label for="country">Country</label>
+            <select id="country" name="country" class="form-control" required>
+              <option value="India">India</option>
+            </select>
+             
+          </div>
+            
+        
+          <div class="form-group col-md-6">
+            <label for="phonenumber">Phone Number</label>
+            <input type="number" id="phonenumber" name="phonenumber" class="form-control">
+            <% if(locals.error){%>
+            <div class="alter text-danger text-start"><%= error%></div>
+          <%}%>
+          </div>
+
+          <input type="hidden" name="cartId" value="<%= cart._id %>">
+        
+          <div class="form-group col-12">
+            <button id="saveChangesButton" type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+          </form>
+        
+          
+        </div>
+        </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
       
 
-       
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <h2 class="h3 mb-3 text-black">Your Order</h2>
+            <div class="p-3 p-lg-5 border bg-white">
+              <table class="table site-block-order-table mb-5">
+                <thead>
+                  <th>Product</th>
+        <th>Price&nbsp&&nbspQty</th>
+                  <th>Total</th>
+                </thead>
+                <tbody>
+                      <% cartItems.forEach(cartItem => { %>
+        <tr>
+                          <td ><span id="productname"><%= cartItem.productName %></span></td>
+          <td id="itemprice"><%= cartItem.price %><strong class="mx-2">x</strong><span id="itemquantity"> <%= cartItem.quantity %></span></td>
 
+                          <td id="itemtotal"><%= cartItem.itemTotal %></td>
+                          </tr>
+                      <% }); %>
+                  <tr>
+                    <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
+          <td></td>
+          
+                    <td id="subt" style="font-weight: 700;"><%= cart.total %></td>
+                  </tr>
+        <tr>
+          <td class="text-black font-weight-bold"><strong>Discount Amount</strong></td>
+          <td></td>
+          <td id="dicprice" style="color: green; font-weight: 500;">0</td>
+        </tr>
+                  <tr>
+                  <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
+          <td></td>
+                    <td id="cartotal" style="font-weight: 700;"><strong><mark>
+          <%= cart.total %></mark></strong></td>
+                  </tr>
+      
+                </tbody>
+              </table>
 
+              <form  id="orderForm">
+        <label>
+          <input type="radio" name="paymentOption" value="Cash On Delivery" id="paymentOption1" onchange="updateHiddenField(this)">
+         Cash On Delivery
+        </label><br>
+      
+        <label>
+          <input type="radio" name="paymentOption" value="Razorpay" id="paymentOption2" onchange="updateHiddenField(this)">
+          Razorpay
+        </label><br>
 
+        <label>
+          <input type="radio" name="paymentOption" value="Wallet" id="paymentOption3" onchange="updateHiddenField(this)">
+          Wallet
+          </label><br><br>
+      
+        
+        
+      
+        <!-- Hidden input fields for address details -->
+        <input type="hidden" name="selectedAddressId" id="selectedAddressId" value="<%= addresses.length > 0 ? addresses[0].id : '' %>">
+        <!-- Add other hidden fields for additional address properties as needed -->
+        <% cartItems.forEach(cartItem => { %>
+        <!-- Hidden input fields for cart item details -->
+        <input type="hidden" name="selectedProductIds[]" class="selectedProductIds[]" value="<%= cartItem.productId ? cartItem.productId : '' %>">
+
+        <input type="hidden" name="selectedProductNames[]" class="selectedProductNames[]" value="<%= cartItem.productName %>">
+        <input type="hidden" name="selectedProductPrices[]" class="selectedProductPrices[]" value="<%= cartItem.price %>">
+
+        <input type="hidden" name="selectedQuantities[]" class="selectedQuantities[]" value="<%= cartItem.quantity %>">
+        <input type="hidden" name="selectedCartTotals[]" class="selectedCartTotals[]" value="<%= cartItem.itemTotal %>">
+        <!-- Add other hidden fields for additional cart item properties as needed -->
+        <% }); %>
+        <input type="hidden" name="carttotal" class="carttotal" id="carttotal"value="<%= cart.total %>">
+        <input type="hidden" name="selectedPaymentOption" id="selectedPaymentOption">
+        
+        <input type="hidden" name="cartId" value="<%= cart._id %>">
 
         <div class="form-group">
+        <button class="btn btn-black btn-lg py-3 btn-block" type="button" onclick="razorpay()">Place Order</button>
+        </div>
+      </form>
 
-          <label for="c_ship_different_address" class="text-black" data-bs-toggle="collapse" href="#ship_different_address" role="button" aria-expanded="false" aria-controls="ship_different_address"><input type="checkbox" value="1" id="c_ship_different_address">Add a new Address</label>
-          <div class="collapse" id="ship_different_address">
-            <div class="suso container mt-4">
-                <div class="edit-profile-form">
-                    
-                    
-                  <h2>Add New Address</h2>
-                  
-                  <p style="font-weight: 600; color: red;">!! The Address May not be saved if you enter invalid details </p>
-                
-                
-                
-                
-                
-                
 
-                  
-              
-                  <form action="/checkoutreload" id="addressForm" method="post" class="row">
-                 
-                    <!-- Personal details -->
-            
-                    <div class="form-group col-md-6">
-                        <label for="saveas">Save as</label>
-                        <input type="text" id="saveas" name="saveas" class="form-control">
-                      </div>
-                    <div class="form-group col-md-6">
-                      <label for="fullname">Full Name</label>
-                      <input type="text" id="fullname" name="fullname" class="form-control">
-                    </div>
-              
-                    <div class="form-group col-md-6">
-                      <label for="adname">House Name / Flat No</label>
-                      <input type="text" id="adname" name="adname" class="form-control">
-                    </div>
-              
-                    <div class="form-group col-md-6">
-                      <label for="street">Street</label>
-                      <input type="text" id="street" name="street" class="form-control">
-                    </div>
-              
-                    <div class="form-group col-md-6">
-                      <label for="pincode">Pincode</label>
-                      <input type="number" id="pincode" name="pincode" class="form-control">
-                    </div>
-              
-                    <div class="form-group col-md-6">
-                      <label for="city">City</label>
-                      <input type="text" id="city" name="city" class="form-control">
-                    </div>
-              
-                    <div class="form-group col-md-6">
-                        <label for="state">State</label>
-                        <select id="state" name="state" class="form-control" required>
-                          <option value="" disabled selected>Select a state</option>
-                          <option value="Kerala">Kerala</option>
-                          <option value="Karnataka">Karnataka</option>
-                          <option value="TamilNadu">Tamil Nadu</option>
-                        </select>
-                      </div>
-              
-                      <div class="form-group col-md-6">
-                        <label for="country">Country</label>
-                        <select id="country" name="country" class="form-control" required>
-                          <option value="India">India</option>
-                        </select>
-                      </div>
-                      
-              
-                    <div class="form-group col-md-6">
-                      <label for="phone">Phone Number</label>
-                      <input type="number" id="phone" name="phone" class="form-control">
-                    </div>
-
-                    <input type="hidden" name="cartId" value="<%= cart._id %>">
-              
-                    <div class="form-group col-12">
-                      <button id="saveChangesButton" type="submit" class="btn btn-primary">Save Changes</button>
-                    </div>
-                  </form>
-                
-                  
-                </div>
-              </div>
-
+</div>
           </div>
         </div>
 
       </div>
     </div>
-    <div class="col-md-6">
-        <!-- /////////////////COUPON///////////////////////////// -->
 
-      <div class="row mb-5">
-        <div class="col-md-12">
-          <h2 class="h3 mb-3 text-black">Your Order</h2>
-          <div class="p-3 p-lg-5 border bg-white">
-            <table class="table site-block-order-table mb-5">
-              <thead>
-                <th>Product</th>
-                <th>Price&nbsp&&nbspQty</th>
-                <th>Total</th>
-              </thead>
-              <tbody>
-                <% cartItems.forEach(cartItem => { %>
-                <tr>
-                    <td ><span id="productname"><%= cartItem.productName %></span></td>
-                    <td id="itemprice"><%= cartItem.price %><strong class="mx-2">x</strong><span id="itemquantity"> <%= cartItem.quantity %></span></td>
-
-                    <td id="itemtotal"><%= cartItem.itemTotal %></td>
-                    </tr>
-                <% }); %>
-                <tr>
-                  <td class="text-black font-weight-bold"><strong>Cart Subtotal</strong></td>
-                  <td></td>
-                  
-                  <td id="subt" style="font-weight: 700;"><%= cart.total %></td>
-                </tr>
-                <tr>
-                    <td class="text-black font-weight-bold"><strong>Discount Amount</strong></td>
-                    <td></td>
-                    <td id="dicprice" style="color: green; font-weight: 500;">0</td>
-                </tr>
-                <tr>
-                <td class="text-black font-weight-bold"><strong>Order Total</strong></td>
-                  <td></td>
-                  <td id="cartotal" style="font-weight: 700;"><strong><mark>
-                    <%= cart.total %></mark></strong></td>
-                </tr>
-            
-              </tbody>
-            </table>
-
-            <form  id="orderForm">
-                <label>
-                  <input type="radio" name="paymentOption" value="Cash On Delivery" id="paymentOption1" onchange="updateHiddenField(this)">
-                 Cash On Delivery
-                </label><br>
-            
-
-
-
-            
-                
-                
-            
-                <!-- Hidden input fields for address details -->
-                <input type="hidden" name="selectedAddressId" id="selectedAddressId" value="<%= addresses.length > 0 ? addresses[0].id : '' %>">
-                <!-- Add other hidden fields for additional address properties as needed -->
-                <% cartItems.forEach(cartItem => { %>
-                <!-- Hidden input fields for cart item details -->
-                <input type="hidden" name="selectedProductIds[]" class="selectedProductIds[]" value="<%= cartItem.productId ? cartItem.productId.toString() : '' %>">
-
-                <input type="hidden" name="selectedProductNames[]" class="selectedProductNames[]" value="<%= cartItem.productName %>">
-                <input type="hidden" name="selectedProductPrices[]" class="selectedProductPrices[]" value="<%= cartItem.price %>">
-
-                <input type="hidden" name="selectedQuantities[]" class="selectedQuantities[]" value="<%= cartItem.quantity %>">
-                <input type="hidden" name="selectedCartTotals[]" class="selectedCartTotals[]" value="<%= cartItem.itemTotal %>">
-                <!-- Add other hidden fields for additional cart item properties as needed -->
-                <% }); %>
-                <input type="hidden" name="carttotal" class="carttotal" id="carttotal"value="<%= cart.total %>">
-                <input type="hidden" name="selectedPaymentOption" id="selectedPaymentOption">
-                
-                <input type="hidden" name="cartId" value="<%= cart._id %>">
-
-                <div class="form-group">
-                <button class="btn btn-black btn-lg py-3 btn-block" type="button" onclick="razorpay()">Place Order</button>
-                </div>
-            </form>
-
-
-</div>
-        </div>
-      </div>
-
-    </div>
   </div>
-
-</div>
 </div>
 
 <!-- Start Footer Section -->
-<%-include('userpartial/footer')%>
+
+
+
+
+
+<!-- Start Footer Section -->
+    <%-include('userpartial/footer')%>
 
 <!-- End Footer Section -->	
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -495,7 +485,18 @@ $(document).ready(function () {
         $('.address-details').slideUp();
         $(this).closest('.address-item').find('.address-details').slideDown();
     });
+
+    $('#c_ship_different_address').change(function () {
+        if (this.checked) {
+            // If "Add a new Address" checkbox is checked, show the new address form
+            $('#ship_different_address').slideDown();
+        } else {
+            // If not checked, hide the new address form
+            $('#ship_different_address').slideUp();
+        }
+    });
 });
+
 function updateHiddenField(selectedRadio) {
 document.getElementById('selectedPaymentOption').value = selectedRadio.value;
 }

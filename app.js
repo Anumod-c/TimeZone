@@ -1,4 +1,5 @@
 require('dotenv').config()
+const flash = require("express-flash")
 const express = require("express");
 const session = require("express-session"); // Correct import statement
 const app = express();
@@ -22,6 +23,7 @@ app.use(
     saveUninitialized: true,
   })
 );
+app.use(flash());
 app.use(nocache());
 app.use(express.json());
 // app.use(session({

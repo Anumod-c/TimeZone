@@ -267,9 +267,12 @@ const addToFav =async(req,res)=>{
 //========================================= DELETE FAVOURITE ===============================================
 const deleteFav =async(req,res)=>{
   try{
-    const userId = req.session.id;
+    const userId = req.session.userId;
+    console.log(userId,"oooooooooooooooo");
     const pid = req.params.id;
-    const result = await favModel.updateOne({userId:userId},{$pull:{item:{_id:pid}}});
+    console.log(pid,"oooooooooooooooo");
+
+     await favModel.updateOne({userId:userId},{$pull:{item:{_id:pid}}});
     const updatefav = await favModel.findOne({userId:userId});
     await updatefav.save();
     res.redirect('/favourite')
@@ -339,6 +342,9 @@ const addtocartviafav = async (req,res)=>{
 
 const checkoutpage =async(req,res)=>{
   try{
+    console.log(" reacehd checkout");
+    const errMessage =req.session.error;
+    console.log(errMessage,"error meesaageee");
     const categories = await categoryModel.find();
     const cartId = req.query.cartId;
     const userId = req.session.userId;
@@ -371,7 +377,10 @@ const checkoutpage =async(req,res)=>{
       itemTotal: cartItem.total,
     }));
     console.log('Cart Total:', cart.total);
-    res.render('user/checkout', { addresses, cartItems, categories, cart,cartId });
+   
+
+    console.log("uyjjrjtyd",errMessage);
+    res.render('user/checkout', { addresses, cartItems, categories, cart,cartId ,error:errMessage});
 
   }
   catch(err){

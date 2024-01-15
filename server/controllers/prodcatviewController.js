@@ -30,7 +30,22 @@ const pricehightolow = async(req,res)=>{
         res.status(500).send('Interana server error')
     }
 }
+/// price low to high
 
+const pricelowtohigh = async (req,res)=>{
+    try{
+        const products = await productModel.find({}).sort({price:1});
+        const categories = await  categoryModel.find();
+        const categoriesbanner='The Shop';
+        res.render('user/shop',{products:products,categories:categories,categoriesbanner});
+
+
+
+    }
+    catch(err){
+        console.log("price low to high",err);
+    }
+}
 
 /////===========================     CATEGORIES VIEW PAGE     ==========================================
 
@@ -68,6 +83,26 @@ const singleproduct = async(req,res)=>{
         console.log('error while rendering single product page',err);
     }
 }
+
+//===========================ssearch=============================
+const search = async(req,res)=>{
+    try{
+        const categoriesbanner="The Shop";
+        const categories =await categoryModel.find()
+        const searchproduct = req.body.searchproduct;
+        const products = await productModel.find({
+            name: { $regex: new RegExp(searchproduct, "i") },
+          });
+          console.log(searchproduct,"searchpp");
+          res.render("user/shop",{products:products,categories:categories,categoriesbanner:categoriesbanner})
+          
+    }
+    catch(err){
+        console.log("search not working",err);
+    }
+}
+
+////////////////////////////search post/////////////
 //exporting
 module.exports={
     newarrival,
@@ -75,6 +110,8 @@ module.exports={
     
     catagorysort,
     singleproduct,
+    pricelowtohigh,
+    search,
 
 
 }

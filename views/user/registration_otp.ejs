@@ -71,21 +71,59 @@
                     <div class="form-group">
                         Enter OTP
                         <input type="text" name="otp" class="form-control" placeholder="Enter Otp here" required>
-                        <% if(locals.otperror){%>
-                            <div class="alter text-danger text-start"><%= otperror%></div>
+                        <% if(expressFlash.otperror){%>
+                            <div class="alter text-danger text-start"><%= expressFlash.otperror%></div>
             
                         <%}%>
                     </div>
                     
                     <button type="submit" class="btn btn-success ">Submit</button>
-                    <p>
+                    <div id="timer">
+                        
+                    </div>
+                    <!-- <p>
                         <a href="/resendotp" id="resendButton" >Resend OTP</a>
-                    </p>
+                    </p> -->
+                    
                 </form>
                 
             </div>
         </div>
     </div>
+    <script>
+        function timer(){
+            const timerContainer = document.getElementById('timer');
+        let count = 30;
+        const countdown = setInterval(()=>{
+            timerContainer.innerHTML = "";
+            --count;
+            timerContainer.innerHTML += `
+            <p>Otp ${count}</p>
+            ` 
+            if(count==0){
+                showButton();
+                clearInterval(countdown)
+            }
+        },1000)
+
+    }
+    function showButton(){
+
+        console.log("inside ca")
+        const timerContainer = document.getElementById('timer');
+        timerContainer.innerHTML=""
+        timerContainer.innerHTML += `
+        <p>
+            <a href="/resendotp" id="resendButton" >Resend OTP</a>
+        </p>
+        `
+    }
+
+    // Call startTimer when the page is loaded
+document.addEventListener('DOMContentLoaded', function () {
+    timer();
+});
+    </script>
 
     <!-- Bootstrap JS and dependencies (jQuery and Popper.js) -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
