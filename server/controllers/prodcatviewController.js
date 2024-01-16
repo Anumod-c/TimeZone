@@ -5,8 +5,10 @@ const categoryModel=require('../models/categorymodel');
 //================================     NEWEST ARRIVAL(BY DEFAULT)     =============================================
 const newarrival =async (req,res)=>{ //by default it will be newest arrival
     try{
-        const products =await productModel.find({status:true}).sort({_id:-1})
         const categories=await categoryModel.find({status:true});
+        const activeCategoryId = categories.map(category=> category._id);
+        const products = await productModel.find({ categories: { $in: activeCategoryId }, status: true })
+        .sort({ _id: -1 });
         const categoriesbanner="The Shop"
         res.render('user/shop',{categories:categories,products:products,categoriesbanner})
     }
@@ -18,8 +20,11 @@ const newarrival =async (req,res)=>{ //by default it will be newest arrival
 //===================================     PRICE HIGH TO LOW    =====================================================
 const pricehightolow = async(req,res)=>{
     try{
-        const products =await productModel.find({}).sort({price:-1})
-        const categories =await categoryModel.find();
+       
+        const categories =await categoryModel.find({status:true});
+        const activeCategoryId = categories.map(category=> category._id);
+        const products = await productModel.find({ categories: { $in: activeCategoryId }, status: true })
+        .sort({ _id: -1 });
         console.log(products,"dddddddddddddddddddddddd");
         const categoriesbanner='The Shop'
         res.render('user/shop',{products:products,categories:categories,categoriesbanner})
@@ -34,8 +39,11 @@ const pricehightolow = async(req,res)=>{
 
 const pricelowtohigh = async (req,res)=>{
     try{
-        const products = await productModel.find({}).sort({price:1});
-        const categories = await  categoryModel.find();
+       
+        const categories = await  categoryModel.find({status:true});
+        const activeCategoryId = categories.map(category=> category._id);
+        const products = await productModel.find({ categories: { $in: activeCategoryId }, status: true })
+        .sort({ _id: -1 });
         const categoriesbanner='The Shop';
         res.render('user/shop',{products:products,categories:categories,categoriesbanner});
 
@@ -84,23 +92,50 @@ const singleproduct = async(req,res)=>{
     }
 }
 
-//===========================ssearch=============================
-const search = async(req,res)=>{
-    try{
-        const categoriesbanner="The Shop";
-        const categories =await categoryModel.find()
+//===========================             SEARCH              =============================
+const search = async (req, res) => {
+    try {
+        const categoriesbanner = "The Shop";
+        const categories = await categoryModel.find();
+
         const searchproduct = req.body.searchproduct;
-        const products = await productModel.find({
-            name: { $regex: new RegExp(searchproduct, "i") },
-          });
-          console.log(searchproduct,"searchpp");
-          res.render("user/shop",{products:products,categories:categories,categoriesbanner:categoriesbanner})
-          
+        const products = await productModel.aggregate([
+            {
+                $match: {
+                    $and: [
+                        { name: { $regex: new RegExp(searchproduct, "i") } },
+                        { status: true }
+                    ]
+                }
+            },
+            {
+                $lookup: {
+                    from: 'categories',  // Assuming your category collection name is 'categories'
+                    localField: 'categories',
+                    foreignField: '_id',
+                    as: 'category'
+                }
+            },
+            {
+                $match: {
+                    'category.status': true
+                }
+            },
+            {
+                $project: {
+                    category: 0  // Exclude the 'category' field from the final result
+                }
+            }
+        ]);
+
+        console.log(searchproduct, "searchpp");
+        res.render("user/shop", { products: products, categories: categories, categoriesbanner: categoriesbanner });
+    } catch (err) {
+        console.log("Search not working", err);
+        res.status(500).send("Internal server error");
     }
-    catch(err){
-        console.log("search not working",err);
-    }
-}
+};
+
 
 ////////////////////////////search post/////////////
 //exporting

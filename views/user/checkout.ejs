@@ -244,17 +244,20 @@
           <div class="form-group col-md-6">
             <label for="saveas">Save as</label>
             <input type="text" id="saveas" name="saveas" class="form-control">
+            
            
           </div>
           <div class="form-group col-md-6">
             <label for="fullname">Full Name</label>
             <input type="text" id="fullname" name="fullname" class="form-control">
+           
             
           </div>
         
           <div class="form-group col-md-6">
             <label for="adname">House Name / Flat No</label>
             <input type="text" id="adname" name="adname" class="form-control">
+           
             
           </div>
         
@@ -262,17 +265,20 @@
             <label for="street">Street</label>
             <input type="text" id="street" name="street" class="form-control">
             
+            
           </div>
         
           <div class="form-group col-md-6">
             <label for="pincode">Pincode</label>
             <input type="number" id="pincode" name="pincode" class="form-control">
+           
             
           </div>
         
           <div class="form-group col-md-6">
             <label for="city">City</label>
             <input type="text" id="city" name="city" class="form-control">
+           
           
             
         </div>
@@ -285,6 +291,7 @@
               <option value="Karnataka">Karnataka</option>
               <option value="TamilNadu">Tamil Nadu</option>
             </select>
+           
             
           </div>
         
@@ -293,6 +300,7 @@
             <select id="country" name="country" class="form-control" required>
               <option value="India">India</option>
             </select>
+           
              
           </div>
             
@@ -300,9 +308,8 @@
           <div class="form-group col-md-6">
             <label for="phonenumber">Phone Number</label>
             <input type="number" id="phonenumber" name="phonenumber" class="form-control">
-            <% if(locals.error){%>
-            <div class="alter text-danger text-start"><%= error%></div>
-          <%}%>
+            
+          
           </div>
 
           <input type="hidden" name="cartId" value="<%= cart._id %>">

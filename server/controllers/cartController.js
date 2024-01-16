@@ -379,8 +379,22 @@ const checkoutpage =async(req,res)=>{
     console.log('Cart Total:', cart.total);
    
 
-    console.log("uyjjrjtyd",errMessage);
-    res.render('user/checkout', { addresses, cartItems, categories, cart,cartId ,error:errMessage});
+    
+    await res.render('user/checkout', { addresses, cartItems, categories, cart,cartId 
+    //   ,expressFlash:{
+    //   saveaserror:req.flash("saveaserror"),
+    //   fullnameerror:req.flash("fullnameerror"),
+    //   adnameerror:req.flash("adnameerror"),
+    //   streeterror:req.flash("streeterror"),
+    //   pinerror:req.flash("pinerror"),
+    //   cityerror:req.flash("cityerror"),
+    //   stateerror:req.flash("stateerror"),
+    //   countryerror:req.flash("countryerror"),
+    //   phonererror:req.flash("phonererror"),
+      
+
+    // }
+  });
 
   }
   catch(err){
