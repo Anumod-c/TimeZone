@@ -343,8 +343,6 @@ const addtocartviafav = async (req,res)=>{
 const checkoutpage =async(req,res)=>{
   try{
     console.log(" reacehd checkout");
-    const errMessage =req.session.error;
-    console.log(errMessage,"error meesaageee");
     const categories = await categoryModel.find();
     const cartId = req.query.cartId;
     const userId = req.session.userId;
@@ -358,6 +356,7 @@ const checkoutpage =async(req,res)=>{
     const addresses =addresslist.address;
     const cart = await cartModel.findById(cartId).populate('item.productId');
     for(const cartItem of cart.item || [] ){
+      console.log(":cart item................",cartItem);
       const product = await productModel.findById(cartItem.productId);
 
       if(cartItem.quantity > product.stock){

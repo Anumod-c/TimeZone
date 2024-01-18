@@ -1,8 +1,11 @@
 const categoryModel = require("../models/categorymodel");
 const userModel = require("../models/usermodel");
 const productModel = require("../models/productmodel");
-const flash = require("express-flash")
+const flash = require("express-flash");
 const orderModel = require("../models/ordermodel");
+const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Types;
+
 const bcrypt = require("bcrypt");
 const {
   nameValid,
@@ -13,7 +16,12 @@ const {
   confirmpasswordValid,
 } = require("../../utils/validators/usersignupvalidator");
 
-const {bnameValid,adphoneValid,pincodeValid} = require("../../utils/validators/address_Validators")
+const {
+  bnameValid,
+  adphoneValid,
+  pincodeValid,
+} = require("../../utils/validators/address_Validators");
+const walletModel = require("../models/walletModel");
 
 //================================ USER DETAILS PAGE RENDERING   ===================================
 const userdetials = async (req, res) => {
@@ -69,10 +77,12 @@ const updateprofile = async (req, res) => {
 };
 
 //========================================ADD NEW ADDRESS PAGE ================================================
-const addnewaddress =async(req,res)=>{
-  try{
-      const categories=await categoryModel.find();
-      res.render('user/newAddress',{categories:categories,expressFlash:{
+const addnewaddress = async (req, res) => {
+  try {
+    const categories = await categoryModel.find();
+    res.render("user/newAddress", {
+      categories: categories,
+      expressFlash: {
         fullnameerror: req.flash("fullnameerror"),
         saveaserror: req.flash("saveaserror"),
         adnameerror: req.flash("adnameerror"),
@@ -82,127 +92,130 @@ const addnewaddress =async(req,res)=>{
         stateerror: req.flash("stateerror"),
         countryerror: req.flash("countryerror"),
         phoneerror: req.flash("phoneerror"),
-        addressexsitserror:req.flash("addressexsitserror")
-      }})
+        addressexsitserror: req.flash("addressexsitserror"),
+      },
+    });
+  } catch (err) {
+    console.log("add new address page rendering error", err);
   }
-  catch(err){
-      console.log('add new address page rendering error',err);
-  }
-}
+};
 //================================================NEW ADDRESS POST   =============================
-const addnewaddresspost =async(req,res)=>{
-  try{
-    const categories=await categoryModel.find();
-      const {saveas,fullname,adname,street,city,state,pincode,country,phonenumber} =req.body;
-      const userId =req.session.userId;
-      console.log('user_id',userId);
-      const existingUser =await userModel.findOne({_id:userId});
-      console.log(existingUser,"tueeeeeeeeeeeeeee");
-      const fullnamevalid=bnameValid(fullname)//
-      const saveasvalid=bnameValid(saveas)//
-      const adnameValid=bnameValid(adname)//
-      const streetValid=bnameValid(street)
-      const pinvalid=pincodeValid(pincode)
-      const cityValid=bnameValid(city)
-      const stateValid=bnameValid(state)
-      const countryValid=bnameValid(country)
-      const phoneValid=adphoneValid(phonenumber)
+const addnewaddresspost = async (req, res) => {
+  try {
+    const categories = await categoryModel.find();
+    const {
+      saveas,
+      fullname,
+      adname,
+      street,
+      city,
+      state,
+      pincode,
+      country,
+      phonenumber,
+    } = req.body;
+    const userId = req.session.userId;
+    console.log("user_id", userId);
+    const existingUser = await userModel.findOne({ _id: userId });
+    console.log(existingUser, "tueeeeeeeeeeeeeee");
+    const fullnamevalid = bnameValid(fullname); //
+    const saveasvalid = bnameValid(saveas); //
+    const adnameValid = bnameValid(adname); //
+    const streetValid = bnameValid(street);
+    const pinvalid = pincodeValid(pincode);
+    const cityValid = bnameValid(city);
+    const stateValid = bnameValid(state);
+    const countryValid = bnameValid(country);
+    const phoneValid = adphoneValid(phonenumber);
 
+    if (!fullnamevalid) {
+      console.log("fullname valid");
+      req.flash("fullnameerror", "Enter a Valid name");
+      return res.redirect("/addnewaddress");
+    }
+    if (!saveasvalid) {
+      console.log("svaes valid");
+      req.flash("saveaserror", "Enter a Valid Address Type");
+      return res.redirect("/addnewaddress");
+    }
+    if (!adnameValid) {
+      console.log("adname valid");
+      req.flash("adnameerror", "Enter a Valid Name");
+      return res.redirect("/addnewaddress");
+    }
+    if (!streetValid) {
+      console.log("street valid");
+      req.flash("streeterror", "Enter a Valid Street");
+      return res.redirect("/addnewaddress");
+    }
+    if (!pinvalid) {
+      console.log("pin valid");
+      req.flash("pincodeerror", "Enter a Valid Pin");
+      return res.redirect("/addnewaddress");
+    }
+    if (!cityValid) {
+      console.log("city valid");
+      req.flash("cityerror", "Enter a Valid City");
+      return res.redirect("/addnewaddress");
+    }
+    if (!stateValid) {
+      console.log("state valid");
+      req.flash("stateerror", "Enter a Valid State");
+      return res.redirect("/addnewaddress");
+    }
+    if (!countryValid) {
+      console.log("contruy valid");
+      req.flash("countryerror", "Enter a Valid Country");
+      return res.redirect("/addnewaddress");
+    }
+    if (!phoneValid) {
+      console.log("phone valid");
+      req.flash("phoneerror", "Enter a Valid Phone");
+      return res.redirect("/addnewaddress");
+    }
 
-      if(!fullnamevalid){
-        console.log("fullname valid");
-        req.flash("fullnameerror","Enter a Valid name");
-        return res.redirect("/addnewaddress")
-      }
-      if(!saveasvalid){
-        console.log("svaes valid");
-        req.flash("saveaserror","Enter a Valid Address Type");
-        return res.redirect("/addnewaddress")
-      }
-      if(!adnameValid){
-        console.log("adname valid");
-        req.flash("adnameerror","Enter a Valid Name");
-        return res.redirect("/addnewaddress")
-      }
-      if(!streetValid){
-        console.log("street valid");
-        req.flash("streeterror","Enter a Valid Street");
-        return res.redirect("/addnewaddress")
-      }
-      if(!pinvalid){
-        console.log("pin valid");
-        req.flash("pincodeerror","Enter a Valid Pin");
-        return res.redirect("/addnewaddress")
-      }
-      if(!cityValid){
-        console.log("city valid");
-        req.flash("cityerror","Enter a Valid City");
-        return res.redirect("/addnewaddress")
-      }
-      if(!stateValid){
-        console.log("state valid");
-        req.flash("stateerror","Enter a Valid State");
-        return res.redirect("/addnewaddress")
-      }
-      if(!countryValid){
-        console.log("contruy valid");
-        req.flash("countryerror","Enter a Valid Country");
-        return res.redirect("/addnewaddress")
-      }
-      if(!phoneValid){
-        console.log("phone valid");
-        req.flash("phoneerror","Enter a Valid Phone");
-        return res.redirect("/addnewaddress")
+    if (existingUser) {
+      console.log("exsirt user if worked valid");
+      const existingAddress = await userModel.findOne({
+        _id: userId,
+        address: {
+          $elemMatch: {
+            fullname: fullname,
+            adname: adname,
+            street: street,
+            pincode: pincode,
+            city: city,
+            state: state,
+            country: country,
+            phonenumber: phonenumber,
+          },
+        },
+      });
+      if (existingAddress) {
+        console.log("exist adress if worked valid");
+        req.flash("addressexsitserror", "Address Alredy Exist");
+
+        return res.redirect("/addnewaddress");
       }
 
-      if(existingUser){
-        console.log("exsirt user if worked valid");
-          const existingAddress =await userModel.findOne({
-              _id:userId,address:{
-                  $elemMatch :{
-                      fullname:fullname,
-                      adname:adname,
-                      street:street,
-                      pincode:pincode,
-                      city:city,
-                      state:state,
-                      country:country,
-                      phonenumber:phonenumber
-                  }
-              }
-          });
-          if(existingAddress){
-            console.log("exist adress if worked valid");
-            req.flash("addressexsitserror","Address Alredy Exist");
-
-            return res.redirect("/addnewaddress")
-          }
-         
-      
-
-
-          existingUser.address.push({
-              saveas:saveas,
-              fullname:fullname,
-              adname:adname,
-              street:street,
-              pincode:pincode,
-              city:city,
-              state:state,
-              country:country,
-              phonenumber:phonenumber,
-          });
-          await existingUser.save();
-          
-
-      }
-       res.redirect('/userdetails')
-              
+      existingUser.address.push({
+        saveas: saveas,
+        fullname: fullname,
+        adname: adname,
+        street: street,
+        pincode: pincode,
+        city: city,
+        state: state,
+        country: country,
+        phonenumber: phonenumber,
+      });
+      await existingUser.save();
+    }
+    res.redirect("/userdetails");
+  } catch (err) {
+    console.log("add new address post method error", err);
   }
-  catch(err){
-      console.log('add new address post method error',err);
-  }
-}
+};
 //=================================   EDIT ADDRESS ==================================
 const editaddress = async (req, res) => {
   try {
@@ -235,7 +248,6 @@ const editaddresspost = async (req, res) => {
       phonenumber,
     } = req.body;
 
-    
     const addressId = req.params.addressId;
     const userId = req.session.userId;
     const isAddressExists = await userModel.findOne({
@@ -255,13 +267,9 @@ const editaddresspost = async (req, res) => {
         },
       },
     });
-    console.log("address exist workd",isAddressExists);
-    
-    
+    console.log("address exist workd", isAddressExists);
 
-
-
-       await userModel.updateOne(
+    await userModel.updateOne(
       { _id: userId, "address._id": addressId },
       {
         $set: {
@@ -312,32 +320,42 @@ const pswdmanagement = async (req, res) => {
 const pswdmanagementpost = async (req, res) => {
   try {
     const categories = await categoryModel.find();
-    const userId =req.session.userId
+    const userId = req.session.userId;
     const oldpassword = req.body.oldPassword;
     const newpassword = req.body.newPassword;
     const confirmpassword = req.body.confirmPassword;
     const user = await userModel.findById(userId);
-    const isPasswordValid =passwordValid(newpassword);
-    const isCPasswordValid = confirmpasswordValid(confirmpassword,newpassword)
-    
-    const passwordMatch =await bcrypt.compare(oldpassword,user.password);
-    
-    if(passwordMatch){
-        console.log('gggggggggggggg',oldpassword,user.password);
-        if(!isPasswordValid){
-            res.render('user/changePassword',{perror:"Passsword should contain atleast one Uppercase, Lowercase, Digit, Special character",categories:categories})
-        }
-        else if(!isCPasswordValid){
-            res.render('user/changePassword',{cpasserror:'Password not match',categories:categories});
-        }
-        else{
-            const hashedpassword = await bcrypt.hash(newpassword,10);
-            await userModel.updateOne({_id:userId},{password:hashedpassword});
-            res.redirect('/userdetails')
-        }
-    }
-    else{
-        res.render('user/changePassword',{categories:categories,olderror:'Incorrect Old Password'})
+    const isPasswordValid = passwordValid(newpassword);
+    const isCPasswordValid = confirmpasswordValid(confirmpassword, newpassword);
+
+    const passwordMatch = await bcrypt.compare(oldpassword, user.password);
+
+    if (passwordMatch) {
+      console.log("gggggggggggggg", oldpassword, user.password);
+      if (!isPasswordValid) {
+        res.render("user/changePassword", {
+          perror:
+            "Passsword should contain atleast one Uppercase, Lowercase, Digit, Special character",
+          categories: categories,
+        });
+      } else if (!isCPasswordValid) {
+        res.render("user/changePassword", {
+          cpasserror: "Password not match",
+          categories: categories,
+        });
+      } else {
+        const hashedpassword = await bcrypt.hash(newpassword, 10);
+        await userModel.updateOne(
+          { _id: userId },
+          { password: hashedpassword }
+        );
+        res.redirect("/userdetails");
+      }
+    } else {
+      res.render("user/changePassword", {
+        categories: categories,
+        olderror: "Incorrect Old Password",
+      });
     }
   } catch (err) {
     res.status(500).send("error occured");
@@ -396,28 +414,315 @@ const orderHistory = async (req, res) => {
     console.log("order history error", err);
   }
 };
+// =============================           SINGLE ORDER PAGE        ========================
 
 const singleOrderPage = async (req, res) => {
   try {
-    const id = req.params.id;
+    const orderId = req.params.id;
 
-    const order = await orderModel.findOne({ _id: id });
+    const order = await orderModel.findOne({ _id: orderId });
     const categories = await categoryModel.find();
     res.render("user/orderDetails", { categories, order });
   } catch (err) {
-    console.log(err);
+    console.log("orderDetails page error", err);
   }
 };
-///==============================Wallet============================
-const wallet = async(req,res)=>{
-  const categories = await categoryModel.find();
+
+//====================================   ORDER CANCELLING =================================================
+const orderCancelling = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const userId = req.session.userId;
+    const update = await orderModel.updateOne(
+      { _id: id },
+      { status: "Cancelled" }
+    );
+
+    const result = await orderModel.findOne({ _id: id });
+    console.log("result data", result);
+
+    const items = result.items.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+      status: item.status,
+    }));
+
+    for (const item of items) {
+      // Skip updating stock for items that are already cancelled
+      if (item.status !== "cancelled") {
+        const product = await productModel.findOne({ _id: item.productId });
+        console.log("dd");
+        product.stock += item.quantity;
+        console.log(product.stock);
+        await product.save();
+        console.log("kk");
+      }
+    }
+    res.redirect("/orderHistory");
+  } catch (err) {
+    console.log("ORDER CANCEL EROOR", err);
+  }
+};
+
+// ============================     ORDER RETURNUNG  ==========================
+const orderreturning = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const id = req.params.id;
+    const update = await orderModel.updateOne(
+      { _id: id },
+      { status: "Returned" }
+    );
+    const order = await orderModel.findOne({ _id: id });
+    console.log("dddddddddddd", order);
+    const user = await walletModel.findOne({userId:userId});
+    const refund = order.totalPrice;
+    console.log("reeeeeeefund",refund);
+    const currentWallet = user.wallet;
+    const newWallet = currentWallet + refund;
+    const amountUpdate = await walletModel.updateOne(
+      { userId: userId },
+      {
+        $set: { wallet: newWallet },
+        $push: {
+          walletTransactions: {
+            date: new Date(),
+            type: "Credited",
+            amount: refund,
+          },
+        },
+      }
+    );
+
+    const items = order.items.map((item) => ({
+      productId: item.productId,
+      quantity: item.quantity,
+      status: item.status,
+    }));
+
+    for (const item of items) {
+      if (item.status !== "Returned") {
+        const product = await productModel.findOne({ _id: item.productId });
+        product.stock += item.quantity;
+        await product.save();
+      }
+    }
+    res.redirect("/orderHistory");
+  } catch (err) {
+    console.log("order returning error", err);
+  }
+};
+//==================== ITEM CANCELLING =======================
+const itemCancelling = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const productId = req.params.id;
+    const orderId = req.params.orderId;
+
+    const order = await orderModel.findOne({ _id: orderId });
+    const singleItem = order.items.find((item) => item.productId == productId);
+    console.log("llllll", singleItem);
+
+    if (!singleItem) {
+      return res.status(404).send("Item is not found!!");
+    }
+
+    // if (order.paymentMethod == "Razorpay" || order.paymentMethod == "Wallet") {
+    //   const user = await walletModel.findOne({ userId: userId });
+    //   const refund = singleItem.price;
+
+    //   const currentWallet = user.wallet;
+    //   const newWallet = currentWallet + refund;
+
+    //   await walletModel.updateOne(
+    //     { userId: userId },
+    //     {
+    //       $set: { wallet: newWallet },
+    //       $push: {
+    //         walletTransactions: {
+    //           date: new Date(),
+    //           type: "Credited",
+    //           amount: refund,
+    //         },
+    //       },
+    //     }
+    //   );
+    // }
+
+    await orderModel.updateOne(
+      {
+        _id: orderId,
+        "items.productId": singleItem.productId,
+      },
+      {
+        $set: {
+          "items.$.status": "cancelled",
+          totalPrice: order.totalPrice - singleItem.price,
+          updatedAt: new Date(),
+        },
+      }
+    );
+
+    const product = await productModel.findOne({
+      _id: singleItem.productId,
+    });
+
+    product.stock += singleItem.quantity;
+    await product.save();
+    console.log("reaminging canccel working??");
+    const remainingNotCancelled = order.items.filter(
+      (item) => item.status !== "cancelled"
+    );
+    console.log("items remainging cancel", remainingNotCancelled);
+    if (remainingNotCancelled.length < 2) {
+      order.status = "Cancelled";
+      await order.save();
+      console.log("its working: all items cancelled, main status updated");
+    }
+
+    res.redirect(`/singleOrder/${orderId}`);
+  } catch (error) {
+    console.log("error cancelling single product", error);
+    res.status(404).send("error cancelling single product");
+  }
+};
+
+//===========================================   ITEM RETURNUNG ============================
+const itemreturintg = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const productId = req.params.id;
+    const orderId = req.params.orderId;
+
+    const order = await orderModel.findOne({ _id: orderId });
+    const singleItem = order.items.find((item) => item.productId == productId);
+    const user = await walletModel.findOne({userId:userId});
+    console.log("singel itemeeee", singleItem);
+    if (!singleItem) {
+      return res.status(404).send("Item not found!");
+    }
+
+
+    const refund = singleItem.price;
+    console.log("refundeeeeee",refund);
+
+
+
+
+const currentWallet = user.wallet;
+    const newWallet = currentWallet + refund;
+    const amountUpdate = await walletModel.updateOne(
+      { userId: userId },
+      {
+        $set: { wallet: newWallet },
+        $push: {
+          walletTransactions: {
+            date: new Date(),
+            type: "Credited",
+            amount: refund,
+          },
+        },
+      }
+    );
+
+
+    await orderModel.updateOne(
+      {
+        _id: orderId,
+        "items.productId": singleItem.productId,
+      },
+      {
+        $set: {
+          "items.$.status": "Returned",
+          totalPrice: order.totalPrice - singleItem.price,
+          updatedAt: new Date(),
+        },
+      }
+    );
+    const product = await productModel.findOne({
+      _id: singleItem.productId,
+    });
+    product.stock += singleItem.quantity;
+    await product.save();
+
+    const remainingNotreturned = order.items.filter(
+      (item) => item.status !== "Returned"
+    );
+
+    if (remainingNotreturned.length < 2) {
+      order.status = "Returned";
+      await order.save();
+    }
+    res.redirect(`/singleOrder/${orderId}`);
+  } catch (err) {
+    console.log("item returnuing error", err);
+  }
+};
+
+///==============================       WALLET          ============================
+const wallet = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const categories = await categoryModel.find();
+    let user = await walletModel
+      .findOne({ userId: userId })
+      .sort({ "walletTransactions.date": -1 });
+    if (!user) {
+      user = await walletModel.create({ userId: userId });
+    }
+
+
+    const userWallet = user.wallet;
+    const usertransactions = user.walletTransactions.reverse();
+ 
+
+    res.render("user/wallet", { categories: categories,userWallet,usertransactions   });
+  } catch (err) {
+    console.log("wallet error",err);
+  }
+};
+
+
+
+
+// ================================= WALLET TOPUP =============================
+ const wallettopup = async(req,res)=>{
   try{
-    res.render("user/wallet",{categories:categories})
+      const userId =req.session.userId;
+      const { razorpay_payment_id, razorpay_order_id } = req.body;
+      const wallet   = await  walletModel.findOne({userId:userId});
+      const Amount = parseFloat(req.body.Amount);
+      console.log(Amount);
+
+      wallet.wallet+=Amount;
+      wallet.walletTransactions.push({
+        type: "Credited",
+        amount: Amount,
+        date: new Date(),
+      
+      })
+      await wallet.save()
+      res.redirect("/wallet")
   }
   catch(err){
-    console.log("wallet error,err");
+    console.log('wallet topup erorr',err);
   }
-}
+ }
+ // ===========================    WALLET UPI INSTANCE     ================
+ const walletUpi = async(req,res)=>{
+  console.log("body:", req.body);
+  var options = {
+    amount: 500,
+    currency: "INR",
+    receipt: "order_rcpt",
+  };
+  instance.orders.create(options, function (err, order) {
+    console.log("order1 :", order);
+    res.send({ orderId: order.id });
+  });
+};
+
+ 
 
 module.exports = {
   userdetials,
@@ -431,6 +736,12 @@ module.exports = {
   pswdmanagement,
   pswdmanagementpost,
   orderHistory,
+  orderCancelling,
+  orderreturning,
+  itemCancelling,
+  itemreturintg,
   singleOrderPage,
   wallet,
+  wallettopup,
+  walletUpi
 };

@@ -7,12 +7,16 @@ const mongoose = require("mongoose");
 const orderModel = require("../models/ordermodel");
 const ShortUniqueId = require("short-unique-id");
 const uid = new ShortUniqueId({ length: 10 });
+const Razorpay = require("razorpay");
+const key_id=process.env.key_id;
+const key_secret=process.env.key_secret
 
 const {
   bnameValid,
   adphoneValid,
   pincodeValid,
 } = require("../../utils/validators/address_Validators");
+const walletModel = require("../models/walletModel");
 
 const placeOrder = async (req, res) => {
   try {
@@ -80,7 +84,7 @@ const checkoutrelod = async (req, res) => {
   try {
     console.log("checkout reload worked");
     const cartId = req.body.cartId;
-    console.log("is post address working");
+    console.log(" post address working");
     const {
       saveas,
       fullname,
@@ -109,42 +113,42 @@ const checkoutrelod = async (req, res) => {
     console.log("assiing validation");
     if (!saveasvalid) {
       // req.flash("saveaserror", "Enter a valid adresstype");
-      return res.redirect("/checkoutpage");
+      return res.redirect(`/checkoutpage?cartId=${cartId}`);
     }
     if (!fullnamevalid) {
       // req.flash("fullnameerror", "Enter a valid fullname");
-      return res.redirect("/checkoutpage");
+      return res.redirect(`/checkoutpage?cartId=${cartId}`);
     }
     if (!adnameValid) {
       // req.flash("adnameerror", "Enter a valid housename");
-      return res.redirect("/checkoutpage");
+      return res.redirect(`/checkoutpage?cartId=${cartId}`);
     }
     if (!streetValid) {
       // req.flash("streeterror", "Enter a valid street name");
-      return res.redirect("/checkoutpage");
+      return res.redirect(`/checkoutpage?cartId=${cartId}`);
     }
     if (!pinvalid) {
       // req.flash("pinerror", "Enter a valid pincode");
-      return res.redirect("/checkoutpage");
+      return res.redirect(`/checkoutpage?cartId=${cartId}`);
     }
     if (!cityValid) {
       // req.flash("cityerror", "Enter a valid city");
 
-      return res.redirect("/checkoutpage");
+      return res.redirect(`/checkoutpage?cartId=${cartId}`);
     }
     if (!stateValid) {
       // req.flash("stateerror", "Enter a valid State");
-      return res.redirect("/checkoutpage");
+      return res.redirect(`/checkoutpage?cartId=${cartId}`);
     }
     if (!countryValid) {
       // req.flash("countryerror", "Enter a valid country");
-      return res.redirect("/checkoutpage");
+      return res.redirect(`/checkoutpage?cartId=${cartId}`);
     }
 
     if (!phoneValid) {
       // req.flash("phonererror", "Enter a valid Phone number");
 
-      return res.redirect("/checkoutpage");
+      return res.redirect(`/checkoutpage?cartId=${cartId}`);
     }
     console.log("validation of address completed");
     if (userExisted) {
@@ -232,7 +236,62 @@ const checkoutrelod = async (req, res) => {
   }
 };
 
+///////////////////////        RAZOR PAY          ///////////////////
+const instance=new Razorpay({key_id:key_id,key_secret:key_secret});
+ 
+
+
+const upi = async (req, res) => {
+  console.log('body:', req.body);
+  var options = {
+      amount: 500,
+      currency: "INR",
+      receipt: "order_rcpt"
+  };
+  instance.orders.create(options, function (err, order) {
+      console.log("order1 :", order);
+      res.send({ orderId: order.id })
+    })
+}
+
+// ================================== WALLET TRANSACTION   ==========================================
+
+const wallettransaction = async (req,res)=>{
+  try{
+      console.log("Reached wallet  transaction");
+      const userId = req.session.userId;
+      const amount = req.body.amount;
+      const user = await walletModel.findOne({userId:userId})
+      const wallet  = user.wallet;
+
+
+      if(user.wallet > amount){
+        user.wallet -=amount;
+        await user.save();
+        const wallet =await  walletModel.findOne({userId:userId});
+        wallet.walletTransactions.push({type:"Debited",
+        amount:amount,
+        date:new Date()})
+        await wallet.save();
+        res.json({success:true})
+      }
+      else{
+        res.json({success:false,message:"don't have enought money"})
+       }
+
+  }
+catch{
+  console.log("wallet transaction error",err);
+}
+}
+
+
+
 module.exports = {
   placeOrder,
   checkoutrelod,
+  upi,
+  wallettransaction,
+
+
 };

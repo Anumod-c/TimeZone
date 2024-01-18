@@ -394,7 +394,7 @@
         <!-- Add other hidden fields for additional address properties as needed -->
         <% cartItems.forEach(cartItem => { %>
         <!-- Hidden input fields for cart item details -->
-        <input type="hidden" name="selectedProductIds[]" class="selectedProductIds[]" value="<%= cartItem.productId ? cartItem.productId : '' %>">
+        <input type="hidden" name="selectedProductIds[]" class="selectedProductIds[]" value="<%= cartItem.productId ? cartItem.productId.toString() : '' %>">
 
         <input type="hidden" name="selectedProductNames[]" class="selectedProductNames[]" value="<%= cartItem.productName %>">
         <input type="hidden" name="selectedProductPrices[]" class="selectedProductPrices[]" value="<%= cartItem.price %>">
@@ -493,15 +493,7 @@ $(document).ready(function () {
         $(this).closest('.address-item').find('.address-details').slideDown();
     });
 
-    $('#c_ship_different_address').change(function () {
-        if (this.checked) {
-            // If "Add a new Address" checkbox is checked, show the new address form
-            $('#ship_different_address').slideDown();
-        } else {
-            // If not checked, hide the new address form
-            $('#ship_different_address').slideUp();
-        }
-    });
+
 });
 
 function updateHiddenField(selectedRadio) {
@@ -556,9 +548,9 @@ else if(pay.value=='Razorpay'){
 console.log("upi total","ppppppp");
 
 var options = {
-"key": 'rzp_test_tY3tynQ51qUYZR', 
+"key": 'rzp_test_zg4Sk7lFMOWMRN', 
 "amount":  amountToPay*100, 
-"name": "Furnify",
+"name": "TimeZone",
 "description": "Test Transaction",
 "image": "Urban Sole",
 "order_id": orderId, 

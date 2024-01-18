@@ -87,8 +87,14 @@ usrouter.get('/deleteAddress/:addressId',auth.islogged,profileController.deletea
 usrouter.get('/pswdmanagement',auth.islogged,profileController.pswdmanagement)
 usrouter.post('/changepassword',auth.islogged,profileController.pswdmanagementpost)
 usrouter.get('/orderHistory',profileController.orderHistory)
+usrouter.get("/cancelorder/:id",profileController.orderCancelling)
+usrouter.get("/returnorder/:id",profileController.orderreturning)
+usrouter.get("/returnitem/:id/:orderId",profileController.itemreturintg)
+usrouter.get('/cancelitem/:id/:orderId',auth.islogged,profileController.itemCancelling)
 usrouter.get('/singleOrder/:id',profileController.singleOrderPage)
 usrouter.get("/wallet",profileController.wallet)
+usrouter.post("/walletTopup",profileController.wallettopup)
+usrouter.post('/walletcreate/orderId',profileController.walletUpi)
 
 
 
@@ -112,7 +118,11 @@ usrouter.get('/checkoutpage',cartController.checkoutpage)
 usrouter.post('/checkoutreload',auth.islogged,checkoutController.checkoutrelod)
 
 
-usrouter.post('/placeOrder',auth.islogged,checkoutController.placeOrder)
+usrouter.post('/placeOrder',auth.islogged,checkoutController.placeOrder);
+
+usrouter.post('/create/orderId',checkoutController.upi)
+usrouter.post("/wallettransaction",checkoutController.wallettransaction)
+
 
 
 

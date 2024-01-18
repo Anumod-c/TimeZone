@@ -368,13 +368,13 @@
                     <td><%=item.singleprice%></td>
                     <td><%=item.quantity%></td>
                     <td><%=item.price%></td>
-                    <td>  <% if (order.status !== 'Cancelled' && order.status !== 'Returned' && order.status !== 'Delivered' && item.status !== 'cancelled' && item.status !=='returned') { %>
+                    <td>  <% if (order.status !== 'Cancelled' && order.status !== 'Returned' && order.status !== 'Delivered' && item.status !== 'cancelled' && item.status !=='Returned') { %>
                     <a style="background-color: rgb(255, 0, 0); font-size: 20px;color:white;border-radius: 5px;" onclick="confirmDialogue('/cancelitem/<%=item.productId%>/<%=order._id%>')" >Cancel Item</a>
-                    <% } else if (order.status === 'Delivered'  && item.status !== 'cancelled' && item.status !=='returned') { %>
+                    <% } else if (order.status === 'Delivered'  && item.status !== 'cancelled' && item.status !=='Returned') { %>
                         <a style="background-color: rgb(209, 140, 140);font-size: 20px;" onclick="confirmDialogue('/returnitem/<%=item.productId%>/<%=order._id%>')" >Return item</a>
                     <% }  else if (item.status == 'cancelled' || order.status=='Cancelled') { %>
                         <a style="background-color: rgb(209, 140, 140);font-size: 20px;"  >Cancelled</a>
-                    <% }else if (item.status == 'returned' || order.status =='Returned' ) { %>
+                    <% }else if (item.status == 'Returned' || order.status =='Returned' ) { %>
                         <a style="background-color: rgb(209, 140, 140);font-size: 20px;"  >Returned</a>&nbsp;&nbsp;&nbsp;
                     <% } %>
 
