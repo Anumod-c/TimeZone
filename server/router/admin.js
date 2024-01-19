@@ -3,6 +3,7 @@ const adrouter =express.Router();
 const adminController =require('./../controllers/adminController');
 const productController =require('../controllers/productcontroller');
 const orderController =require('../controllers/orderController')
+const couponController = require("../controllers/couponController")
 adrouter.use(express.urlencoded({extended:true}));
 const multer =require('multer');
 const auth =require('../../middleware/isAuth')
@@ -70,6 +71,16 @@ adrouter.get('/orderPage',orderController.orderPage)
 adrouter.post('/updateOrderStatus',orderController.updateOrderStatus)
 adrouter.get('/filterOrder/:status',orderController.filterOrder)
 
+
+
+
+// =========================================        COUPON     ========================================= 
+adrouter.get("/couponList",couponController.couponList)
+adrouter.get("/newcoupon",couponController.addCouponPage)
+adrouter.post("/add_coupon",couponController.addCouponpost)
+adrouter.get("/editCouponGet/:id",couponController.editcouponPage)
+adrouter.post("/updateCoupon/:id",couponController.editCouponPost)
+adrouter.get("/unlist/:id",couponController.unlistCoupon)
 
 
 //====================================================LOGOUT =======================================================

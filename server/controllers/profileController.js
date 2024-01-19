@@ -439,6 +439,35 @@ const orderCancelling = async (req, res) => {
     );
 
     const result = await orderModel.findOne({ _id: id });
+
+    if (
+      result.paymentMethod == "Razorpay" ||
+      result.paymentMethod == "Wallet"
+    ) {
+      const user = await walletModel.findOne({ userId: userId });
+
+      const refund = result.totalPrice;
+
+      const currentWallet = user.wallet;
+      console.log(currentWallet);
+
+      const newWallet = currentWallet + refund;
+      console.log(newWallet);
+      const amountUpdate = await walletModel.updateOne(
+        { userId: userId },
+        {
+          $set: { wallet: newWallet },
+          $push: {
+            walletTransactions: {
+              date: new Date(),
+              type: "Credited", // or 'debit' depending on your use case
+              amount: refund, // Replace with the actual amount you want to add
+            },
+          },
+        }
+      );
+    }
+
     console.log("result data", result);
 
     const items = result.items.map((item) => ({
@@ -475,9 +504,9 @@ const orderreturning = async (req, res) => {
     );
     const order = await orderModel.findOne({ _id: id });
     console.log("dddddddddddd", order);
-    const user = await walletModel.findOne({userId:userId});
+    const user = await walletModel.findOne({ userId: userId });
     const refund = order.totalPrice;
-    console.log("reeeeeeefund",refund);
+    console.log("reeeeeeefund", refund);
     const currentWallet = user.wallet;
     const newWallet = currentWallet + refund;
     const amountUpdate = await walletModel.updateOne(
@@ -527,27 +556,27 @@ const itemCancelling = async (req, res) => {
       return res.status(404).send("Item is not found!!");
     }
 
-    // if (order.paymentMethod == "Razorpay" || order.paymentMethod == "Wallet") {
-    //   const user = await walletModel.findOne({ userId: userId });
-    //   const refund = singleItem.price;
+    if (order.paymentMethod == "Razorpay" || order.paymentMethod == "Wallet") {
+      const user = await walletModel.findOne({ userId: userId });
+      const refund = singleItem.price;
 
-    //   const currentWallet = user.wallet;
-    //   const newWallet = currentWallet + refund;
+      const currentWallet = user.wallet;
+      const newWallet = currentWallet + refund;
 
-    //   await walletModel.updateOne(
-    //     { userId: userId },
-    //     {
-    //       $set: { wallet: newWallet },
-    //       $push: {
-    //         walletTransactions: {
-    //           date: new Date(),
-    //           type: "Credited",
-    //           amount: refund,
-    //         },
-    //       },
-    //     }
-    //   );
-    // }
+      await walletModel.updateOne(
+        { userId: userId },
+        {
+          $set: { wallet: newWallet },
+          $push: {
+            walletTransactions: {
+              date: new Date(),
+              type: "Credited",
+              amount: refund,
+            },
+          },
+        }
+      );
+    }
 
     await orderModel.updateOne(
       {
@@ -596,20 +625,16 @@ const itemreturintg = async (req, res) => {
 
     const order = await orderModel.findOne({ _id: orderId });
     const singleItem = order.items.find((item) => item.productId == productId);
-    const user = await walletModel.findOne({userId:userId});
+    const user = await walletModel.findOne({ userId: userId });
     console.log("singel itemeeee", singleItem);
     if (!singleItem) {
       return res.status(404).send("Item not found!");
     }
 
-
     const refund = singleItem.price;
-    console.log("refundeeeeee",refund);
+    console.log("refundeeeeee", refund);
 
-
-
-
-const currentWallet = user.wallet;
+    const currentWallet = user.wallet;
     const newWallet = currentWallet + refund;
     const amountUpdate = await walletModel.updateOne(
       { userId: userId },
@@ -624,7 +649,6 @@ const currentWallet = user.wallet;
         },
       }
     );
-
 
     await orderModel.updateOne(
       {
@@ -671,45 +695,42 @@ const wallet = async (req, res) => {
       user = await walletModel.create({ userId: userId });
     }
 
-
     const userWallet = user.wallet;
     const usertransactions = user.walletTransactions.reverse();
- 
 
-    res.render("user/wallet", { categories: categories,userWallet,usertransactions   });
+    res.render("user/wallet", {
+      categories: categories,
+      userWallet,
+      usertransactions,
+    });
   } catch (err) {
-    console.log("wallet error",err);
+    console.log("wallet error", err);
   }
 };
 
-
-
-
 // ================================= WALLET TOPUP =============================
- const wallettopup = async(req,res)=>{
-  try{
-      const userId =req.session.userId;
-      const { razorpay_payment_id, razorpay_order_id } = req.body;
-      const wallet   = await  walletModel.findOne({userId:userId});
-      const Amount = parseFloat(req.body.Amount);
-      console.log(Amount);
+const wallettopup = async (req, res) => {
+  try {
+    const userId = req.session.userId;
+    const { razorpay_payment_id, razorpay_order_id } = req.body;
+    const wallet = await walletModel.findOne({ userId: userId });
+    const Amount = parseFloat(req.body.Amount);
+    console.log(Amount);
 
-      wallet.wallet+=Amount;
-      wallet.walletTransactions.push({
-        type: "Credited",
-        amount: Amount,
-        date: new Date(),
-      
-      })
-      await wallet.save()
-      res.redirect("/wallet")
+    wallet.wallet += Amount;
+    wallet.walletTransactions.push({
+      type: "Credited",
+      amount: Amount,
+      date: new Date(),
+    });
+    await wallet.save();
+    res.redirect("/wallet");
+  } catch (err) {
+    console.log("wallet topup erorr", err);
   }
-  catch(err){
-    console.log('wallet topup erorr',err);
-  }
- }
- // ===========================    WALLET UPI INSTANCE     ================
- const walletUpi = async(req,res)=>{
+};
+// ===========================    WALLET UPI INSTANCE     ================
+const walletUpi = async (req, res) => {
   console.log("body:", req.body);
   var options = {
     amount: 500,
@@ -721,8 +742,6 @@ const wallet = async (req, res) => {
     res.send({ orderId: order.id });
   });
 };
-
- 
 
 module.exports = {
   userdetials,
@@ -743,5 +762,5 @@ module.exports = {
   singleOrderPage,
   wallet,
   wallettopup,
-  walletUpi
+  walletUpi,
 };

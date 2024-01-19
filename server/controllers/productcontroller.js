@@ -3,6 +3,7 @@ const path =require('path');
 const productModel=require('../models/productmodel');
 const categoryModel=require('../models/categorymodel');
 const fs= require('fs');
+const couponModel = require('../models/couponModel');
 
 const product = async (req, res) => {
     try {
@@ -61,10 +62,10 @@ const addproduct = async (req, res) => {
 const unlist =async(req,res)=>{
     try{
         const id =req.params.id;
-        const product = await productModel.findOne({_id:id})
-        product.status=!product.status;
-        res.redirect('/admin/product');
-        await product.save();
+        const coupon = await couponModel.findOne({_id:id})
+        coupon.status=!coupon.status;
+        await coupon.save();
+        res.redirect('/admin/couponList');
     }
     catch(err){
         console.log('product listing/unlisting error',err);
