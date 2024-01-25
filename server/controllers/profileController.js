@@ -6,6 +6,7 @@ const couponModel = require("../models/couponModel")
 const flash = require("express-flash");
 const orderModel = require("../models/ordermodel");
 const mongoose = require("mongoose");
+const easyinvoice = require("easyinvoice");
 const { ObjectId } = mongoose.Types;
 
 const bcrypt = require("bcrypt");
@@ -762,6 +763,74 @@ const couponsAndRewards = async(req,res)=>{
     console.log("coupons and re4ward page error",err);
   }
 }
+
+
+//=============================================== INVOICE ================================================
+const downloadinvoice = async(req,res)=>{
+try{
+  const orderId = req.params.orderId;
+  console.log("orderID:",orderId);
+  const order = await orderModel.findOne({ orderId: orderId }).populate({
+    path: "items.productId",
+    select: "name",
+  });
+  console.log("hyy",order);
+  const pdfBuffer = await generateInvoice(order);
+  res.setHeader("Content-Type", "application/pdf");
+  res.setHeader(
+    "Content-Disposition",
+    ` attachment; filename=invoice-${order.orderId}.pdf`
+  );
+  res.send(pdfBuffer);
+}
+catch(err){
+  console.log("download invoice error",err);
+}
+} 
+
+
+//=================================================================
+const generateInvoice = async(order)=>{
+  try{
+    let totalAmount = order.totalPrice;
+    const data = {
+      documentTitle: "Invoice",
+      currency: "INR",
+      marginTop: 25,
+      marginRight: 25,
+      marginLeft: 25,
+      marginBottom: 25,
+      sender: {
+        company: "TimeZone",
+        address: "123 Main Street, Banglore, India",
+        zip: "651323",
+        city: "Banglore",
+        country: "INDIA",
+        phone: "9876543210",
+        email: "timezoneofficial18@gmail.com",
+        website: "www.timezone.shop",
+      },
+      invoiceNumber: "INV-${order.orderId}",
+      invoiceDate: new Date().toJSON(),
+      products: order.items.map((item) => ({
+        quantity: item.quantity,
+        description: item.productName,
+        price: item.price,
+      })),
+      total: `₹${totalAmount.toFixed(2)}`,
+      tax: 0,
+      bottomNotice: "Thank you for shopping at TimeZone!",
+    };
+
+    const result = await easyinvoice.createInvoice(data);
+    const pdfBuffer = Buffer.from(result.pdf, "base64");
+
+    return pdfBuffer;
+  }
+  catch(err){
+    console.log("invoice genreating error",err);
+  }
+} 
 module.exports = {
   userdetials,
   editprofile,
@@ -783,4 +852,6 @@ module.exports = {
   wallettopup,
   walletUpi,
   couponsAndRewards,
+  downloadinvoice,
+
 };

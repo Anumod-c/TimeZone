@@ -98,6 +98,7 @@ usrouter.post("/walletTopup",profileController.wallettopup)
 usrouter.post('/walletcreate/orderId',auth.islogged,profileController.walletUpi)
 usrouter.get("/rewards",profileController.couponsAndRewards)
 usrouter.get("/ratepage",ratingController.ratepage)
+usrouter.get("/download-invoice/:orderId",profileController.downloadinvoice)
 
 
 //=================================     CART    =======================================
