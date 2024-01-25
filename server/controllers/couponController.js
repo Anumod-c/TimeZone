@@ -133,7 +133,7 @@ const editcouponPage = async(req,res)=>{
 const editCouponPost = async (req,res)=>{
     try{
         const id = req.params.id;
-        const currentCoupon = await couponModel.find({_id:id});
+        const currentCoupon = await couponModel.findOne({_id:id});
 
         const {couponCode,couponType,minimumPrice,discount,maxRedeem,expiry,} = req.body;
         const couponValid = uppercaseAlphanumValid(couponCode);

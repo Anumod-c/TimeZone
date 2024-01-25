@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="css/tiny-slider.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="shortcut icon" type="image/x-icon" href="user_assets/img/favicon.ico">
+
+    <link rel="stylesheet" href="/user_assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/user_assets/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/user_assets/css/flaticon.css">
+    <link rel="stylesheet" href="/user_assets/css/slicknav.css">
+    <link rel="stylesheet" href="/user_assets/css/animate.min.css">
+    <link rel="stylesheet" href="/user_assets/css/magnific-popup.css">
+    <link rel="stylesheet" href="/user_assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="/user_assets/css/themify-icons.css">
+    <link rel="stylesheet" href="user_assets/css/slick.css">
+    <link rel="stylesheet" href="/user_assets/css/nice-select.css">
+    <link rel="stylesheet" href="/user_assets/css/style.css">
+    <style>
+
+        /* Default style for select-line */
+    
+    
+   
+    
+    
+    
+    
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .referral-section {
+            background-color: #c5cac8;
+            padding: 15px;
+            border-radius: 8px;
+            color: #3c3939;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 20px; /* Add margin to separate it from the "Coupons And Rewards" text */
+        }
+
+        .coupon-section {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        /* Media query for small screens */
+        @media (max-width: 767px) {
+            .referral-section {
+                margin-top: 0; /* Adjust margin for small screens */
+            }
+        }
+        
+ 
+	/* Default style for select-line */
+    .select-line {
+    background-color: #3b5d50;
+}
+
+/* Media query for small screens (e.g., mobile devices) */
+@media (max-width: 767px) {
+    .select-line {
+        height: 8vw; /* Set the height for small screens */
+		align-items: start;
+		margin-top: 0.1px;
+    }
+}
+
+/* Media query for medium screens (e.g., tablets) */
+
+
+/* Media query for large screens (e.g., desktops) */
+
+
+  
+
+  
+
+
+
+    .custom-rounded {
+    border-radius:8px;   
+    }
+ 
+        
+      </style>
+
+    <title>Reward Page</title>
+</head>
+<body>
+    
+
+    <!-- Header -->
+    <%- include('userpartial/nav', { categories: categories }) %>
+<!-- Start Hero Section -->
+
+
+
+
+
+
+
+<div class="hero mb-5" style="height:40vh">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="intro-excerpt">
+                    <h1>Coupons And Rewards</h1>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="referral-section">
+                    <h5 class="card-title">Your Referral Code</h5>
+                    <p class="card-text d-none d-lg-block">Share this code with your friends and <span style="font-size: 3vw;">WIN Rs.50</span></p>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" value="<%= referralCode %>" id="referralCodeInput" readonly>
+                        <button class="btnn btn-success" onclick="copyReferralCode()">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Hero Section -->
+<div class="mb-5">
+  <!-- User Profile Page Content -->
+  <div class="container mt-5 mb-5">
+    <div class="row mb-5">
+        <% coupons.forEach(coupon => { %>
+            <div class="col-lg-4 col-md-6 mb-5">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Coupon Code: <span style="font-weight: 700;"><%= coupon.couponCode %></span></h5>
+                        <% if (coupon.type === "percentageDiscount") { %>
+                            <p style="font-size: 20px;"><%= coupon.discount %>% off on Rs.<%= coupon.minimumPrice %> purchase (Maximum Redeemable: <%= coupon.maxRedeem %>)</p><br>
+                          <% } else { %>
+                            <p style="font-size: 20px;"> Flat Rs. <%= coupon.discount %>% off on <%= coupon.minimumPrice %> purchase</p><br>
+                          <% } %>
+                        
+                        <button class="btn btn-primary copy-btn position-absolute top-0 end-0 m-2 p-1 custom-rounded"
+                                data-coupon-code="<%= coupon.couponCode %>">
+                                <i class="fas fa-copy"></i>&nbsp;Copy
+                            </button>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    </div>
+</div>
+</div>
+  <!-- End User Profile Page Content -->
+
+ 		<!-- Start Footer Section -->
+
+
+
+
+
+
+
+
+
+
+<!-- Start Footer Section -->
+<%-include('userpartial/footer')%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+
+<script>
+    function copyReferralCode() {
+        const referralCodeInput = document.getElementById('referralCodeInput');
+        referralCodeInput.select();
+        document.execCommand('copy');
+
+        // Display a brief "Copied!" message using SweetAlert2
+        Swal.fire({
+            icon: 'success',
+            title: 'Copied!',
+            showConfirmButton: false,
+            timer: 1000, // 1 second
+        });
+    }
+</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const copyButtons = document.querySelectorAll('.copy-btn');
+
+        copyButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                const couponCode = this.getAttribute('data-coupon-code');
+                
+                const tempInput = document.createElement('input');
+                tempInput.setAttribute('value', couponCode);
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Copied!',
+                    showConfirmButton: false,
+                    timer: 1000, // 1 second
+                });
+            });
+        });
+    });
+</script>
+   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/tiny-slider.js"></script>
+    <script src="/js/custom.js"></script>
+<!-- End Footer Section -->	
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <script src="js/tiny-slider.js"></script>
+    <script src="js/custom.js"></script>
+</body>
+<script src="/user_assets/js/vendor/modernizr-3.5.0.min.js"></script>
+<!-- Jquery, Popper, Bootstrap -->
+<script src="/user_assets/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="/user_assets/js/popper.min.js"></script>
+<script src="/user_assets/js/bootstrap.min.js"></script>
+<!-- Jquery Mobile Menu -->
+<script src="/user_assets/js/jquery.slicknav.min.js"></script>
+<!-- Jquery Slick , Owl-Carousel Plugins -->
+<script src="/user_assets/js/owl.carousel.min.js"></script>
+<script src="/user_assets/js/slick.min.js"></script>
+
+<!-- One Page, Animated-HeadLin -->
+<script src="/user_assets/js/wow.min.js"></script>
+<script src="/user_assets/js/animated.headline.js"></script>
+<script src="/user_assets/js/jquery.magnific-popup.js"></script>
+
+<!-- Scrollup, nice-select, sticky -->
+<script src="/user_assets/js/jquery.scrollUp.min.js"></script>
+<script src="/user_assets/js/jquery.nice-select.min.js"></script>
+<script src="/user_assets/js/jquery.sticky.js"></script>
+
+<!-- contact js -->
+<script src="/user_assets/js/contact.js"></script>
+<script src="/user_assets/js/jquery.form.js"></script>
+<script src="/user_assets/js/jquery.validate.min.js"></script>
+<script src="/user_assets/js/mail-script.js"></script>
+<script src="/user_assets/js/jquery.ajaxchimp.min.js"></script>
+
+<!-- Jquery Plugins, main Jquery -->
+<script src="/user_assets/js/plugins.js"></script>
+<script src="/user_assets/js/main.js"></script>
+
+
+
+
+    
+</body>
+
+</html>

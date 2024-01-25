@@ -69,6 +69,7 @@
                       <th>status</th>
                       <th>createdAt</th>
                       <th>UpdatedAt</th>
+                      <th>orderDetail</th>
                       
                   </tr>
               </thead>
@@ -76,6 +77,7 @@
                   <% if(locals.orderdata) { %>
                       <% let slno = 1; %>
                       <% orderdata.forEach(order => { %>
+                        
                           <tr>
                               <td><%= order.orderId %></td>
                               <td><%= order.userName %></td>
@@ -86,31 +88,32 @@
                               
                               <!-- <td><%= order.createdAt %></td> -->
                               <td>
-                                  <!-- Form for updating the order status -->
-                                  <form action="/admin/updateOrderStatus" method="post" id="orderStatusForm_<%= order._id %>">
-                                      <input type="hidden" name="orderId" value="<%= order._id %>">
-                                      
-                                      <label for="status"></label>
-                                      <select name="status" id="status_<%= order._id %>" onchange="submitForm('<%= order._id %>')">
-                                          <% const statuses = ['Pending', 'Processing', 'Shipped', 'Delivered','Cancelled','Returned']; %>
-                                          <% for (const status of statuses) { %>
-                                              <option value="<%= status %>" <%= order.status === status ? 'selected' : '' %>><%= status.charAt(0).toUpperCase() + status.slice(1) %></option>
-                                          <% } %>
-                                      </select>
+                                <!-- Form for updating the order status -->
+                                <form action="/admin/updateOrderStatus" method="post" id="orderStatusForm_<%= order._id %>">
+                                  <input type="hidden" name="orderId" value="<%= order._id %>">
+                                  
+                                  <label for="status"></label>
+                                  <select name="status" id="status_<%= order._id %>" onchange="submitForm('<%= order._id %>')">
+                                    <% const statuses = ['Pending', 'Processing', 'Shipped', 'Delivered','Cancelled','Returned']; %>
+                                    <% for (const status of statuses) { %>
+                                      <option value="<%= status %>" <%= order.status === status ? 'selected' : '' %>><%= status.charAt(0).toUpperCase() + status.slice(1) %></option>
+                                      <% } %>
+                                    </select>
                                   </form>
                                   
-                              </td>
-                              <td>
-                                <%= order.createdAt.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }) %>
+                                </td>
+                                <td>
+                                  <%= order.createdAt.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }) %>
                                 </td>
                                 <td>
                                   <%= order.updatedAt ? order.updatedAt.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true }) : 'N/A' %>
                                 </td>
-                          </tr>
-                    
-                     
-                      
-                  </tr>
+                                <td><a href="/admin/orderDetails/<%= order._id %>"><button >orderDetail</button></a></td>
+                              </tr>
+                              
+                              
+                              
+                            </tr>
                   <% slno++; %>
                   <% }) %>
                   <% } else { %>
@@ -145,6 +148,7 @@
             // Update the order status in the current table row without reloading the entire page
             const statusCell = document.getElementById('status_' + orderId);
             statusCell.innerHTML = status.charAt(0).toUpperCase() + status.slice(1);
+            window.location.reload();
 
             console.log('Order status updated successfully');
         } else {

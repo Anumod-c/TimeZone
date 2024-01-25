@@ -27,10 +27,14 @@ const userSchema =new mongoose.Schema({
           country:{type:String},
           phonenumber:{type:Number}
         }]},
+        uniqueID:{type:String},
     status :{type:Boolean,default:false,required:true},
     isAdmin: {
         type:Boolean,default:false
-    }
+    },
+    usedCoupons:
+    [{ type: String }],
+    
 
 })
 

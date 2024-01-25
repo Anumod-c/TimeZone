@@ -92,13 +92,21 @@
                         <div class="alter text-danger text-start"><%= expressFlash.maxError%></div>
                       <%}%>
                   </div>
-                        <div class="mb-3">
-                            <label for="expiry" class="form-label">Expiry:</label>
-                            <input type="date" class="form-control" id="expiry" name="expiry" value="<%=coupon.expiry%>" required>
-                            <% if(expressFlash.expiryError){%>
-                              <div class="alter text-danger text-start"><%= expressFlash.expiryError%></div>
-                            <%}%>
-                            </div>
+                  <div class="mb-3">
+                    <label for="expiry" class="form-label">Expiry:</label>
+                    <% if (coupon.expiry) { %>
+                      <% const formattedDate = coupon.expiry.toLocaleDateString('en-GB', { day: 'numeric', month: 'numeric', year: 'numeric' }); %>
+                      <input type="text" class="form-control" id="expiry"  value="<%= formattedDate %>" readonly>
+                    <% } else { %>
+                      <input type="text" class="form-control" id="expiry"  readonly>
+                    <% } %>
+                    <% if (expressFlash.expiryError) { %>
+                      <div class="alert text-danger text-start"><%= expressFlash.expiryError %></div>
+                    <% } %>
+                     <label for="">enter new expiry date</label> 
+                    <input type="date" placeholder="select the expiry date" name="expiry">
+                  </div>
+                  
                         <input type="hidden" id="couponId" name="couponId" value="<%= coupon._id %>">
 
         

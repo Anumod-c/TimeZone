@@ -1,3 +1,28 @@
+const cartModel = require("../server/models/cartmodel");
+const favModel = require("../server/models/favouritemodel");
+
+const counterbadge =async(req,res,next)=>{
+  if(req.session.isAuth){
+    const cart = await cartModel.findOne({userId: req.session.userId});
+    const  fav = await favModel.findOne({userId: req.session.userId})
+    if(cart){
+      res.locals.totalQuantity =cart.item.reduce((acc, item) => acc + item.quantity, 0);
+          res.locals.favQuantity = fav.item.length;
+
+    }else{
+      res.locals.totalQuantity=0;
+      res.locals.favQuantity=0;
+    }
+  }else{
+    res.locals.totalQuantity=0
+    res.locals.favQuantity=0
+
+  }
+  next()
+
+}
+
+
 const iflogged=async(req,res,next)=>{
     if(req.session.isAuth){
       res.redirect('/')
@@ -64,6 +89,5 @@ const iflogged=async(req,res,next)=>{
         checkSessionVariable,
         loggedadmin,
         logoutadmin,
-        logouting
-        
-    }
+        logouting,
+        counterbadge,}

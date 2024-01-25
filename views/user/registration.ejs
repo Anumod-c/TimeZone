@@ -123,6 +123,14 @@
             
                         <%}%>
                     </div>
+                    <div class="form-group">
+                        Referal Code
+                        <input type="text" class="form-control" name="referal" placeholder="Referal Code" >
+                        <% if(expressFlash.referalerror){%>
+                            <div class="alter text-danger text-start"><%= expressFlash.referalerror%>></div>
+            
+                        <%}%>
+                    </div>
                     <button type="submit" class="btn btn-success"  >REGISTER</button>
                 </form>
             </div>

@@ -368,21 +368,29 @@
                     <td><%=item.singleprice%></td>
                     <td><%=item.quantity%></td>
                     <td><%=item.price%></td>
-                    <td>  <% if (order.status !== 'Cancelled' && order.status !== 'Returned' && order.status !== 'Delivered' && item.status !== 'cancelled' && item.status !=='Returned') { %>
-                    <a style="background-color: rgb(255, 0, 0); font-size: 20px;color:white;border-radius: 5px;" onclick="confirmDialogue('/cancelitem/<%=item.productId%>/<%=order._id%>')" >Cancel Item</a>
-                    <% } else if (order.status === 'Delivered'  && item.status !== 'cancelled' && item.status !=='Returned') { %>
-                        <a style="background-color: rgb(209, 140, 140);font-size: 20px;" onclick="confirmDialogue('/returnitem/<%=item.productId%>/<%=order._id%>')" >Return item</a>
-                    <% }  else if (item.status == 'cancelled' || order.status=='Cancelled') { %>
-                        <a style="background-color: rgb(209, 140, 140);font-size: 20px;"  >Cancelled</a>
-                    <% }else if (item.status == 'Returned' || order.status =='Returned' ) { %>
-                        <a style="background-color: rgb(209, 140, 140);font-size: 20px;"  >Returned</a>&nbsp;&nbsp;&nbsp;
-                    <% } %>
-
-
-                    <% if (item.status !== 'cancelled' && order.status =='Delivered' ) { %>
-                        <a  style="background-color: rgb(208, 210, 70);font-size: 20px;" onclick="openModal('<%= item.productId %>')">Rate the product</a>
+                    <td>
+                        <% if (order.status !== 'Cancelled' && order.status !== 'Returned' && item.status !== 'cancelled' && item.status !== 'Returned') { %>
+                            <button onclick="confirmDialogue('/cancelitem/<%=item.productId%>/<%=order._id%>')"
+                                    style="background-color: rgb(255, 0, 0); border: none; font-size: 20px; color: white; border-radius: 5px;"
+                                    type="button">Cancel Item
+                            </button>
+                        <% } else if (order.status === 'Delivered' && item.status !== 'cancelled' && item.status !== 'Returned') { %>
+                            <button onclick="confirmDialogue('/returnitem/<%=item.productId%>/<%=order._id%>')"
+                                    style="background-color: rgb(209, 140, 140); border: none; font-size: 20px;" type="button">Return item
+                            </button>
+                        <% } else if (item.status == 'cancelled' || order.status == 'Cancelled') { %>
+                            <button style="background-color: rgb(209, 140, 140); border: none; font-size: 20px;" type="button" disabled>Cancelled</button>
+                        <% } else if (item.status == 'Returned' || order.status == 'Returned') { %>
+                            <button style="background-color: rgb(209, 140, 140); border: none; font-size: 20px;" type="button" disabled>Returned</button>
+                        <% } %>
+                    
+                        <% if (item.status !== 'cancelled' && order.status == 'Delivered') { %>
+                            <button onclick="openModal('<%= item.productId %>')"
+                                    style="background-color: rgb(024, 153, 234); color: rgb(255, 255, 255); border-radius: 5px; border: none; font-size: 20px;" type="button">Rate the product
+                            </button>
                         <% } %>
                     </td>
+                    
                     
                     <div class="modal" id="rateAndReviewModal" style=" display: none;">
                         <div class="modal-content" style="width: 30%;">
@@ -390,7 +398,7 @@
                             
                             <h2 style="text-align: center;">Rate and Review</h2>
                             
-                            <form method="get" action="/rateAndReview" id="rateAndReviewForm">
+                            <form method="get" action="/ratepage" id="rateAndReviewForm">
                                
                                <!-- Add this block for each star rating -->
 <div class="star-rating">
@@ -431,7 +439,7 @@
             <a style="background-color: rgb(255, 0, 0);width: auto; color: white;" onclick="confirmDialogue('/cancelorder/<%=order._id%>')" class="btn btn-danger">Cancel Order</a>
             <% } else if (order.status === 'Delivered') { %>
                 <!-- Code to execute if the condition is false -->
-                <a style="background-color: rgb(181, 0, 0);width: auto;" onclick="confirmDialogue('/returnorder/<%=order._id%>')" class="btn btn-danger">Return Order</a>
+                <a style="background-color: rgb(255, 0, 0);color: white; width: auto;" onclick="confirmDialogue('/returnorder/<%=order._id%>')" class="btn btn-danger">Return Order</a>
                 <% } %>
         
         </div>
@@ -580,6 +588,7 @@ function closeModal() {
         });
     });
 </script>
+    
 
     <script src="/js/bootstrap.bundle.min.js"></script>
     <script src="/js/tiny-slider.js"></script>

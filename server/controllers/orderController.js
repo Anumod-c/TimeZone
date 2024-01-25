@@ -9,8 +9,19 @@ const orderPage=async (req,res)=>{
 }
 catch (err) {
     console.log(err);
-    res.render("users/serverError")
+    return res.status(400).send("Erro Occured")
 }
+}
+
+const orderDetails=async(req,res)=>{
+    try {
+        console.log("mannu");
+        const id=req.params.id
+        const order=await orderModel.findById(id)
+        res.render("admin/orderDetail",{orders:order})
+    } catch (error) {
+        
+    }
 }
 
 
@@ -26,10 +37,13 @@ const updateOrderStatus=async(req,res)=>{
 
         const currentOrder = await orderModel.findById(orderId);
         if(!currentOrder){
+            console.log("111111111111")
             return res.status(404).json({error:'Order not found'});
             
         }
         if(getStatusIndex(status)< getStatusIndex(currentOrder.status)){
+            console.log("22222222222222222")
+
             return res.status(400).json({error:'Invalid status update'})
         }
 
@@ -43,6 +57,8 @@ const updateOrderStatus=async(req,res)=>{
       
 
         if (!updatedOrder) {
+            console.log("3333333333333")
+
             return res.status(404).json({ error: 'Order not found' });
         }
 
@@ -102,6 +118,7 @@ module.exports={
     orderPage,
     updateOrderStatus,
     filterOrder,
+    orderDetails
     
 
 

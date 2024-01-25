@@ -8,8 +8,8 @@ const orderModel = require("../models/ordermodel");
 const ShortUniqueId = require("short-unique-id");
 const uid = new ShortUniqueId({ length: 10 });
 const Razorpay = require("razorpay");
-const key_id=process.env.key_id;
-const key_secret=process.env.key_secret
+const key_id = process.env.key_id;
+const key_secret = process.env.key_secret;
 
 const {
   bnameValid,
@@ -17,6 +17,7 @@ const {
   pincodeValid,
 } = require("../../utils/validators/address_Validators");
 const walletModel = require("../models/walletModel");
+const couponModel = require("../models/couponModel");
 
 const placeOrder = async (req, res) => {
   try {
@@ -100,6 +101,9 @@ const checkoutrelod = async (req, res) => {
     const userId = req.session.userId;
     console.log("body id", userId);
     const userExisted = await userModel.findOne({ _id: userId });
+    const availableCoupons = await couponModel.find({
+      couponCode: { $nin: userExisted.usedCoupons }
+    }); ///////////////////////////////////
     console.log("bhhhhhhhhhhhhhhhhhhh", userExisted);
     const fullnamevalid = bnameValid(fullname);
     const saveasvalid = bnameValid(saveas);
@@ -229,69 +233,151 @@ const checkoutrelod = async (req, res) => {
     console.log("jsbdhakljsholasjf", cartItems);
     console.log("Cart Total:", cart.total);
 
-    res.render("user/checkout", { addresses, cartItems, categories, cart });
+    res.render("user/checkout", { addresses, cartItems, categories, cart,availableCoupons });
   } catch (error) {
-    console.log("cant add checkout addr");
-    res.status(400).send("checkout addres not workoing");
+    console.log("cant add checkout addr",error);
+    res.status(400).send("checkout addres not workoing",);
   }
 };
 
 ///////////////////////        RAZOR PAY          ///////////////////
-const instance=new Razorpay({key_id:key_id,key_secret:key_secret});
- 
-
+const instance = new Razorpay({ key_id: key_id, key_secret: key_secret });
 
 const upi = async (req, res) => {
-  console.log('body:', req.body);
+  console.log("body:", req.body);
   var options = {
-      amount: 500,
-      currency: "INR",
-      receipt: "order_rcpt"
+    amount: 500,
+    currency: "INR",
+    receipt: "order_rcpt",
   };
   instance.orders.create(options, function (err, order) {
-      console.log("order1 :", order);
-      res.send({ orderId: order.id })
-    })
-}
+    console.log("order1 :", order);
+    res.send({ orderId: order.id });
+  });
+};
 
 // ================================== WALLET TRANSACTION   ==========================================
 
-const wallettransaction = async (req,res)=>{
-  try{
-      console.log("Reached wallet  transaction");
-      const userId = req.session.userId;
-      const amount = req.body.amount;
-      const user = await walletModel.findOne({userId:userId})
-      const wallet  = user.wallet;
+const wallettransaction = async (req, res) => {
+  try {
+    console.log("Reached wallet  transaction");
+    const userId = req.session.userId;
+    const amount = req.body.amount;
+    const user = await walletModel.findOne({ userId: userId });
+    const wallet = user.wallet;
 
+    if (user.wallet > amount) {
+      user.wallet -= amount;
+      await user.save();
+      const wallet = await walletModel.findOne({ userId: userId });
+      wallet.walletTransactions.push({
+        type: "Debited",
+        amount: amount,
+        date: new Date(),
+      });
+      await wallet.save();
+      res.json({ success: true });
+    } else {
+      res.json({ success: false, message: "don't have enought money" });
+    }
+  } catch {
+    console.log("wallet transaction error", err);
+  }
+};
 
-      if(user.wallet > amount){
-        user.wallet -=amount;
-        await user.save();
-        const wallet =await  walletModel.findOne({userId:userId});
-        wallet.walletTransactions.push({type:"Debited",
-        amount:amount,
-        date:new Date()})
-        await wallet.save();
-        res.json({success:true})
+//====================================== COUPON =============================
+const applyCoupon = async (req, res) => {
+  try {
+    const { couponCode, subtotal } = req.body;
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",couponCode,subtotal)
+    const userId = req.session.userId;
+    console.log("llllllllllllllll",userId)
+    const coupon = await couponModel.findOne({ couponCode: couponCode });
+
+    if (coupon && coupon.status === true) {
+      const user = await userModel.findOne({_id:userId});
+      console.log("kkkkkkkkkkkkkk",user)
+      if (user && user.usedCoupons.includes(couponCode)) {
+        console.log("nvjksadnjkghakjvajkvnasdmvbasfhvb");
+        res.json({ success: false, message: "Already Redeemed" });
+      } else if (
+        coupon.expiry > new Date() &&
+        coupon.minimumPrice <= subtotal
+      ) {
+        console.log("else  if workerd  means coupon is not redeemed yet now");
+        let dicprice;
+        let price;
+        if (coupon.type === "percentageDiscount") {
+          dicprice = (subtotal * coupon.discount) / 100;
+          if (dicprice >= coupon.maxRedeem) {
+            dicprice = coupon.maxRedeem;
+          }
+          price = subtotal - dicprice;
+        } else if (coupon.type === "flatDiscount") {
+          dicprice = coupon.discount;
+          price = subtotal - dicprice;
+        }
+        await userModel.findByIdAndUpdate(
+          userId,
+          { $addToSet: { usedCoupons: couponCode } },
+          { new: true }
+        );
+        res.json({ success: true, dicprice, price });
+      } else {
+        res.json({ success: false, message: "Invalid Coupon" });
       }
-      else{
-        res.json({success:false,message:"don't have enought money"})
-       }
+    } else {
+      res.json({ success: false, message: "Coupon not found" });
+    }
+  } catch (err) {
+    console.log("coupon error", err);
+  }
+};
+
+/// ==========================       REVOKE COUPON============
+
+const revokeCoupon = async(req,res)=>{
+  try{
+    const {couponCode,subtotal} = req.body;
+    const userId = req.session.userId;
+    const coupon=  await couponModel.findOne({couponCode:couponCode});
+    if(coupon){
+      const user = await userModel.findById(userId);
+      console.log("wwwwwwwwwwsssssssssssssssssss w",user)
+
+      if(coupon.expiry > new Date() && coupon.minimumPrice <= subtotal){
+        const dprice = (subtotal * coupon.discount) / 100;
+            const dicprice = 0;
+
+            const price = subtotal;
+            console.log(price,'lllllllllllllllllll');
+
+            await userModel.findByIdAndUpdate(
+              userId,
+              { $pull: { usedCoupons: couponCode } },
+              { new: true }
+            );
+            console.log("ddddddddddddddddddd")
+            res.json({ success: true, dicprice, price });
+        } else {
+            res.json({ success: false, message: "Invalid Coupon" });
+        }
+    } else {
+        res.json({ success: false, message: "Coupon not found" });
+    }
+    
 
   }
-catch{
-  console.log("wallet transaction error",err);
+  catch(err){
+    console.log("REVOKE EROOR",err);
+  }
 }
-}
-
-
 
 module.exports = {
   placeOrder,
   checkoutrelod,
   upi,
   wallettransaction,
-
-
+  applyCoupon,
+  revokeCoupon,
 };

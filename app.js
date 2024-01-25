@@ -9,6 +9,7 @@ const adrouter = require("./server/router/admin");
 const path = require("path");
 const nocache = require("nocache");
 const multer = require("multer");
+const isAuth = require("./middleware/isAuth")
 const PORT=process.env.PORT
 const MONGO_URL=process.env.MONGO_URL
 
@@ -33,6 +34,8 @@ app.use(express.json());
 //     }));
 
 //static
+
+app.use(isAuth.counterbadge)
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join(__dirname, "public")));
 // app.set("public",path.join(__dirname,"public/user_assets"))

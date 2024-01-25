@@ -5,6 +5,7 @@ const prodcatviewController =require('../controllers/prodcatviewController');
 const profileController = require('../controllers/profileController')
 const cartController  =   require('../controllers/cartController')
 const checkoutController =require('../controllers/checkoutController')
+const ratingController = require("../controllers/ratingController")
 const auth =require('../../middleware/isAuth')
 
 usrouter.use(express.urlencoded({extended:true}))
@@ -95,7 +96,8 @@ usrouter.get('/singleOrder/:id',auth.islogged,profileController.singleOrderPage)
 usrouter.get("/wallet",auth.islogged,profileController.wallet)
 usrouter.post("/walletTopup",profileController.wallettopup)
 usrouter.post('/walletcreate/orderId',auth.islogged,profileController.walletUpi)
-
+usrouter.get("/rewards",profileController.couponsAndRewards)
+usrouter.get("/ratepage",ratingController.ratepage)
 
 
 //=================================     CART    =======================================
@@ -122,6 +124,9 @@ usrouter.post('/placeOrder',auth.islogged,checkoutController.placeOrder);
 
 usrouter.post('/create/orderId',auth.islogged,checkoutController.upi)
 usrouter.post("/wallettransaction",auth.islogged,checkoutController.wallettransaction)
+
+usrouter.post("/applyCoupon",checkoutController.applyCoupon)
+usrouter.post("/revokeCoupon",checkoutController.revokeCoupon)
 
 
 

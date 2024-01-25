@@ -1,6 +1,8 @@
 const categoryModel = require("../models/categorymodel");
 const userModel = require("../models/usermodel");
 const productModel = require("../models/productmodel");
+const walletModel = require("../models/walletModel");
+const couponModel = require("../models/couponModel")
 const flash = require("express-flash");
 const orderModel = require("../models/ordermodel");
 const mongoose = require("mongoose");
@@ -21,7 +23,6 @@ const {
   adphoneValid,
   pincodeValid,
 } = require("../../utils/validators/address_Validators");
-const walletModel = require("../models/walletModel");
 
 //================================ USER DETAILS PAGE RENDERING   ===================================
 const userdetials = async (req, res) => {
@@ -743,6 +744,24 @@ const walletUpi = async (req, res) => {
   });
 };
 
+
+//==================================   OUPONS & REWARDS   =================================
+const couponsAndRewards = async(req,res)=>{
+  try{
+    const categories = await categoryModel.find();
+    const userId = req.session.userId;
+    const user = await userModel.findOne({_id:userId});
+    const uniqueID = user.uniqueID;
+    console.log(uniqueID,"unique id");
+    const coupons = await couponModel.find({})
+
+    res.render("user/rewardpage",{categories:categories,coupons:coupons,referralCode:uniqueID})
+
+  }
+  catch(err){
+    console.log("coupons and re4ward page error",err);
+  }
+}
 module.exports = {
   userdetials,
   editprofile,
@@ -763,4 +782,5 @@ module.exports = {
   wallet,
   wallettopup,
   walletUpi,
+  couponsAndRewards,
 };

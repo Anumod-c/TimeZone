@@ -1,6 +1,7 @@
 const productModel=require('../models/productmodel');
 const categoryModel=require('../models/categorymodel');
-
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 //================================     NEWEST ARRIVAL(BY DEFAULT)     =============================================
 const newarrival =async (req,res)=>{ //by default it will be newest arrival
@@ -24,7 +25,7 @@ const pricehightolow = async(req,res)=>{
         const categories =await categoryModel.find({status:true});
         const activeCategoryId = categories.map(category=> category._id);
         const products = await productModel.find({ categories: { $in: activeCategoryId }, status: true })
-        .sort({ _id: -1 });
+        .sort({ price: -1 });
         console.log(products,"dddddddddddddddddddddddd");
         const categoriesbanner='The Shop'
         res.render('user/shop',{products:products,categories:categories,categoriesbanner})
@@ -43,7 +44,7 @@ const pricelowtohigh = async (req,res)=>{
         const categories = await  categoryModel.find({status:true});
         const activeCategoryId = categories.map(category=> category._id);
         const products = await productModel.find({ categories: { $in: activeCategoryId }, status: true })
-        .sort({ _id: -1 });
+        .sort({ price: 1 });
         const categoriesbanner='The Shop';
         res.render('user/shop',{products:products,categories:categories,categoriesbanner});
 
@@ -82,10 +83,38 @@ const singleproduct = async(req,res)=>{
     try{
         const id =req.params.id;
         console.log('reached single product page');
-        const product =await productModel.findOne({_id:id})
+        const product =await productModel.findOne({_id:id}).populate({
+            path: "userRatings.userId",
+            select: "firstname",
+          });
+          const convertedId = new ObjectId(id);
+
+          const result = await productModel.aggregate([
+            {
+              $match: { _id: convertedId },
+            },
+            {
+              $unwind: { path: "$userRatings", preserveNullAndEmptyArrays: true },
+            },
+            {
+              $group: {
+                _id: null,
+                averageRating: { $avg: "$userRatings.rating" },
+                totalRatings: { $sum: 1 },
+              },
+            },
+          ]);
+      
+          const averageRating = result.length > 0 ? result[0].averageRating : 0;
+          const totalRatings = result.length > 0 ? result[0].totalRatings : 0;
+
+
+
         const categories = await categoryModel.find();
         product.images = product.images.map(image => image.replace(/\\/g, '/'));
-        res.render('user/singleproduct',{product:product,categories:categories})
+        res.render('user/singleproduct',{product:product,categories:categories,
+            averageRating,
+            totalRatings,})
     }
     catch(err){
         console.log('error while rendering single product page',err);

@@ -70,6 +70,7 @@ adrouter.post('/deleteproduct/:id',auth.loggedadmin,productController.delproduct
 adrouter.get('/orderPage',orderController.orderPage)
 adrouter.post('/updateOrderStatus',orderController.updateOrderStatus)
 adrouter.get('/filterOrder/:status',orderController.filterOrder)
+adrouter.get("/orderDetails/:id",orderController.orderDetails)
 
 
 

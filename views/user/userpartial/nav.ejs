@@ -71,9 +71,31 @@
                                     </form>
                                 </div>
                             </li>
-                            <li><a href="/profile"><span class="flaticon-user"></span></a></li>
-                            <li><a href="/favourite"><span class="flaticon-heart"></span></a></li>
-                            <li><a href="/cart"><span class="flaticon-shopping-cart"></span></a></li>
+                            <li style="padding-left: 22px;"><a href="/profile"><span class="flaticon-user"></span></a></li>
+                            <!-- Sample code in navbar.ejs -->
+                            <li>
+                                <a href="/favourite">
+                                    <span style="padding-left: 31px; padding-right: 0px;" class="flaticon-heart"></span>
+                                   
+                                    <% if (favQuantity > 0) { %>
+                                        <span id="badge" style="background-color: red;color: white; padding: 0px 2px;" class="badge"><%= favQuantity %></span>
+                                    <% } %>
+                                    
+                                </a>
+                            </li>
+                            
+
+<li>
+    <a href="/cart">
+        <span style="padding-left: 31px; padding-right: 0px;" class="flaticon-shopping-cart"></span>
+        
+        <% if (totalQuantity > 0) { %>
+            <span id="cart-badge" class="badge" style="background-color: red;color: white ; padding: 0px 2px;"><%= totalQuantity %></span>
+        <% } %>
+    </a>
+</li>
+
+
                         </ul>
                     </div>
                     

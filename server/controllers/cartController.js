@@ -3,6 +3,7 @@ const cartModel = require("../models/cartmodel");
 const productModel = require("../models/productmodel");
 const userModel = require("../models/usermodel");
 const favModel = require("../models/favouritemodel");
+const couponModel = require("../models/couponModel")
 
 const showcart = async (req, res) => {
   try {
@@ -28,6 +29,10 @@ const showcart = async (req, res) => {
         total: 0,
       });
     }
+
+    // Calculate the total quantity of items in the cart
+    // const totalQuantity = cart.item.reduce((acc, item) => acc + item.quantity, 0);
+
     console.log(cart, ":CART");
     res.render("user/cart.ejs", { cart: cart, categories: categories });
   } catch (err) {
@@ -35,6 +40,7 @@ const showcart = async (req, res) => {
     res.status(500).send("Error occurred");
   }
 };
+
 //========================================== addtoCart =============================================================
 const addToCart = async (req, res) => {
   try {
@@ -69,7 +75,7 @@ const addToCart = async (req, res) => {
 
       const productExist = cart.item.findIndex((item) => item.productId == pid);
       if (productExist !== -1) {
-        cart.item[productExist].quantity += 1;
+        cart.item[productExist].quantity += 1;///////////////////////////
         cart.item[productExist].total =
           cart.item[productExist].quantity * price;
       } else {
@@ -86,6 +92,7 @@ const addToCart = async (req, res) => {
         cart.userId = userId;
       }
       cart.total = cart.item.reduce((acc, item) => acc + item.total, 0);
+      // const totalQuantity = cart.item.reduce((acc, item) => acc + item.quantity, 0);
       await cart.save();
       res.redirect("/cart");
     }
@@ -145,6 +152,8 @@ const updatecart = async (req, res) => {
     const total = cart.item.reduce((acc, item) => acc + item.total, 0);
     console.log("total:", total);
     cart.total = total;
+    const totalQuantity = cart.item.reduce((acc, item) => acc + item.quantity, 0);
+    cart.totalQuantity =totalQuantity
     await cart.save();
 
     res.json({
@@ -152,6 +161,7 @@ const updatecart = async (req, res) => {
       newQuantity: updateQuantity,
       newProductTotal,
       total: total,
+      totalQuantity,
     });
   } catch (err) {
     console.log("update cart error:", err);
@@ -205,6 +215,7 @@ const favouritepage =async(req,res)=>{
         total:0,
       })
     }
+
           res.render('user/favourite',{fav:fav,categories:categories})
 
           console.log(fav,'==============fav')
@@ -239,18 +250,19 @@ const addToFav =async(req,res)=>{
         total:0,
       })
     }
-    const productExist = fav.item.findIndex((item) => item.productId == pid);
-    if(productExist !== -1){
-      fav.item[productExist].quantity += 1;
-      fav.item[productExist].total = fav.item[productExist].quantity * price;
-    }
-    else{
+    // const productExist = fav.item.findIndex((item) => item.productId == pid);
+    // if(productExist !== -1){
+    //   fav.item[productExist].quantity += 1;
+    //   fav.item[productExist].total = fav.item[productExist].quantity * price;
+    // }
+    // else{
       const newitem ={
         productId:pid,
-        price:price
+        price:price,
+        quantity:1,
       };
       fav.item.push(newitem)
-    }
+    // }
      if(userId && !fav.userId){
       fav.userId = userId;
 
@@ -347,7 +359,11 @@ const checkoutpage =async(req,res)=>{
     const cartId = req.query.cartId;
     const userId = req.session.userId;
     const user = await userModel.findById(userId);
-    const  addresslist = await userModel.findOne({_id:userId});
+    const availableCoupons = await couponModel.find({
+      couponCode: { $nin: user.usedCoupons },
+      status:true
+    });
+      const  addresslist = await userModel.findOne({_id:userId});
 
     if(!addresslist){
       console.log('user not found');
@@ -379,7 +395,7 @@ const checkoutpage =async(req,res)=>{
    
 
     
-    await res.render('user/checkout', { addresses, cartItems, categories, cart,cartId 
+    await res.render('user/checkout', { availableCoupons,addresses, cartItems, categories, cart,cartId 
     //   ,expressFlash:{
     //   saveaserror:req.flash("saveaserror"),
     //   fullnameerror:req.flash("fullnameerror"),

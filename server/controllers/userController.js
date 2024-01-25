@@ -1,8 +1,11 @@
+const mongoose =require("mongoose")
 const userModel =require('../models/usermodel')
 const bcrypt=require('bcrypt')
 const flash = require("express-flash")
 const otpgenerator=require('otp-generator')
-const nodemailer=require('nodemailer')
+const nodemailer=require('nodemailer');
+const ShortUniqueId = require("short-unique-id");
+const uniqueid = new ShortUniqueId({ length: 10 });
 const {nameValid,
     lnameValid, 
     emailValid,phoneValid,
@@ -10,7 +13,8 @@ const {nameValid,
     confirmpasswordValid}=require('../../utils/validators/usersignupvalidator')
 const otpModel = require('../models/userotpmodel')
 const categoryModel = require('../models/categorymodel')
-const productModel = require('../models/productmodel')
+const productModel = require('../models/productmodel');
+const walletModel = require('../models/walletModel');
 const Email=process.env.Email
 const pass=process.env.pass
 
@@ -95,6 +99,13 @@ const signotp = async(req,res)=>{
         let cpassword=req.body.cpassword;
         console.log( "Entered Password",password);
         console.log("Entered Email",email);
+        
+        if(req.body.referal){
+            req.session.referal = req.body.referal;
+        }
+        console.log("req.session.referal",req.session.referal)
+        
+
 
 
         const isFnameValid=nameValid(firstname);
@@ -141,8 +152,10 @@ const signotp = async(req,res)=>{
                 lastname:lastname,
                 email:email,
                 phone:phone,
-                password:hashedpassword
-            })
+                password:hashedpassword,
+                uniqueID: uniqueid.rnd()
+            });
+            
             req.session.user = user;
             req.session.signup = true;
             req.session.forgot = false;
@@ -212,9 +225,53 @@ const verifyotp =async(req,res)=>{
                     console.log("User Created")
                     const userdata =await userModel.findOne({email:email});
                     req.session.userId=userdata._id;
-                    req.session.isAuth=true;//===>isAuth is wittene here -should check  the use  <=== 
+                    req.session.isAuth=true;
                     req.session.otppressed=false;
-                    res.redirect('/')
+const referalCode = req.session.referal;
+console.log("referal in verifytotp", referalCode);
+
+if (referalCode) {
+    const winner = await userModel.findOne({ uniqueID: referalCode });
+
+    if (winner) {
+        const winnerID = winner._id;
+        console.log("2222222222");
+
+        const wallet = await walletModel.findOne({ userId: winnerID });
+        console.log("1111111");
+
+        if (wallet) {
+            const updatedWallet = wallet.wallet + 50;
+            console.log("winner._id:", winner._id);
+            const winnerID = winner._id;
+
+            await walletModel.findOneAndUpdate(
+                { userId: winnerID },
+                { $set: { wallet: updatedWallet } },
+                { new: true }
+            );
+
+            const transaction = {
+                date: new Date(),
+                type: "Credited",
+                amount: 50,
+            };
+            await walletModel.findOneAndUpdate({
+                userId: winnerID
+            },
+            { $push: { walletTransactions: transaction } }
+            );
+
+            console.log(`added 50 to the wallet of user whose id matches ${referalCode}`);
+        }
+
+        console.log("winnerID:", winner._id.toString());
+        console.log("walledtmodel working");
+    }
+}
+
+res.redirect('/');
+
                 }
                 else if(req.session.forgot){
                     req.session.newpasspressed=true;

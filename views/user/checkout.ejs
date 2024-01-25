@@ -25,125 +25,123 @@
     <link rel="stylesheet" href="user_assets/css/slick.css">
     <link rel="stylesheet" href="user_assets/css/nice-select.css">
     <link rel="stylesheet" href="user_assets/css/style.css">
+
     <style>
 
 
         /* Default style for select-line */
-        .select-line {
-        background-color: #3b5d50;
-    }
-    
-    /* Media query for small screens (e.g., mobile devices) */
-    @media (max-width: 767px) {
-        .select-line {
-            height: 8vw; /* Set the height for small screens */
-            align-items: start;
-            margin-top: 0.1px;
-        }
-    }
-    
-    /* Media query for medium screens (e.g., tablets) */
-    @media (min-width: 768px) and (max-width: 991px) {
-        .select-line {
-            height: 6vw; /* Set the height for medium screens */
-        }
-    }
-    
-    /* Media query for large screens (e.g., desktops) */
-    @media (min-width: 992px) {
-        .select-line {
-            height: 4vw; /* Set the height for large screens */
-        }
-    }
-    
-    
-    
-    
-    /* The Modal (background) */
-    .modal {
-      display: none; /* Hidden by default */
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    }
-    
-    /* Modal Content */
-    .modal-content {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(0, -50%);
-      background-color: #3e6e5c;
-      color: rgb(0, 0, 0);
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-    
-    /* Close button */
-    .close {
-      top: 0;
-      right: 0;
-      padding: 10px;
-      cursor: pointer;
-    }
-    
-    /* Style the button inside the modal */
-    .modal-content button {
-      background-color: #000000; /* Green background */
-      color: white; /* White text */
-      padding: 5px;
-      border: none;
-      border-radius: 8px;
-      margin-left: 2px;
-      cursor: pointer;
-    
-    }
-    
-    /* Hover effect for the button */
-    .modal-content button:hover {
-      background-color: #fbfdfb;
-      color: #000000;
-      border: solid 2px #000000;
-    }
-    
-         .address-list {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 20px;
-            }
-    
-            .address-item {
-                width: 48%; /* Two items in one row with a small gap */
-                padding: 10px;
-                border: 1px solid #ccc;
-                box-sizing: border-box;
-            }
-    
-            .address-details {
-                display: none;
-                padding-left: 20px;
-            }
-    
-            .larger-text {
-                font-size: 16px; 
-    
-            }
-    
-            
-        .category-options {
-          display: none;
-        }
-       
+      /* Default style for select-line */
+	.select-line {
+    background-color: #3b5d50;
+}
 
-    
+/* Media query for small screens (e.g., mobile devices) */
+@media (max-width: 767px) {
+    .select-line {
+        height: 8vw; /* Set the height for small screens */
+		align-items: start;
+		margin-top: 0.1px;
+    }
+}
 
-        .key{
-            color: #3b5d50;
-            font-weight: bold;
+/* Media query for medium screens (e.g., tablets) */
+@media (min-width: 768px) and (max-width: 991px) {
+    .select-line {
+        height: 6vw; /* Set the height for medium screens */
+    }
+}
+
+/* Media query for large screens (e.g., desktops) */
+@media (min-width: 992px) {
+    .select-line {
+        height: 4vw; /* Set the height for large screens */
+    }
+}
+
+
+
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+/* Modal Content */
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(0, -50%);
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Close button */
+.close {
+  top: 0;
+  right: 0;
+  padding: 10px;
+  cursor: pointer;
+}
+
+/* Style the button inside the modal */
+.modal-content button {
+  background-color: #000000; /* Green background */
+  color: white; /* White text */
+  padding: 5px;
+  border: none;
+  border-radius: 8px;
+  margin-left: 2px;
+  cursor: pointer;
+
+}
+
+/* Hover effect for the button */
+.modal-content button:hover {
+  background-color: #fbfdfb;
+  color: #000000;
+  border: solid 2px #000000;
+}
+
+	 .address-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
         }
+
+        .address-item {
+            width: 48%; /* Two items in one row with a small gap */
+            padding: 10px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+
+        .address-details {
+            display: none;
+            padding-left: 20px;
+        }
+
+        .larger-text {
+            font-size: 16px; 
+
+        }
+
+        
+
+
+
+	.key{
+		color: #3b5d50;
+		font-weight: bold;
+	}
       </style>
 
     <title>Change Password</title>
@@ -328,6 +326,72 @@
 
         </div>
       </div>
+
+
+
+
+
+
+
+
+
+      <div class="col-md-6">
+
+          <div class="row mb-5">
+            <div class="col-md-12">
+              <h2 class="h3 mb-3 text-black">Coupon Code</h2>
+              <div class="p-3 p-lg-5 border bg-white">
+        <!-- Add a button to open the modal -->
+  <button onclick="openModal()"><h2>Available Coupons</h2></button>
+
+  <!-- The Modal -->
+  <div id="couponModal" class="modal">
+  <div class="modal-content">
+  <span class="close" onclick="closeModal()">&times;</span>
+  <ul>
+  <% availableCoupons.forEach(coupon => { %>
+    <li>
+  <div class="row">
+  <div class="col-3">
+    <%= coupon.couponCode %> &nbsp;&nbsp;
+    <% if (coupon.type === "percentageDiscount") { %>
+      <p><%= coupon.discount %>% off on Rs.<%= coupon.minimumPrice %> purchase (Maximum Redeemable: <%= coupon.maxRedeem %>)</p><br>
+    <% } else { %>
+      <p> Flat Rs. <%= coupon.discount %>% off on <%= coupon.minimumPrice %> purchase</p><br>
+    <% } %>
+    </div>
+    <div class="col-3 mt-2 ">
+    <button onclick="copyToClipboard('<%= coupon.couponCode %>')">Copy Code</button>
+    </div>
+  </div>
+    </li>
+  <% }); %>
+  </ul>
+  </div>
+  </div>
+        
+                    <form>
+                <label for="c_code" class="text-black mb-3">Enter your coupon code if you have one</label>
+                <div class="input-group w-75 couponcode-wrap">
+                  <input type="text" class="form-control me-2" id="c_code" placeholder="Coupon Code" aria-label="Coupon Code" aria-describedby="button-addon2">
+                  <div class="input-group-append">
+                    <button class="btn btn-black btn-sm" type="button" id="button-addon2" onclick="couponApply()">Apply</button>
+                  </div>
+          <div >
+                    <button style="color: black;border: solid black;margin-left: 3px;" class="btn btn-white-outline btn-sm" type="button" id="button-addon3" onclick="couponRevoke()">Clear</button>
+                  </div>
+                </div>
+      </form>
+
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
       
 
         <div class="row mb-5">
@@ -439,44 +503,44 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
-function openModal() {
-  var modal = document.getElementById('couponModal');
-  modal.style.display = 'block';
-}
-
-function closeModal() {
-  var modal = document.getElementById('couponModal');
-  modal.style.display = 'none';
-}
-
-function copyToClipboard(couponCode) {
-  var tempInput = document.createElement('input');
-  tempInput.value = couponCode;
-  document.body.appendChild(tempInput);
-
-  tempInput.select();
-  document.execCommand('copy');
-
-  document.body.removeChild(tempInput);
-
-  Swal.fire({
-        icon: 'success',
-        title: 'Copied!',
-        showConfirmButton: false,
-        timer: 1000, // 1 second
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-  // Close the modal if the user clicks outside of it
-  window.addEventListener('click', function (event) {
+  function openModal() {
+    var modal = document.getElementById('couponModal');
+    modal.style.display = 'block';
+  }
+  
+  function closeModal() {
+    var modal = document.getElementById('couponModal');
+    modal.style.display = 'none';
+  }
+  
+  function copyToClipboard(couponCode) {
+    var tempInput = document.createElement('input');
+    tempInput.value = couponCode;
+    document.body.appendChild(tempInput);
+  
+    tempInput.select();
+    document.execCommand('copy');
+  
+    document.body.removeChild(tempInput);
+  
+    Swal.fire({
+                icon: 'success',
+                title: 'Copied!',
+                showConfirmButton: false,
+                timer: 1000, // 1 second
+            });
+  }
+  
+  document.addEventListener('DOMContentLoaded', function () {
+    // Close the modal if the user clicks outside of it
+    window.addEventListener('click', function (event) {
     var modal = document.getElementById('couponModal');
     if (event.target === modal) {
       closeModal();
     }
+    });
   });
-});
-</script>
+  </script>
 
 <script>
 function toggleDropdown() {
@@ -666,98 +730,96 @@ document.getElementById('orderForm').submit();
 </script>
 <script>
 
-function couponApply() {
-const couponCode = document.getElementById('c_code').value;
-const subtotal=document.getElementById('subt').innerText
-
-fetch('/applyCoupon', {
-method: "POST",
-headers: {
-'Content-Type': "application/json"
-},
-body: JSON.stringify({couponCode,subtotal })
-})
-.then(response => response.json())
-.then(data => {
-if (data.success) {
-console.log("ivideumethi")
-document.getElementById('dicprice').innerText="-"+data.dicprice
-document.getElementById('cartotal').innerText=data.price
-document.getElementById('carttotal').value=data.price
-
-
-
-} else {
-Swal.fire({
-text: data.message,
-icon: 'error',
-confirmButtonText: 'OK',
-customClass: {
-title: 'text-danger',
-popup: 'swal2-popup-custom',
-confirmButton: 'btn btn-danger'
-},
-showCancelButton: false,
-showCloseButton: true,
-showLoaderOnConfirm: false,
-timer: 3000
-});
-}
-})
-.catch(error => {
-console.error('Error applying coupon:', error);
-alert('An error occurred while applying the coupon. Please try again.');
-});
-}
-
-function couponRevoke() {
-
-const couponCode = document.getElementById('c_code').value;
-const subtotal=document.getElementById('subt').innerText
-
-fetch('/revokeCoupon', {
-method: "POST",
-headers: {
-'Content-Type': "application/json"
-},
-body: JSON.stringify({couponCode,subtotal })
-})
-.then(response => response.json())
-.then(data => {
-if (data.success) {
-document.getElementById('dicprice').innerText=0
-document.getElementById('cartotal').innerText=data.price
-document.getElementById('carttotal').value=data.price
-
-
-
-} else {
-Swal.fire({
-text: data.message,
-icon: 'error',
-confirmButtonText: 'OK',
-customClass: {
-title: 'text-danger',
-popup: 'swal2-popup-custom',
-confirmButton: 'btn btn-danger'
-},
-showCancelButton: false,
-showCloseButton: true,
-showLoaderOnConfirm: false,
-timer: 3000
-});
-}
-})
-.catch(error => {
-console.error('Error applying coupon:', error);
-alert('An error occurred while applying the coupon. Please try again.');
-});
-}
-
-
-</script>
-
-
+  function couponApply() {
+      const couponCode = document.getElementById('c_code').value;
+    const subtotal=document.getElementById('subt').innerText
+  
+      fetch('/applyCoupon', {
+          method: "POST",
+          headers: {
+              'Content-Type': "application/json"
+          },
+      body: JSON.stringify({couponCode,subtotal })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+        console.log("ivideumethi")
+        document.getElementById('dicprice').innerText="-"+data.dicprice
+             document.getElementById('cartotal').innerText=data.price
+         document.getElementById('carttotal').value=data.price
+  
+  
+         
+          } else {
+        Swal.fire({
+            text: data.message,
+            icon: 'error',
+            confirmButtonText: 'OK',
+            customClass: {
+              title: 'text-danger',
+              popup: 'swal2-popup-custom',
+              confirmButton: 'btn btn-danger'
+            },
+            showCancelButton: false,
+            showCloseButton: true,
+            showLoaderOnConfirm: false,
+            timer: 3000
+          });
+          }
+      })
+      .catch(error => {
+          console.error('Error applying coupon:', error);
+          alert('An error occurred while applying the coupon. Please try again.');
+      });
+  }
+  
+      function couponRevoke() {
+          
+      const couponCode = document.getElementById('c_code').value;
+    const subtotal=document.getElementById('subt').innerText
+  
+      fetch('/revokeCoupon', {
+          method: "POST",
+          headers: {
+              'Content-Type': "application/json"
+          },
+      body: JSON.stringify({couponCode,subtotal })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+        document.getElementById('dicprice').innerText=0
+             document.getElementById('cartotal').innerText=data.price
+         document.getElementById('carttotal').value=data.price
+  
+  
+         
+          } else {
+        Swal.fire({
+            text: data.message,
+            icon: 'error',
+            confirmButtonText: 'OK',
+            customClass: {
+              title: 'text-danger',
+              popup: 'swal2-popup-custom',
+              confirmButton: 'btn btn-danger'
+            },
+            showCancelButton: false,
+            showCloseButton: true,
+            showLoaderOnConfirm: false,
+            timer: 3000
+          });
+          }
+      })
+      .catch(error => {
+          console.error('Error applying coupon:', error);
+          alert('An error occurred while applying the coupon. Please try again.');
+      });
+      }
+  
+  
+      </script>
 
 
 
@@ -765,6 +827,9 @@ alert('An error occurred while applying the coupon. Please try again.');
 
 
 
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.0.0-beta2/js/bootstrap.bundle.min.js"></script>
 
     <script src="js/bootstrap.bundle.min.js"></script>
     <script src="js/tiny-slider.js"></script>
