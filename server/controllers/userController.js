@@ -15,6 +15,7 @@ const otpModel = require('../models/userotpmodel')
 const categoryModel = require('../models/categorymodel')
 const productModel = require('../models/productmodel');
 const walletModel = require('../models/walletModel');
+const bannerModel = require("../models/bannerModel")
 const Email=process.env.Email
 const pass=process.env.pass
 
@@ -63,8 +64,9 @@ const index=async(req,res)=>{
 try{
     const categories= await categoryModel.find({status:true});
     const products=await productModel.find({status:true}).sort({_id:-1}).limit(6)
-    console.log(products,'hyhyhyhyhyh');
-    res.render('user/index',{categories:categories,products:products})
+    const banners = await bannerModel.find( {active:true});
+    
+    res.render('user/index',{categories:categories,products:products,banners:banners})
 }
 catch(err){
 console.log(err,"homepage error");    

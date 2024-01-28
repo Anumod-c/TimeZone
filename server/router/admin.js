@@ -4,6 +4,7 @@ const adminController =require('./../controllers/adminController');
 const productController =require('../controllers/productcontroller');
 const orderController =require('../controllers/orderController')
 const couponController = require("../controllers/couponController")
+const bannerController  = require("../controllers/bannerController")
 adrouter.use(express.urlencoded({extended:true}));
 const multer =require('multer');
 const auth =require('../../middleware/isAuth')
@@ -82,8 +83,17 @@ adrouter.post("/add_coupon",couponController.addCouponpost)
 adrouter.get("/editCouponGet/:id",couponController.editcouponPage)
 adrouter.post("/updateCoupon/:id",couponController.editCouponPost)
 adrouter.get("/unlist/:id",couponController.unlistCoupon)
+ 
 
 
+//==================================    BANNER PAGE  ================================================
+adrouter.get('/bannerList',bannerController.bannerList);
+adrouter.get('/addBanner',bannerController.addBanner);
+adrouter.post('/addBanner',upload.single('image'),bannerController.addBannerpost)
+adrouter.get('/deleteBanner/:id',bannerController.deleteBanner);
+adrouter.get("/unlistBanner/:id",bannerController.bannerUnlist)
+adrouter.get('/editBanner/:id',bannerController.editBanner);
+adrouter.post('/updateBannerPost/:id', upload.single('newImage'),bannerController.updateBannerPost)
 //====================================================LOGOUT =======================================================
 //admin logout
 adrouter.get('/adlogout', auth.logouting,adminController.adlogout)

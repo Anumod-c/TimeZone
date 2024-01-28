@@ -369,17 +369,17 @@
                     <td><%=item.quantity%></td>
                     <td><%=item.price%></td>
                     <td>
-                        <% if (order.status !== 'Cancelled' && order.status !== 'Returned' && item.status !== 'cancelled' && item.status !== 'Returned') { %>
+                        <% if (order.status !== 'Cancelled' && order.status !== 'Returned'&& order.status !== 'Delivered' && item.status !== 'cancelled' && item.status !== 'Returned') { %>
                             <button onclick="confirmDialogue('/cancelitem/<%=item.productId%>/<%=order._id%>')"
                                     style="background-color: rgb(255, 0, 0); border: none; font-size: 20px; color: white; border-radius: 5px;"
                                     type="button">Cancel Item
                             </button>
                         <% } else if (order.status === 'Delivered' && item.status !== 'cancelled' && item.status !== 'Returned') { %>
                             <button onclick="confirmDialogue('/returnitem/<%=item.productId%>/<%=order._id%>')"
-                                    style="background-color: rgb(209, 140, 140); border: none; font-size: 20px;" type="button">Return item
+                                    style= " border-radius: 5px; background-color: rgb(209, 140, 140); border: none; font-size: 20px;" type="button">Return item
                             </button>
                         <% } else if (item.status == 'cancelled' || order.status == 'Cancelled') { %>
-                            <button style="background-color: rgb(209, 140, 140); border: none; font-size: 20px;" type="button" disabled>Cancelled</button>
+                            <button style= " border-radius: 5px; background-color: rgb(209, 140, 140); border: none; font-size: 20px;" type="button" disabled>Cancelled</button>
                         <% } else if (item.status == 'Returned' || order.status == 'Returned') { %>
                             <button style="background-color: rgb(209, 140, 140); border: none; font-size: 20px;" type="button" disabled>Returned</button>
                         <% } %>

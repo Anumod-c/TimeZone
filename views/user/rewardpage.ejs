@@ -149,7 +149,7 @@
                         <% if (coupon.type === "percentageDiscount") { %>
                             <p style="font-size: 20px;"><%= coupon.discount %>% off on Rs.<%= coupon.minimumPrice %> purchase (Maximum Redeemable: <%= coupon.maxRedeem %>)</p><br>
                           <% } else { %>
-                            <p style="font-size: 20px;"> Flat Rs. <%= coupon.discount %>% off on <%= coupon.minimumPrice %> purchase</p><br>
+                            <p style="font-size: 20px;"> Flat Rs. <%= coupon.discount %> off on <%= coupon.minimumPrice %> purchase</p><br>
                           <% } %>
                         
                         <button class="btn btn-primary copy-btn position-absolute top-0 end-0 m-2 p-1 custom-rounded"

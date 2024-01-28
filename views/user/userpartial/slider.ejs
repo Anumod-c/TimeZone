@@ -1,0 +1,25 @@
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+        <% banners.forEach(function(banner, index) { %>
+            <% if (banner.active) { %>
+                <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                    <a href="/bannerURL?id=<%= banner._id %>">
+                        <img src="<%= banner.image.url %>" class="d-block w-100  sliderimg" alt="<%= banner.title %>" style="max-height: 540px;">
+                        <div class="carousel-caption d-none d-md-block btitle" style="color: <%= (banner.color !== undefined && banner.color !== null) ? banner.color : '#fff' %>;">
+                            <div style="font-size: 6vw;"><%= banner.title %></div>
+                            <div style="font-size: 4vw;"><%= banner.subtitle %></div>
+                        </div>
+                    </a>
+                </div>
+            <% } %>
+        <% }); %>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>

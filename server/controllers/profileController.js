@@ -810,7 +810,7 @@ const generateInvoice = async(order)=>{
         email: "timezoneofficial18@gmail.com",
         website: "www.timezone.shop",
       },
-      invoiceNumber: "INV-${order.orderId}",
+      invoiceNumber: `INV-${order.orderId}`,
       invoiceDate: new Date().toJSON(),
       products: order.items.map((item) => ({
         quantity: item.quantity,

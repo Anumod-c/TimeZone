@@ -6,6 +6,7 @@ const profileController = require('../controllers/profileController')
 const cartController  =   require('../controllers/cartController')
 const checkoutController =require('../controllers/checkoutController')
 const ratingController = require("../controllers/ratingController")
+const bannerController = require("../controllers/bannerController")
 const auth =require('../../middleware/isAuth')
 
 usrouter.use(express.urlencoded({extended:true}))
@@ -66,6 +67,8 @@ usrouter.get('/pricelowtohigh',prodcatviewController.pricelowtohigh)
 
 usrouter.post("/search",prodcatviewController.search)
 
+
+usrouter.get("/bannerURL",bannerController.bannerURL)
 //========================CATEGORY SORTING AND SHOP PAGE RENDERING================================
 
 usrouter.get('/shop',prodcatviewController.catagorysort)
