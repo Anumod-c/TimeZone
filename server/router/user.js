@@ -68,7 +68,7 @@ usrouter.get('/pricelowtohigh',prodcatviewController.pricelowtohigh)
 usrouter.post("/search",prodcatviewController.search)
 
 
-usrouter.get("/bannerURL",bannerController.bannerURL)
+usrouter.get("/bannerURL",  bannerController.bannerURL)
 //========================CATEGORY SORTING AND SHOP PAGE RENDERING================================
 
 usrouter.get('/shop',prodcatviewController.catagorysort)

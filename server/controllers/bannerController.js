@@ -200,15 +200,15 @@ const bannerURL = async (req,res)=>{
  const banner = await bannerModel.findOne({_id:bannerId});
  if(banner.label=="category"){
   const categoryId = banner.bannerlink;
-  console.log(categoryId,"ffffffff  ")
+  // console.log(categoryId,"ffffffff  ")
 
   const category = await categoryModel.findOne({_id:categoryId})
-  console.log(category,"ffffffff  ")
+  // console.log(category,"ffffffff  ")
   res.redirect(`/shop?category=${categoryId}`)
  }
  else if(banner.label=="product"){
   const productId=banner.bannerlink
-  console.log(productId,"ffffffff  ")
+  // console.log(productId,"ffffffff  ")
   const  product=await productModel.findOne({_id: productId})
 
   res.redirect(`/singleproduct/${productId}`)

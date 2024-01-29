@@ -94,6 +94,12 @@ adrouter.get('/deleteBanner/:id',bannerController.deleteBanner);
 adrouter.get("/unlistBanner/:id",bannerController.bannerUnlist)
 adrouter.get('/editBanner/:id',bannerController.editBanner);
 adrouter.post('/updateBannerPost/:id', upload.single('newImage'),bannerController.updateBannerPost)
+
+//====================================================SALES =======================================================
+adrouter.post('/chartData',adminController.chartData);
+adrouter.post('/downloadsales',adminController.downloadsales)
+
+
 //====================================================LOGOUT =======================================================
 //admin logout
 adrouter.get('/adlogout', auth.logouting,adminController.adlogout)

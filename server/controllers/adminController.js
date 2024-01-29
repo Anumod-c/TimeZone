@@ -1,6 +1,11 @@
 const bcrypt = require("bcrypt");
 const userModel = require("../models/usermodel");
 const categoryModel = require("../models/categorymodel");
+const orderModel = require("../models/ordermodel");
+const path = require('path')
+const fs = require("fs");
+const os = require("os");
+const puppeteer = require("puppeteer");
 
 //=============================================   admin login    =================================================
 const adlogin = (req, res) => {
@@ -221,6 +226,233 @@ const adlogout = (req, res) => {
     console.log("LOGOUT ERROR", err);
   }
 };
+
+//=====================================      SALES AND  GRAPH  ===================================
+const chartData = async (req, res) => {
+  try {
+    const selected = req.body.selected;
+    if (selected == "month") {
+      const orderByMonth = await orderModel.aggregate([
+        {
+          $group: {
+            _id: {
+              month: { $month: "$createdAt" },
+            },
+            count: { $sum: 1 },
+          },
+        },
+      ]);
+
+      const salesByMonth = await orderModel.aggregate([
+        {
+          $group: {
+            _id: {
+              month: { $month: "$createdAt" },
+            },
+            totalAmount: { $sum: "$totalPrice" },
+          },
+        },
+      ]);
+      const responseData = {
+        order: orderByMonth,
+        sales: salesByMonth,
+      };
+
+      res.status(200).json(responseData);
+    } else if (selected == "year") {
+      const orderByYear = await orderModel.aggregate([
+        {
+          $group: {
+            _id: {
+              year: { $year: "$createdAt" },
+            },
+            count: { $sum: 1 },
+          },
+        },
+      ]);
+
+      const salesByYear = await orderModel.aggregate([
+        {
+          $group: {
+            _id: {
+              year: { $year: "$createdAt" },
+            },
+            totalAmount: { $sum: "$totalPrice" },
+          },
+        },
+      ]);
+      const responseData = {
+        order: orderByYear,
+        sales: salesByYear,
+      };
+      res.status(200).json(responseData);
+    }
+  } catch (err) {
+    console.log("sale error", err);
+  }
+};
+
+//======================================  DOWNLOAD SALES  =========================================
+const downloadsales = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.body;
+
+    console.log(req.body);
+
+    const salesData = await orderModel.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(startDate),
+            $lte: new Date(endDate),
+          },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalOrders: { $sum: 1 },
+          totalAmount: { $sum: "$totalPrice" },
+        },
+      },
+    ]);
+    console.log(salesData,"ssssssss")
+
+    const products = await orderModel.aggregate([
+      {
+        $match: {
+          createdAt: {
+            $gte: new Date(startDate),
+            $lte: new Date(endDate),
+          },
+        },
+      },
+      {
+        $unwind: "$items",
+      },
+      {
+        $group: {
+          _id: "$items.productId",
+          totalSold: { $sum: "$items.quantity" },
+        },
+      },
+      {
+        $lookup: {
+          from: "products",
+          localField: "_id",
+          foreignField: "_id",
+          as: "productDetails",
+        },
+      },
+      {
+        $unwind: "$productDetails",
+      },
+      {
+        $project: {
+          _id: 1,
+          totalSold: 1,
+          productName: "$productDetails.name",
+        },
+      },
+      {
+        $sort: { totalSold: -1 },
+      },
+    ]);
+
+    console.log("aaaaaaaaa",products)
+
+    const htmlContent = `
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <title>Sales Report</title>
+                <style>
+                    body {
+                        margin-left: 20px;
+                    }
+                </style>
+            </head>
+            <body>
+                <h2 align="center"> Sales Report</h2>
+                Start Date:${startDate}<br>
+                End Date:${endDate}<br> 
+                <center>
+                    <table style="border-collapse: collapse;">
+                        <thead>
+                            <tr>
+                                <th style="border: 1px solid #000; padding: 8px;">Sl N0</th>
+                                <th style="border: 1px solid #000; padding: 8px;">Product Name</th>
+                                <th style="border: 1px solid #000; padding: 8px;">Quantity Sold</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${products
+                              .map(
+                                (item, index) => `
+                                <tr>
+                                    <td style="border: 1px solid #000; padding: 8px;">${
+                                      index + 1
+                                    }</td>
+                                    <td style="border: 1px solid #000; padding: 8px;">${
+                                      item.productName
+                                    }</td>
+                                    <td style="border: 1px solid #000; padding: 8px;">${
+                                      item.totalSold
+                                    }</td>
+                                </tr>`
+                              )
+                              .join("")}
+                                <tr>
+                                <td style="border: 1px solid #000; padding: 8px;"></td>
+                                <td style="border: 1px solid #000; padding: 8px;">Total No of Orders</td>
+                                <td style="border: 1px solid #000; padding: 8px;">${
+                                  salesData[0].totalOrders
+                                }</td>
+                            </tr>
+                            <tr>
+                                <td style="border: 1px solid #000; padding: 8px;"></td>
+                                <td style="border: 1px solid #000; padding: 8px;">Total Revenue</td>
+                                <td style="border: 1px solid #000; padding: 8px;">${
+                                  salesData[0].totalAmount
+                                }</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </center>
+            </body>
+            </html>
+        `;
+
+        const browser = await puppeteer.launch({ headless: "new" });
+
+    const page = await browser.newPage();
+    await page.setContent(htmlContent);
+
+    
+    const pdfBuffer = await page.pdf();
+
+    await browser.close();
+
+    const downloadsPath = path.join(os.homedir(), "Downloads");
+    const pdfFilePath = path.join(downloadsPath, "sales.pdf");
+
+   
+    fs.writeFileSync(pdfFilePath, pdfBuffer);
+
+    res.setHeader("Content-Length", pdfBuffer.length);
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "attachment; filename=sales.pdf");
+    res.status(200).end(pdfBuffer);
+  } catch (err) {
+    console.log(err,"download error");
+    
+  }
+};
+
+
+//=========================================================================================================
 module.exports = {
   adlogin,
   adloginpost,
@@ -237,6 +469,8 @@ module.exports = {
   updatecat,
   updatecatpost,
   unlistcat,
+  chartData,
+  downloadsales,
 
   adlogout,
 };

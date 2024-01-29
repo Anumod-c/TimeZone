@@ -361,8 +361,9 @@ const checkoutpage =async(req,res)=>{
     const user = await userModel.findById(userId);
     const availableCoupons = await couponModel.find({
       couponCode: { $nin: user.usedCoupons },
-      status:true
-    });
+      status: true
+  });
+  
       const  addresslist = await userModel.findOne({_id:userId});
 
     if(!addresslist){

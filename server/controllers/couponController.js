@@ -6,7 +6,7 @@ const {alphanumValid,uppercaseAlphanumValid,zerotonine,onlyNumbers,isFutureDate}
 //=====================================     COUPON PAGE RENDERING          ======================================
 const couponList = async (req,res)=>{
     try{
-        const coupons = await couponModel.find({})
+        const coupons = await couponModel.find({status:true})
         res.render("admin/couponList",{coupons})
     }
     catch(err){
