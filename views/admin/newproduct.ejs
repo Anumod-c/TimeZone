@@ -87,11 +87,14 @@
                 <label for="mrp" class="form-label">MRP:</label>
                 <input type="text" class="form-control" id="mrp" name="mrp" required>
             </div>
-          
+            <div class="mb-3">
+              <label for="discount" class="form-label">Discount:</label>
+              <input type="number" class="form-control" id="discount" name="discount" min="1" max="100" oninput="calculatePrice()" required>
+          </div>
 
                     <div class="mb-3">
                       <label for="price" class="form-label">Price:</label>
-                      <input type="text" class="form-control" id="price" name="price" required>
+                      <input type="text" class="form-control" id="price" name="price" readonly required>
                   </div>
 
                   <!-- check stock code -->
@@ -161,46 +164,24 @@
     <!-- container-scroller -->
     <!-- plugins:js -->
     <script>
-    function loadSubcategories(subcatData) {
-      var cleanedData = subcatData.replace(/[^\[\]\{\}\"0-9a-zA-Z\,\:]/g, '');
-    var subcat = JSON.parse(cleanedData);
-    // console.log("Parsed subcat:", subcat);
+ function calculatePrice(){
+    const mrpInput = document.getElementById("mrp")
+    const discountInput = document.getElementById("discount")
+    const priceInput = document.getElementById("price")
 
+    let mrp = parseFloat(mrpInput.value)
+    let discount = parseFloat(discountInput.value || 0)
+    mrp = isNaN(mrp) ? 0 : Math.max(mrp, 1);
+        mrpInput.value = mrp;
+        discount = Math.min(Math.max(discount, 0), 99);
+        discountInput.value =discount;
 
+        const calculatedPrice = discount >= 0 && discount <= 99 ? mrp - (mrp * discount / 100) : '';
     
-    //   console.log("hi");
-    //   console.log(subcat);
-      var parentCategorySelect = document.getElementById("categories");
-        var subCategorySelect = document.getElementById("subCategory");
-  
-        var selectedParentCategoryId = parentCategorySelect.value;
-        console.log("Selected Parent Category ID:", selectedParentCategoryId);
+    priceInput.value = isNaN(calculatedPrice) ? '' : calculatedPrice.toFixed(2);
+ }
 
-    
-
-    var filteredSubcategories = subcat
-  .filter(function(category) {
-    console.log("Selected Parent Category ID:", selectedParentCategoryId);
-    console.log("Subcategory Parent Category ID:", category.parentCategoryId);
-    return category.parentCategoryId.id === selectedParentCategoryId;
-  })
-  
-
-  
-        console.log("Filtered Subcategories:", filteredSubcategories);
-      
-        subCategorySelect.innerHTML = '<option value="" disabled selected>Select sub Category</option>';
-        console.log(filteredSubcategories);
-        filteredSubcategories.forEach(function(subcategory) {
-        //   console.log("jjj");
-        // console.log(subcategory.id);
-        // console.log(subcategory.name);
-            var option = document.createElement("option");
-            option.value = subcategory.id;
-            option.textContent = subcategory.subcategoryName;
-            subCategorySelect.appendChild(option);
-        });
-    }</script>
+</script>
   
     
     <script src="/adminassets/vendors/js/vendor.bundle.base.js"></script>

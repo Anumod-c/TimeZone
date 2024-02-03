@@ -744,10 +744,17 @@ document.getElementById('orderForm').submit();
       .then(response => response.json())
       .then(data => {
           if (data.success) {
+            Swal.fire({
+                  icon: 'success',
+                  title: 'Coupon Applied Succesfully',
+                  showConfirmButton: false,
+                  timer: 1000, // 1 second
+            });
         console.log("ivideumethi")
         document.getElementById('dicprice').innerText="-"+data.dicprice
              document.getElementById('cartotal').innerText=data.price
          document.getElementById('carttotal').value=data.price
+  
   
   
          
@@ -792,6 +799,7 @@ document.getElementById('orderForm').submit();
         document.getElementById('dicprice').innerText=0
              document.getElementById('cartotal').innerText=data.price
          document.getElementById('carttotal').value=data.price
+         document.getElementById('c_code').value = ""
   
   
          

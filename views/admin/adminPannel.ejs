@@ -12,6 +12,12 @@
     <link rel="stylesheet" href="/adminassets/vendors/bootstrap-datepicker/bootstrap-datepicker.min.css" />
     <link rel="stylesheet" href="/adminassets/css/style.css" />
     <link rel="shortcut icon" href="/adminassets/images/favicon.png" />
+    <!-- SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
+
+<!-- SweetAlert JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
   </head>
   <body>
     <div class="container-scroller">
@@ -116,16 +122,19 @@
                     <div class="row">
                       <div class="col-sm-7">
                         <h5>Business Survey</h5>
-                        <p class="text-muted"> Show overview jan 2018 - Dec 2019 <a class="text-muted font-weight-medium pl-2" href="#"><u>See Details</u></a>
+                        <p class="text-muted"> Show overview jan 2023 - Feb 2024 <a class="text-muted font-weight-medium pl-2" href="#"><u>See Details</u></a>
                         </p>
                       </div>
                       <div class="col-sm-5 text-md-right">
-                        <form action="/admin/downloadsales" method="post">
-                        <input type="date" id="startDate" name="startDate" placeholder="Start Date">
-                        <input type="date" id="endDate" name="endDate" placeholder="End Date">
-                        <button type="submit" class="btn btn-icon-text mb-3 mt-2 mb-sm-0 btn-inverse-primary font-weight-normal" onclick="">
-                          <i class="mdi mdi-email btn-icon-prepend"></i>Download Report </button>
-                        </form>
+                        <form action="/admin/downloadsales" method="post" onsubmit="return validateDates()">
+                          <input type="date" id="startDate" name="startDate" placeholder="Start Date">
+                          <input type="date" id="endDate" name="endDate" placeholder="End Date">
+                          <button type="submit" class="btn btn-icon-text mb-3 mt-2 mb-sm-0 btn-inverse-primary font-weight-normal">
+                              <i class="mdi mdi-email btn-icon-prepend"></i>Download Report
+                          </button>
+                      </form>
+                      
+                      
                       </div>
                     </div>
                     
@@ -274,6 +283,27 @@
         });
       }
     </script>
+<script>
+  function validateDates() {
+      var startDate = new Date(document.getElementById('startDate').value);
+      var endDate = new Date(document.getElementById('endDate').value);
+      var currentDate = new Date();
+
+      if (startDate > currentDate) {
+          swal("Error", "Start date should be less than or equal to the current date", "error");
+          return false; // Prevent form submission
+      }
+
+      if (endDate > currentDate) {
+          swal("Error", "End date should be less than or equal to the current date", "error");
+          return false; // Prevent form submission
+      }
+
+      return true; // Allow form submission
+  }
+</script>
+
+  
     
     <script src="/adminassets/assets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->

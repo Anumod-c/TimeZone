@@ -299,7 +299,6 @@ res.redirect('/');
 //===================================      resend otp page     ===================================================
 const resendotp =async(req,res)=>{
     try{
-        console.log("resend otp is working");
         const email =req.session.user.email;
         const otp = generatorotp();
         console.log("resend otp",otp);
@@ -339,7 +338,6 @@ const forgotpasspost =async (req,res)=>{
         let email =req.body.email;
         console.log('forgotpassword email',email);
         const emailExist =await userModel.findOne({email:email});
-        console.log(emailExist,"email exist")
         if(!emailExist){
             req.flash('emailerror','Email doesnt Exist')
             res.redirect("/forgotpassword")
@@ -350,7 +348,6 @@ const forgotpasspost =async (req,res)=>{
             req.session.user={email:email};
             console.log({email:email},"user details from forgotpassword code");
             const otp = generatorotp();
-            console.log('otp generated for forgot password:',otp);
             const currentTimestamp= Date.now();
             expiryTimestamp =currentTimestamp + 60* 1000;
             const filter ={email:email};
@@ -406,7 +403,6 @@ const resetpasspost =async(req,res)=>{
             const hashedpassword=await bcrypt.hash(password,10);
             const email=req.session.user.email;
             console.log(email)
-            console.log('code before update querey executed succesfully')
             await userModel.updateOne({email:email},{
                 password:hashedpassword,
             })
@@ -452,7 +448,6 @@ const profile = async (req, res) => {
 const loginaction=async(req,res)=>{ 
     try{
         const email =req.body.email;
-        console.log(email,"email");
         const  user = await userModel.findOne({email:email});
         //checking whether the user exist ir not
         if(!user){ 
@@ -462,7 +457,6 @@ const loginaction=async(req,res)=>{
         
         const passowrdmatch =await bcrypt.compare(req.body.password,user.password);
         if(passowrdmatch && !user.status){
-            console.log('hhh');
             req.session.userId=user._id;
             req.session.firstname=user.firstname;
             req.session.isAuth=true;

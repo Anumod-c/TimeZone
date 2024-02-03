@@ -2,20 +2,34 @@ const orderModel = require('../models/ordermodel')
 
 
 
-const orderPage=async (req,res)=>{
-    try{
-        const orders=await orderModel.find({}).sort({ createdAt: -1 })
-    res.render("admin/orderPage",{orderdata:orders})
-}
-catch (err) {
-    console.log(err);
-    return res.status(400).send("Erro Occured")
-}
-}
+
+
+
+const orderPage = async (req, res) => {
+    try {
+        const ITEMS_PER_PAGE = 5; // Number of orders per page
+        const page = parseInt(req.query.page) || 1; // Get the current page from query parameters
+
+        const options = {
+            page: page,
+            limit: ITEMS_PER_PAGE,
+            sort: { totalPrice: -1 } // Sort by totalPrice in descending order
+        };
+
+        const orders = await orderModel.paginate({}, options);
+
+        res.render('admin/orderPage', { orderdata: orders.docs, pageCount: orders.totalPages, currentPage: orders.page });
+    } catch (err) {
+        console.log(err);
+        return res.status(400).send('Error Occurred');
+    }
+};
+
+//////////////////////////////////////////////
 
 const orderDetails=async(req,res)=>{
     try {
-        console.log("mannu");
+        
         const id=req.params.id
         const order=await orderModel.findById(id)
         res.render("admin/orderDetail",{orders:order})
@@ -37,12 +51,12 @@ const updateOrderStatus=async(req,res)=>{
 
         const currentOrder = await orderModel.findById(orderId);
         if(!currentOrder){
-            console.log("111111111111")
+           
             return res.status(404).json({error:'Order not found'});
             
         }
         if(getStatusIndex(status)< getStatusIndex(currentOrder.status)){
-            console.log("22222222222222222")
+          
 
             return res.status(400).json({error:'Invalid status update'})
         }
@@ -57,7 +71,7 @@ const updateOrderStatus=async(req,res)=>{
       
 
         if (!updatedOrder) {
-            console.log("3333333333333")
+            
 
             return res.status(404).json({ error: 'Order not found' });
         }

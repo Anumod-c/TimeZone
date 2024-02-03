@@ -33,7 +33,6 @@ const showcart = async (req, res) => {
     // Calculate the total quantity of items in the cart
     // const totalQuantity = cart.item.reduce((acc, item) => acc + item.quantity, 0);
 
-    console.log(cart, ":CART");
     res.render("user/cart.ejs", { cart: cart, categories: categories });
   } catch (err) {
     console.log("show cart error", err);
@@ -52,7 +51,6 @@ const addToCart = async (req, res) => {
     const stock = product.stock;
 
     const quantity = 1;
-    console.log(req.session.id, ":req.session.userId");
 
     if (stock == 0) {
       res.redirect("/cart");
@@ -103,14 +101,9 @@ const addToCart = async (req, res) => {
 //======================================  UPDATE CART  ======================================================
 const updatecart = async (req, res) => {
   try {
-    console.log("Reached updat cart");
-    console.log("Recieved req.body:", req.body);
     const { productId } = req.params;
     const { action, cartId } = req.body;
     const cart = await cartModel.findOne({ _id: cartId });
-    console.log("Cartid:", cartId);
-    console.log("cart:", cart);
-    console.log(productId);
     const itemIndex = cart.item.findIndex((item) => item._id == productId);
     console.log(itemIndex);
     console.log("Cart items:", cart.item);
@@ -122,20 +115,12 @@ const updatecart = async (req, res) => {
     const selectedProduct = await productModel.findOne({
       _id: selectedProductId,
     });
-    console.log("selected product:", selectedProduct);
     const stockLimit = selectedProduct.stock;
-    console.log("stocklimit:", stockLimit);
     const price = cart.item[itemIndex].price;
-    console.log("Received req.body:", req.body);
-    console.log("Cart ID:", cartId);
-    console.log("Cart Object:", cart);
-
     let updateQuantity;
     if (action == "1") {
-      console.log("1");
       updateQuantity = currentQuantity + 1;
     } else if (action == "-1") {
-      console.log("-1");
       updateQuantity = currentQuantity - 1;
     } else {
       return res.status(400).json({ success: false, error: "Invalid Actioon" });
@@ -150,7 +135,6 @@ const updatecart = async (req, res) => {
     const newProductTotal = price * updateQuantity;
     cart.item[itemIndex].total = newProductTotal;
     const total = cart.item.reduce((acc, item) => acc + item.total, 0);
-    console.log("total:", total);
     cart.total = total;
     const totalQuantity = cart.item.reduce((acc, item) => acc + item.quantity, 0);
     cart.totalQuantity =totalQuantity
@@ -174,12 +158,10 @@ const deletecart = async (req, res) => {
     const userId = req.session.userId;
     const pid = req.params.id;
     const size = req.params.size;
-    console.log("delelting item", { userId, pid });
     const result = await cartModel.updateOne(
       { userId: userId },
       { $pull: { item: { _id: pid } } }
     );
-    console.log("update result:", result);
     const updatedCart = await cartModel.findOne({ userId: userId });
     const newTotal = updatedCart.item.reduce((acc, item) => acc + item.total, 0);
     updatedCart.total = newTotal;
@@ -218,7 +200,6 @@ const favouritepage =async(req,res)=>{
 
           res.render('user/favourite',{fav:fav,categories:categories})
 
-          console.log(fav,'==============fav')
 
   }
   catch(err){
@@ -280,9 +261,9 @@ const addToFav =async(req,res)=>{
 const deleteFav =async(req,res)=>{
   try{
     const userId = req.session.userId;
-    console.log(userId,"oooooooooooooooo");
+   
     const pid = req.params.id;
-    console.log(pid,"oooooooooooooooo");
+   
 
      await favModel.updateOne({userId:userId},{$pull:{item:{_id:pid}}});
     const updatefav = await favModel.findOne({userId:userId});

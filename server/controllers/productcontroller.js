@@ -7,15 +7,31 @@ const couponModel = require('../models/couponModel');
 
 const product = async (req, res) => {
     try {
-        const products = await productModel.find({}).populate( {
-            path: 'categories',
-            select: 'name'
+        const page = req.query.page || 1; // Extract page from request query parameters
+        const perPage = 4  ; // Adjust per your pagination settings
+
+        const options = {
+            page: page,
+            limit: perPage,
+            populate: {
+                path: 'categories',
+                select: 'name'
+            }
+        };
+
+        const products = await productModel.paginate({}, options);
+
+        res.render('admin/product', { 
+            products: products.docs,
+            pageCount: products.totalPages,
+            currentPage: products.page 
         });
-        res.render('admin/product', { products: products });
     } catch (err) {
         console.log('product rendering error', err);
+        res.status(500).send('Internal server error');
     }
 };
+
 //==============================         adding product page    ================================================
 const newproduct = async (req, res) => {
     try {
@@ -30,7 +46,7 @@ const newproduct = async (req, res) => {
 //===================================         addproduct post      ===============================================
 const addproduct = async (req, res) => {
     try {
-        const { productName, categories, images, mrp, price, stock, descriptions, dialcolour, strapcolour, framematerial, strapmaterial, dimensions, manufacture } = req.body;
+        const { productName, categories, images, mrp, discount,price, stock, descriptions, dialcolour, strapcolour, framematerial, strapmaterial, dimensions, manufacture } = req.body;
         console.log('Received request body:', req.body);
 
         const newproduct = await productModel.create({
@@ -39,6 +55,7 @@ const addproduct = async (req, res) => {
             // type: productType, ==> can be useful when veiwng similar products in sigle product page
             images: req.files.map(file => file.path),
             mrp: mrp,
+            discount:discount,
             price: price,
             stock: stock,
             descriptions: descriptions,
@@ -143,7 +160,7 @@ const delimage=async(req,res)=>{
     const updateproductpost= async(req,res)=>{
         try{
             const id=req.params.id;
-            const { productName, categories, mrp, price, stock, descriptions, dialcolour, strapcolour, framematerial, strapmaterial, dimensions, manufacture } = req.body;
+            const { productName, categories, mrp,discount, price, stock, descriptions, dialcolour, strapcolour, framematerial, strapmaterial, dimensions, manufacture } = req.body;
             console.log(req.body)
             await productModel.updateOne(
                 { _id: id },
@@ -152,6 +169,7 @@ const delimage=async(req,res)=>{
                         name: productName,
                         categories: categories,
                         mrp: mrp,
+                        discount:discount,
                         price: price,
                         stock: stock,
                         descriptions: descriptions,

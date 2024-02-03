@@ -70,11 +70,26 @@
                 <div class="row product-btn justify-content-between mb-40">
                     <div class="properties__button">
                         <!--Nav Button  -->
-                        <nav>                                                      
+                        <nav>  
+                            
+                            <%
+                            // Check if a category ID is present in the current context
+                            let categoryQuery = '';
+                            
+                            if (categoriesbanner && categoriesbanner._id) {
+                                // If a category ID exists, construct the query parameter
+                                categoryQuery = `?category=${categoriesbanner._id}`;
+                            }
+                            %>   
+                                                                             
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                <a class="nav-item nav-link" id="nav-home-tab" href="/newarrival">Newest Arrivals</a>
-                                <a class="nav-item nav-link" id="nav-profile-tab" href="/pricehightolow">Price high to low</a>
-                                <a class="nav-item nav-link" id="nav-contact-tab" href="/pricelowtohigh">Price low to high</a>
+                                <a class="nav-item nav-link" id="nav-home-tab" href="/newarrival<%= categoryQuery %>">Newest Arrivals</a>
+
+
+
+
+<a class="nav-item nav-link" href="/pricehightolow<%= categoryQuery %>">Price high to low</a>
+                                <a class="nav-item nav-link" id="nav-contact-tab" href="/pricelowtohigh<%= categoryQuery %>">Price low to high</a>
                             </div>
                         </nav>
                         
@@ -132,69 +147,48 @@
                         </div>
                     </div>
                     <!-- Card two -->
-                    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <div class="row">
-                            <% products.forEach(product => { %>
-                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                                    <div class="single-popular-items mb-50 text-center">
-                                        <div class="popular-img">
-                                            <% if (product.images && product.images.length > 0) { %>
-                                                <!-- Display the first image -->
-                                                <img src="<%= product.images[0] %>" alt="<%= product.name %>">
-                                            <% } else { %>
-                                                <!-- Display a placeholder image if no images are available -->
-                                                <img src="path/to/placeholder-image.jpg" alt="Placeholder Image">
-                                            <% } %>
-                                            <a href="/addtocart/<%= product._id %>"> <div class="img-cap">
-                                                <span>Add to cart</span>
-                                            </div></a>
-                                            <a href="/addtofavourite/<%=product._id%>""></a><div class="favorit-items">
-                                                <span class="flaticon-heart"></span>
-                                            </div>
-                                        </div>
-                                        <div class="popular-caption">
-                                            <h3><%= product.name %></a></h3>
-                                            <span>Rs <%= product.price %></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            <% }); %>
-                        </div>
-                    </div>
+                   
                     <!-- Card three -->
-                    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        <div class="row">
-                            <% products.forEach(product => { %>
-                                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6">
-                                    <div class="single-popular-items mb-50 text-center">
-                                        <div class="popular-img">
-                                            <% if (product.images && product.images.length > 0) { %>
-                                                <!-- Display the first image -->
-                                                <img src="<%= product.images[0] %>" alt="<%= product.name %>">
-                                            <% } else { %>
-                                                <!-- Display a placeholder image if no images are available -->
-                                                <img src="path/to/placeholder-image.jpg" alt="Placeholder Image">
-                                            <% } %>
-                                            <div class="img-cap">
-                                                <span>Add to cart</span>
-                                            </div>
-                                            <div class="favorit-items">
-                                                <span class="flaticon-heart"></span>
-                                            </div>
-                                        </div>
-                                        <div class="popular-caption">
-                                            <h3><%= product.name %></a></h3>
-                                            <span>Rs <%= product.price %></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            <% }); %>
-                        </div>
-                    </div>
+                    
                 </div>
                 <!-- End Nav Card -->
             </div>
+<!-- Pagination -->
+<!-- Pagination -->
+<!-- Pagination -->
+<!-- Pagination -->
+<% if (typeof pageCount !== 'undefined') { %>
+    <nav aria-label="Page navigation example" style="font-size: 25px;">
+        <ul class="pagination" style="justify-content: center;">
+            <% if (typeof page !== 'undefined' && page > 1) { %>
+                <li class="page-item">
+                    <a class="page-link" href="<%= req.path %>?page=<%= page - 1 %><%= categoryQuery %>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            <% } %>
+            <% for (let i = 1; i <= pageCount; i++) { %>
+                <li class="page-item <%= page == i ? 'active' : '' %>">
+                    <a class="page-link" href="<%= req.path %>?page=<%= i %><%= categoryQuery %>"><%= i %></a>
+                </li>
+            <% } %>
+            <% if (page < pageCount) { %>
+                <li class="page-item">
+                    <a class="page-link" href="<%= req.path %>?page=<%= page + 1 %><%= categoryQuery %>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            <% } %>
+        </ul>
+    </nav>
+    <% } %>
+    
+
+
+            
         </section>
+        
+
     <!-- Latest Products End -->
     <!-- footer start here-->
     <%-include('userpartial/footer')%>
@@ -209,6 +203,8 @@
     </div>
     <!-- Search model end -->
    <script>
+   
+
     document.addEventListener('DOMContentLoaded', function() {
     const navLinks = document.querySelectorAll('.nav-tabs .nav-link');
 

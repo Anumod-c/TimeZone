@@ -50,30 +50,30 @@ const addCouponpost = async(req,res)=>{
 
         if(!couponValid){
             req.flash("codeError","Only Uppercase letter Allowed")
-            console.log("11111COPON VLA11111111111");
+          
             return res.redirect("/admin/newcoupon")
         }
         else if(!minimumValid){
             req.flash("minError","Invalid Data")
-            console.log("11111111MINIM,UM11111111");
+          
             return  res.redirect("/admin/newcoupon")
 
         }
         else if(!discountValid){
             req.flash("discountError","Invalid Data")
-            console.log("11111111DISCOPUNT11111111");
+           
             return  res.redirect("/admin/newcoupon")
 
         }
         else if(!expiryValid){
             req.flash("expiryError","Invalid Data")
-            console.log("11111111EXPIRY11111111");
+            
             return  res.redirect("/admin/newcoupon")
 
         }
         else if(!maxredeemValid){
             req.flash("maxError","Invalid Data")
-            console.log("MAX REDEEM");
+          
             return  res.redirect("/admin/newcoupon")
 
         }
@@ -146,26 +146,26 @@ const editCouponPost = async (req,res)=>{
 
         if(!couponValid){
             req.flash("codeError","Only Uppercase letter Allowed")
-            console.log("11111COPON VLA11111111111");
+            
             return res.redirect(`/admin/editCouponGet/${id}`)        }
         else if(!minimumValid){
             req.flash("minError","Invalid Data")
-            console.log("11111111MINIM,UM11111111");
+           
             return res.redirect(`/admin/editCouponGet/${id}`)
         }
         else if(!discountValid){
             req.flash("discountError","Invalid Data")
-            console.log("11111111DISCOPUNT11111111");
+          
             return res.redirect(`/admin/editCouponGet/${id}`)
         }
         else if(!expiryValid){
             req.flash("expiryError","Invalid Data")
-            console.log("11111111EXPIRY11111111");
+            
             return res.redirect(`/admin/editCouponGet/${id}`)
         }
         else if(!maxredeemValid){
             req.flash("maxError","Invalid Data")
-            console.log("MAX REDEEM");
+           
             return res.redirect(`/admin/editCouponGet/${id}`)
         }
 
@@ -197,7 +197,7 @@ const editCouponPost = async (req,res)=>{
                 }
                 
             );
-            console.log("COUPON created");
+            
             res.redirect('/admin/couponList');
         }
 

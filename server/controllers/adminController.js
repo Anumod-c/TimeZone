@@ -10,7 +10,7 @@ const puppeteer = require("puppeteer");
 //=============================================   admin login    =================================================
 const adlogin = (req, res) => {
   try {
-    console.log("admin rendered");
+   
     res.render("admin/adlogin");
   } catch (err) {
     console.loglog("login error", err);
@@ -21,19 +21,18 @@ const adlogin = (req, res) => {
 const adloginpost = async (req, res) => {
   try {
     const email = req.body.email;
-    console.log(email);
+    
     const user = await userModel.findOne({ email: email });
     const passowrdmatch = await bcrypt.compare(
       req.body.password,
       user.password
     );
-    console.log("admin details:", user);
+ 
     if (passowrdmatch && user.isAdmin) {
-      console.log("if condition of admin checking worked");
+      
       req.session.isadAuth = true;
       res.redirect("/admin/adminpannel");
     } else {
-      console.log(" admin chekin else part woked");
       res.render("admin/adlogin", {
         passworderror: "Invalid Password or email",
       });
@@ -58,7 +57,7 @@ const adminpannel = async (req, res) => {
 const userlist = async (req, res) => {
   try {
     const users = await userModel.find({ isAdmin: false });
-    console.log(users);
+   
     res.render("admin/users_list", { users: users });
   } catch (err) {
     console.log(err, "listing error");
@@ -77,7 +76,7 @@ const userupdate = async (req, res) => {
     if (user.status) {
       req.session.isAuth = false;
     }
-    console.log(user);
+   
     await user.save();
     res.redirect("/admin/userslist");
   } catch (err) {
@@ -155,19 +154,21 @@ const addcategory = async (req, res) => {
   try {
     const catname = req.body.categoryName;
     const catdescription = req.body.description;
-    console.log("kkkkkkkkkkkkkkkkkkk", catdescription);
+    const  offer = req.body.offer;
+    
     const categoryexist = await categoryModel.findOne({ name: catname });
     if (categoryexist) {
       res.render("admin/addcategories", {
         caterror: "Categories alredy exist",
       });
     } else {
-      console.log("else condition worked");
+      
       await categoryModel.create({
         name: catname,
+        offer:offer,
         description: catdescription,
       });
-      console.log("categoriess created");
+    
       res.redirect("/admin/Category");
     }
   } catch (err) {
@@ -193,9 +194,10 @@ const updatecatpost = async (req, res) => {
     const id = req.params.id;
     const catname = req.body.categoryName;
     const catdes = req.body.description;
+    const offer  = req.body.offer;
     await categoryModel.updateOne(
       { _id: id },
-      { $set: { name: catname, description: catdes } }
+      { $set: { name: catname,offer:offer, description: catdes } }
     );
     res.redirect("/admin/category");
   } catch (err) {
@@ -297,14 +299,14 @@ const downloadsales = async (req, res) => {
   try {
     const { startDate, endDate } = req.body;
 
-    console.log(req.body);
+    
 
     const salesData = await orderModel.aggregate([
       {
         $match: {
           createdAt: {
             $gte: new Date(startDate),
-            $lte: new Date(endDate),
+            $lte: new Date(endDate + "T23:59:59.999Z")
           },
         },
       },
@@ -316,14 +318,14 @@ const downloadsales = async (req, res) => {
         },
       },
     ]);
-    console.log(salesData,"ssssssss")
-
+    
     const products = await orderModel.aggregate([
       {
         $match: {
           createdAt: {
             $gte: new Date(startDate),
-            $lte: new Date(endDate),
+            $lte: new Date(endDate + "T23:59:59.999Z")
+
           },
         },
       },
@@ -359,8 +361,7 @@ const downloadsales = async (req, res) => {
       },
     ]);
 
-    console.log("aaaaaaaaa",products)
-
+    
     const htmlContent = `
             <!DOCTYPE html>
             <html lang="en">

@@ -49,10 +49,13 @@
                       <label for="categoryName" class="form-label">MRP:</label>
                       <input type="number" class="form-control" id="mrp" name="mrp" value="<%= product.mrp %>" required>
                   </div>
-
+                  <div class="mb-3">
+                    <label for="discount" class="form-label">Discount:</label>
+                    <input type="number" class="form-control" min="0" max="100" oninput="calculatePrice()" id="discount" name="discount" value="<%= product.discount %>" required>
+                </div>
                     <div class="mb-3">
-                        <label for="categoryName" class="form-label">Price:</label>
-                        <input type="number" class="form-control" id="categoryName" name="price" value="<%= product.price %>" required>
+                        <label for="price" class="form-label">Price:</label>
+                        <input type="number" class="form-control" id="price" name="price" readonly value="<%= product.price %>" required>
                     </div>
                     <div class="mb-3 d-flex">
                         <label for="categoryName" class="form-label">Product stock:</label>
@@ -121,7 +124,28 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
-    
+    <script>
+      function calculatePrice(){
+         const mrpInput = document.getElementById("mrp")
+         const discountInput = document.getElementById("discount")
+         const priceInput = document.getElementById("price")
+     
+         let mrp = parseFloat(mrpInput.value)
+         let discount = parseFloat(discountInput.value || 0)
+         mrp = isNaN(mrp) ? 0 : Math.max(mrp, 1);
+             mrpInput.value = mrp;
+             discount = Math.min(Math.max(discount, 0), 99);
+             discountInput.value =discount;
+     
+             const calculatedPrice = discount >= 0 && discount <= 99 ? mrp - (mrp * discount / 100) : '';
+         
+         priceInput.value = isNaN(calculatedPrice) ? '' : calculatedPrice.toFixed(2);
+      }
+     
+     </script>
+
+
+
     <script src="/adminassets/vendors/js/vendor.bundle.base.js"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->

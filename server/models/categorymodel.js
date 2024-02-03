@@ -7,6 +7,10 @@ const catSchema= new mongoose.Schema({
         type:String,
         requried:true
     },
+    offer:{
+        type:Number,
+        required:true,
+    },
     description:{
         type:String,
         required:true,

@@ -51,13 +51,12 @@ const addBannerpost = async (req, res) => {
     const tittleValid = alphanumValid(bannerTitle);
     const subtitleValid = alphanumValid(bannerSubtitle);
     if (!tittleValid) {
-      console.log("tit");
+      
       req.flash("titleError", "Invalid Entrty");
       return res.redirect("/admin/addBanner");
     }
     if (!subtitleValid) {
-      console.log("sub");
-
+      
       req.flash("subtitleError", "Invalid Entry");
       return res.redirect("/admin/addBanner");
     }
@@ -126,12 +125,12 @@ const updateBannerPost = async (req, res) => {
 
     const titleValid = alphanumValid(bannerTitle);
     if (!titleValid) {
-        console.log("hyy")
+     
       req.flash("titleError", "Invalid Entry !");
       return res.redirect(`/admin/editBanner/${bannerId}`);
     }
     if (!subtitleValid) {
-        console.log("hello")
+       
 
       req.flash("subtitleError", "Invalid Entry !");
       return res.redirect(`/admin/editBanner/${bannerId}`);
@@ -160,6 +159,7 @@ const updateBannerPost = async (req, res) => {
     }
 }
     await banner.save();
+    
     res.redirect('/admin/bannerList')
   } catch (err) {
     console.log("edit banner post error", err);
@@ -200,24 +200,30 @@ const bannerURL = async (req,res)=>{
  const banner = await bannerModel.findOne({_id:bannerId});
  if(banner.label=="category"){
   const categoryId = banner.bannerlink;
-  // console.log(categoryId,"ffffffff  ")
+ 
 
   const category = await categoryModel.findOne({_id:categoryId})
-  // console.log(category,"ffffffff  ")
+  
   res.redirect(`/shop?category=${categoryId}`)
  }
  else if(banner.label=="product"){
   const productId=banner.bannerlink
-  // console.log(productId,"ffffffff  ")
+  
   const  product=await productModel.findOne({_id: productId})
 
   res.redirect(`/singleproduct/${productId}`)
 
 }
 else if(banner.label=="coupon"){
+  if(req.session.userId){
+    res.redirect("/rewards")
+
+  }
+  else{
+    res.redirect("/profile")
+  }
   // const couponId=new mongoose.Types.ObjectId(banner.bannerlink)
   // const  coupon=await couponModel.find({_id: couponId})
-  res.redirect("/rewards")
 
 }
 else{

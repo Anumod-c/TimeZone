@@ -97,14 +97,11 @@ const checkoutrelod = async (req, res) => {
       country,
       phonenumber,
     } = req.body;
-    console.log("gettig in body", req.body);
     const userId = req.session.userId;
-    console.log("body id", userId);
     const userExisted = await userModel.findOne({ _id: userId });
     const availableCoupons = await couponModel.find({
       couponCode: { $nin: userExisted.usedCoupons }
     }); ///////////////////////////////////
-    console.log("bhhhhhhhhhhhhhhhhhhh", userExisted);
     const fullnamevalid = bnameValid(fullname);
     const saveasvalid = bnameValid(saveas);
     const adnameValid = bnameValid(adname);
@@ -114,7 +111,6 @@ const checkoutrelod = async (req, res) => {
     const stateValid = bnameValid(state);
     const countryValid = bnameValid(country);
     const phoneValid = adphoneValid(phonenumber);
-    console.log("assiing validation");
     if (!saveasvalid) {
       // req.flash("saveaserror", "Enter a valid adresstype");
       return res.redirect(`/checkoutpage?cartId=${cartId}`);
@@ -206,7 +202,6 @@ const checkoutrelod = async (req, res) => {
     }
 
     const addresses = addresslist.address;
-    console.log("addressessssssssssssss:", addresses);
 
     // Check if cartId is provided and is valid
     if (!cartId) {
@@ -230,8 +225,6 @@ const checkoutrelod = async (req, res) => {
       price: cartItem.productId.price,
       itemTotal: cartItem.total,
     }));
-    console.log("jsbdhakljsholasjf", cartItems);
-    console.log("Cart Total:", cart.total);
 
     res.render("user/checkout", { addresses, cartItems, categories, cart,availableCoupons });
   } catch (error) {
@@ -260,7 +253,6 @@ const upi = async (req, res) => {
 
 const wallettransaction = async (req, res) => {
   try {
-    console.log("Reached wallet  transaction");
     const userId = req.session.userId;
     const amount = req.body.amount;
     const user = await walletModel.findOne({ userId: userId });
@@ -281,7 +273,6 @@ const wallettransaction = async (req, res) => {
       res.json({ success: false, message: "don't have enought money" });
     }
   } catch {
-    console.log("wallet transaction error", err);
   }
 };
 
@@ -289,22 +280,17 @@ const wallettransaction = async (req, res) => {
 const applyCoupon = async (req, res) => {
   try {
     const { couponCode, subtotal } = req.body;
-    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",couponCode,subtotal)
     const userId = req.session.userId;
-    console.log("llllllllllllllll",userId)
     const coupon = await couponModel.findOne({ couponCode: couponCode });
 
     if (coupon && coupon.status === true) {
       const user = await userModel.findOne({_id:userId});
-      console.log("kkkkkkkkkkkkkk",user)
       if (user && user.usedCoupons.includes(couponCode)) {
-        console.log("nvjksadnjkghakjvajkvnasdmvbasfhvb");
         res.json({ success: false, message: "Already Redeemed" });
       } else if (
         coupon.expiry > new Date() &&
         coupon.minimumPrice <= subtotal
       ) {
-        console.log("else  if workerd  means coupon is not redeemed yet now");
         let dicprice;
         let price;
         if (coupon.type === "percentageDiscount") {
@@ -343,21 +329,18 @@ const revokeCoupon = async(req,res)=>{
     const coupon=  await couponModel.findOne({couponCode:couponCode});
     if(coupon){
       const user = await userModel.findById(userId);
-      console.log("wwwwwwwwwwsssssssssssssssssss w",user)
 
       if(coupon.expiry > new Date() && coupon.minimumPrice <= subtotal){
         const dprice = (subtotal * coupon.discount) / 100;
             const dicprice = 0;
 
             const price = subtotal;
-            console.log(price,'lllllllllllllllllll');
 
             await userModel.findByIdAndUpdate(
               userId,
               { $pull: { usedCoupons: couponCode } },
               { new: true }
             );
-            console.log("ddddddddddddddddddd")
             res.json({ success: true, dicprice, price });
         } else {
             res.json({ success: false, message: "Invalid Coupon" });
