@@ -9,15 +9,12 @@ const ratepage = async(req,res)=>{
 
 
         const productId  = id;
-        console.log("prodictId",productId)
         const product = await productModel.findById(productId);
         if (!product) {
             return res.status(404).send('Product not found');
           }
-          console.log("hyyyy33")
 
           const existingUserRating = product.userRatings.find((userRating) => userRating.userId.toString() === userId);
-          console.log("existinguserRating",existingUserRating)
 
           if (existingUserRating) {
               existingUserRating.rating = rating;
@@ -32,6 +29,8 @@ const ratepage = async(req,res)=>{
     }
     catch(err){
         console.log("rating page error",err);
+        res.render("user/serverError")  
+
     }
 }
 

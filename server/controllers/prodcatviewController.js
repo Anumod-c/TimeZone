@@ -21,21 +21,18 @@ const newarrival = async (req, res) => {
         if (categoryId) {
             const selectedCategory = await categoryModel.findById(categoryId);
             if (selectedCategory) {
-                console.log(" seconsd if newArrivallllllllllllllllllllllllllllllllll query is presenst")
 
                 categoriesbanner = selectedCategory// Set the category name as the banner
             }
             categories = await categoryModel.find({ status: true });
             products = await productModel.paginate({ categories: categoryId, status: true }, options);
         } else {
-            console.log(" else newArrivallllllllllllllllllllllllllllllllll query is presenst")
 
             categories = await categoryModel.find({ status: true });
             const activeCategoryId = categories.map(category => category._id);
             products = await productModel.paginate({ categories: { $in: activeCategoryId }, status: true }, options);
         }
 
-        console.log(categoriesbanner,'yyyyyyyyyyy999y')
         // res.render('user/shop', { products, categories, categoriesbanner });
         // res.json({"":"test"})
         // res.render('user/shop', { products, categories, categoriesbanner ,categoryId });
@@ -43,7 +40,7 @@ const newarrival = async (req, res) => {
     } catch (err) {
     
         console.log('New Arrival error', err);
-        res.status(500).send('Internal server error');
+        res.render("user/serverError")  
     }
 };
 
@@ -92,7 +89,7 @@ const pricehightolow = async (req, res) => {
         });
     } catch (err) {
         console.log('Price high to low error', err);
-        res.status(500).send('Internal server error');
+        res.render("user/serverError")  
     }
 };
 
@@ -135,7 +132,7 @@ const pricelowtohigh = async (req, res) => {
         res.render('user/shop', {req: req , products: products.docs, categories, categoriesbanner, page, pageCount: products.totalPages, categoryId });
     } catch (err) {
         console.log('Price low to high error', err);
-        res.status(500).send('Internal server error');
+        res.render("user/serverError")  
     }
 };
 
@@ -157,28 +154,25 @@ const catagorysort = async (req, res) => {
         if (categoryId) {
             const selectedCategory = await categoryModel.findById(categoryId);
             if (selectedCategory) {
-                console.log(" seconsd if newArrivallllllllllllllllllllllllllllllllll query is presenst")
 
                 categoriesbanner = selectedCategory// Set the category name as the banner
             }
             categories = await categoryModel.find({ status: true });
             products = await productModel.paginate({ categories: categoryId, status: true }, options);
         } else {
-            console.log(" else newArrivallllllllllllllllllllllllllllllllll query is presenst")
 
             categories = await categoryModel.find({ status: true });
             const activeCategoryId = categories.map(category => category._id);
             products = await productModel.paginate({ categories: { $in: activeCategoryId }, status: true }, options);
         }
 
-        console.log(categoriesbanner,'yyyyyyyyyyy999y')
         // res.render('user/shop', { products, categories, categoriesbanner });
         // res.json({"":"test"})
         // res.render('user/shop', { products, categories, categoriesbanner ,categoryId });
         res.render('user/shop', { req: req ,products: products.docs, categories, categoriesbanner, categoryId,page, pageCount: products.totalPages });
     } catch (err) {
         console.log('catgorysort page error', err);
-        res.status(500).send('Internal server error');
+        res.render("user/serverError")  
     }
 };
 
@@ -186,8 +180,7 @@ const catagorysort = async (req, res) => {
 const singleproduct = async(req,res)=>{
     try{
         const id =req.params.id;
-        console.log('reached single product page');
-        const product =await productModel.findOne({_id:id}).populate({
+        const product = await productModel.findOne({_id:id}).populate({
             path: "userRatings.userId",
             select: "firstname",
           });
@@ -222,6 +215,8 @@ const singleproduct = async(req,res)=>{
     }
     catch(err){
         console.log('error while rendering single product page',err);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -261,11 +256,10 @@ const search = async (req, res) => {
             }
         ]);
 
-        console.log(searchproduct, "searchpp");
         res.render("user/shop", { products: products, categories: categories, categoriesbanner: categoriesbanner });
     } catch (err) {
         console.log("Search not working", err);
-        res.status(500).send("Internal server error");
+        res.render("user/serverError")  
     }
 };
 

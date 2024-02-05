@@ -19,6 +19,8 @@ const bannerList = async (req, res) => {
     res.render("admin/banner", { banners: banners });
   } catch (err) {
     console.log("banner page loading errror", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -41,6 +43,8 @@ const addBanner = async (req, res) => {
     });
   } catch (err) {
     console.log("adding banner error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -92,6 +96,8 @@ const addBannerpost = async (req, res) => {
     res.render("admin/banner", { banners: banners });
   } catch (err) {
     console.log("bannerpost methood error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -111,6 +117,8 @@ const editBanner = async (req, res) => {
     });
   } catch (err) {
     console.log("edit banner error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -163,6 +171,8 @@ const updateBannerPost = async (req, res) => {
     res.redirect('/admin/bannerList')
   } catch (err) {
     console.log("edit banner post error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -177,6 +187,8 @@ const bannerUnlist = async(req,res)=>{
   }
   catch(err){
     console.log("unlisting banner error");
+    res.render("user/serverError")  
+
   }
 }
 
@@ -189,6 +201,8 @@ const deleteBanner = async (req, res) => {
     res.redirect("/admin/bannerList");
   } catch (err) {
     console.log("delete banner error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -234,6 +248,8 @@ else{
   }
   catch(err){
     console.log("banner clicking error",err);
+    res.render("user/serverError")  
+
   }
 }
 

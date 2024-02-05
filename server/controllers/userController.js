@@ -51,7 +51,6 @@ const sendmail=async(email,otp)=>{
         };
 
         await transporter.sendMail(mailOptions);
-        console.log('E-mail sent Succesfully');
     }
     catch (err){
         console.log("error in sending email",err)
@@ -69,7 +68,9 @@ try{
     res.render('user/index',{categories:categories,products:products,banners:banners})
 }
 catch(err){
-console.log(err,"homepage error");    
+console.log(err,"homepage error");
+res.render("user/serverError")  
+
 }}
 
 
@@ -92,20 +93,16 @@ const registration =async(req,res)=>{
 //======================================    user otp sending    =================================================
 const signotp = async(req,res)=>{
     try{       
-        console.log('datas in body:',req.body)
         let firstname=req.body.firstname;
         let lastname=req.body.lastname;
          let email=req.body.email;
         let phone=req.body.phone;
         let password=req.body.password;
         let cpassword=req.body.cpassword;
-        console.log( "Entered Password",password);
-        console.log("Entered Email",email);
         
         if(req.body.referal){
             req.session.referal = req.body.referal;
         }
-        console.log("req.session.referal",req.session.referal)
         
 
 
@@ -147,7 +144,7 @@ const signotp = async(req,res)=>{
             req.flash('cpassworderror',"Enter a Valid Password");
             res.redirect("/registration")
         }
-        else{ console.log("Reached signotp else part");
+        else{
             const hashedpassword=await bcrypt.hash(password,10);
             const user =new userModel({
                 firstname:firstname,
@@ -182,6 +179,8 @@ const signotp = async(req,res)=>{
     }
     catch (err){
         console.log("error occured",err)
+        res.render("user/serverError")  
+
     }
 }
 
@@ -198,7 +197,8 @@ const otp =async(req,res)=>{
     }
     catch (err){
         console.log(err)
-        res.send('error occured',err)
+        res.render("user/serverError")  
+
     }
     
 }
@@ -209,7 +209,6 @@ const verifyotp =async(req,res)=>{
         const enteredotp =req.body.otp;
         console.log("entered otp is",enteredotp,typeof(enteredotp))
         const user =req.session.user;
-        console.log("user details",req.session.user);
         const email =req.session.user.email;
         const userdb =await otpModel.findOne({email:email});
         const otp =userdb.otp;
@@ -218,33 +217,26 @@ const verifyotp =async(req,res)=>{
 
 
         if(enteredotp.toString() === otp.toString() && expiry.getTime() >= Date.now()){
-            console.log("Code checked enteredotp==otp")
             user.isVerified=true;
             try{
-                console.log("creating user")
                 if(req.session.signup){
                     await userModel.create(user);
-                    console.log("User Created")
                     const userdata =await userModel.findOne({email:email});
                     req.session.userId=userdata._id;
                     req.session.isAuth=true;
                     req.session.otppressed=false;
 const referalCode = req.session.referal;
-console.log("referal in verifytotp", referalCode);
 
 if (referalCode) {
     const winner = await userModel.findOne({ uniqueID: referalCode });
 
     if (winner) {
         const winnerID = winner._id;
-        console.log("2222222222");
 
         const wallet = await walletModel.findOne({ userId: winnerID });
-        console.log("1111111");
 
         if (wallet) {
             const updatedWallet = wallet.wallet + 50;
-            console.log("winner._id:", winner._id);
             const winnerID = winner._id;
 
             await walletModel.findOneAndUpdate(
@@ -264,11 +256,8 @@ if (referalCode) {
             { $push: { walletTransactions: transaction } }
             );
 
-            console.log(`added 50 to the wallet of user whose id matches ${referalCode}`);
         }
 
-        console.log("winnerID:", winner._id.toString());
-        console.log("walledtmodel working");
     }
 }
 
@@ -292,7 +281,9 @@ res.redirect('/');
         
     }
     catch (err){
-        console.log("error occured",err)
+        console.log("error occured",err);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -315,6 +306,8 @@ const resendotp =async(req,res)=>{
         res.redirect('/regotp')
     }
     catch(err){
+        console.log(err,"resendotperror");
+        res.render("user/serverError")  
 
     }
 };
@@ -330,13 +323,14 @@ const forgotpassword=async (req,res)=>{
     }
     catch(err){
         console.log(err,"forgot password error")
+        res.render("user/serverError")  
+
     }
 }
 //=====================================    forgotpasswrod action    ============================================
 const forgotpasspost =async (req,res)=>{
     try{
         let email =req.body.email;
-        console.log('forgotpassword email',email);
         const emailExist =await userModel.findOne({email:email});
         if(!emailExist){
             req.flash('emailerror','Email doesnt Exist')
@@ -346,7 +340,6 @@ const forgotpasspost =async (req,res)=>{
             req.session.forgot=true;
             req.session.signup=false;
             req.session.user={email:email};
-            console.log({email:email},"user details from forgotpassword code");
             const otp = generatorotp();
             const currentTimestamp= Date.now();
             expiryTimestamp =currentTimestamp + 60* 1000;
@@ -372,6 +365,8 @@ const forgotpasspost =async (req,res)=>{
     }
     catch(err){
         console.log(err,"forgotpost error");
+        res.render("user/serverError")  
+
     }
 }
 //==============================       resett password page      ===================================================
@@ -382,6 +377,8 @@ const resetpassword =async (req,res)=>{
     }
     catch(err){
         console.log('reset psssword error',err);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -402,7 +399,6 @@ const resetpasspost =async(req,res)=>{
         else{
             const hashedpassword=await bcrypt.hash(password,10);
             const email=req.session.user.email;
-            console.log(email)
             await userModel.updateOne({email:email},{
                 password:hashedpassword,
             })
@@ -412,6 +408,8 @@ const resetpasspost =async(req,res)=>{
     }
     catch(err){
         console.log('reset password post error:',err);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -437,7 +435,7 @@ const profile = async (req, res) => {
             });
         }
     } catch (err) {
-        res.status(400).send("Error Occured")
+        res.render("user/serverError")  
         console.log("profile error", err);
     }
 };
@@ -493,6 +491,8 @@ const logout =async(req,res)=>{
     }
     catch(err){
         console.log(err,'logout error'); 
+        res.render("user/serverError")  
+
     }
 }
 

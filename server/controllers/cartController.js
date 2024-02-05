@@ -36,7 +36,7 @@ const showcart = async (req, res) => {
     res.render("user/cart.ejs", { cart: cart, categories: categories });
   } catch (err) {
     console.log("show cart error", err);
-    res.status(500).send("Error occurred");
+    res.render("user/serverError")  
   }
 };
 
@@ -96,6 +96,8 @@ const addToCart = async (req, res) => {
     }
   } catch (err) {
     console.log("addtocart error", err);
+    res.render("user/serverError")  
+
   }
 };
 //======================================  UPDATE CART  ======================================================
@@ -105,11 +107,7 @@ const updatecart = async (req, res) => {
     const { action, cartId } = req.body;
     const cart = await cartModel.findOne({ _id: cartId });
     const itemIndex = cart.item.findIndex((item) => item._id == productId);
-    console.log(itemIndex);
-    console.log("Cart items:", cart.item);
-    console.log(cart.item[itemIndex].quantity);
-    console.log(cart.item[itemIndex].stock);
-    console.log(cart.item[itemIndex].price);
+  
     const currentQuantity = cart.item[itemIndex].quantity;
     const selectedProductId = cart.item[itemIndex].productId;
     const selectedProduct = await productModel.findOne({
@@ -149,6 +147,8 @@ const updatecart = async (req, res) => {
     });
   } catch (err) {
     console.log("update cart error:", err);
+    res.render("user/serverError")  
+
   }
 };
 //=============================    DELETE CART       ==============================================================
@@ -169,6 +169,8 @@ const deletecart = async (req, res) => {
     res.redirect("/cart");
   } catch (err) {
     console.log("delter cart error", err);
+    res.render("user/serverError")  
+
   }
 };
 //===========================================   WISHLIST  ======================================================== 
@@ -204,59 +206,60 @@ const favouritepage =async(req,res)=>{
   }
   catch(err){
     console.log('Favoouritepage error:',err);
+    res.render("user/serverError")  
+
   }
 }
 
 //=============================================     ADDING FAVOURITE     ========================================
-const addToFav =async(req,res)=>{
-  try{
-    const pid =req.params.id;
-    const product =await productModel.findOne({_id:pid});
+const addToFav = async (req, res) => {
+  try {
+    const pid = req.params.id;
+    const product = await productModel.findOne({ _id: pid });
     const userId = req.session.userId;
 
     const price = product.price;
     let fav;
-    if(userId){
-      fav = await favModel.findOne({userId:userId});
 
+    if (userId) {
+      fav = await favModel.findOne({ userId: userId }).populate('item.productId');
+    } else {
+      fav = await favModel.findOne({ sessionId: req.session.id }).populate('item.productId');
     }
-    if(!fav){
-      fav =await favModel.findOne({sessionId: req.session.id});
 
-    }
-    if(!fav){
+    if (!fav) {
       fav = new favModel({
         sessionId: req.session.id,
-        item:[],
-        total:0,
-      })
+        item: [],
+        total: 0,
+      });
     }
-    // const productExist = fav.item.findIndex((item) => item.productId == pid);
-    // if(productExist !== -1){
-    //   fav.item[productExist].quantity += 1;
-    //   fav.item[productExist].total = fav.item[productExist].quantity * price;
-    // }
-    // else{
-      const newitem ={
-        productId:pid,
-        price:price,
-        quantity:1,
-      };
-      fav.item.push(newitem)
-    // }
-     if(userId && !fav.userId){
-      fav.userId = userId;
 
-     }
-     await fav.save();
-     res.redirect('/favourite')
-    
-   
-  }
-  catch(err){
-    console.log('addin fav errror',err);
+    const productExists = fav.item.find(item => item.productId._id.equals(pid));
+
+    if (productExists) {
+       return res.send('<script>alert("Product already exists in favorites!"); window.location.href = "/favourite";</script>');
+    } else {
+      const newitem = {
+        productId: pid,
+        price: price,
+        quantity: 1,
+      };
+      fav.item.push(newitem);
+
+      if (userId && !fav.userId) {
+        fav.userId = userId;
+      }
+
+      await fav.save();
+      res.redirect('/favourite');
+    }
+  } catch (err) {
+    console.log('adding fav error', err);
+    res.render("user/serverError");
   }
 }
+
 //========================================= DELETE FAVOURITE ===============================================
 const deleteFav =async(req,res)=>{
   try{
@@ -273,6 +276,8 @@ const deleteFav =async(req,res)=>{
   }
   catch(err){
     console.log('delteingg fav error',err);
+    res.render("user/serverError")  
+
   }
 }
 //========================================= ADD TO CART VIA FAVOURITE ==============================================
@@ -328,6 +333,8 @@ const addtocartviafav = async (req,res)=>{
   }
   catch(err){
     console.log('addtocart via fav errror',err);
+    res.render("user/serverError")  
+
   }
 }
 
@@ -335,7 +342,6 @@ const addtocartviafav = async (req,res)=>{
 
 const checkoutpage =async(req,res)=>{
   try{
-    console.log(" reacehd checkout");
     const categories = await categoryModel.find();
     const cartId = req.query.cartId;
     const userId = req.session.userId;
@@ -348,17 +354,14 @@ const checkoutpage =async(req,res)=>{
       const  addresslist = await userModel.findOne({_id:userId});
 
     if(!addresslist){
-      console.log('user not found');
       return res.status(404).send('User not found')
     }
     const addresses =addresslist.address;
     const cart = await cartModel.findById(cartId).populate('item.productId');
     for(const cartItem of cart.item || [] ){
-      console.log(":cart item................",cartItem);
       const product = await productModel.findById(cartItem.productId);
 
       if(cartItem.quantity > product.stock){
-        console.log('Selected quantity exceeds available stock for productId:', cartItem.productId);
         const nonitemid = cartItem.productId;
         const theitem = await productModel.findOne({_id:nonitemid});
         const nameitem = theitem.nameitem
@@ -373,7 +376,6 @@ const checkoutpage =async(req,res)=>{
       quantity: cartItem.quantity,
       itemTotal: cartItem.total,
     }));
-    console.log('Cart Total:', cart.total);
    
 
     
@@ -396,6 +398,8 @@ const checkoutpage =async(req,res)=>{
   }
   catch(err){
     console.log("checkout page error",err);
+    res.render("user/serverError")  
+
   }
 }
 

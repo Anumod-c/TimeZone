@@ -14,6 +14,8 @@ const adlogin = (req, res) => {
     res.render("admin/adlogin");
   } catch (err) {
     console.loglog("login error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -51,6 +53,8 @@ const adminpannel = async (req, res) => {
     }
   } catch (err) {
     console.log("pannel error", err);
+    res.render("user/serverError")  
+
   }
 };
 //=================================================userlisting=====================================================
@@ -61,6 +65,8 @@ const userlist = async (req, res) => {
     res.render("admin/users_list", { users: users });
   } catch (err) {
     console.log(err, "listing error");
+    res.render("user/serverError")  
+
   }
 };
 
@@ -81,6 +87,8 @@ const userupdate = async (req, res) => {
     res.redirect("/admin/userslist");
   } catch (err) {
     console.log(err, "USER UPDATE ERROR");
+    res.render("user/serverError")  
+
   }
 };
 
@@ -96,6 +104,8 @@ const searchuser = async (req, res) => {
     res.redirect("/admin/searchview");
   } catch (err) {
     console.log("search error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -106,6 +116,8 @@ const searchview = async (req, res) => {
     res.render("admin/users_list", { users: user });
   } catch (err) {
     console.log("searchview error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -126,6 +138,8 @@ const filter = async (req, res) => {
     res.render("admin/users_list", { users: user });
   } catch (err) {
     console.log("SORT ERROR", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -136,6 +150,8 @@ const category = async (req, res) => {
     res.render("admin/categories", { cat: category });
   } catch (err) {
     console.log("catogory error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -145,6 +161,8 @@ const newcat = (req, res) => {
     res.render("admin/addcategories");
   } catch (err) {
     console.log("new cat error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -173,6 +191,8 @@ const addcategory = async (req, res) => {
     }
   } catch (err) {
     console.log("addcat post method error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -184,6 +204,8 @@ const updatecat = async (req, res) => {
     res.render("admin/updatecat", { itemcat: cat });
   } catch (err) {
     console.log("editing categories error");
+    res.render("user/serverError")  
+
   }
 };
 
@@ -202,6 +224,8 @@ const updatecatpost = async (req, res) => {
     res.redirect("/admin/category");
   } catch (err) {
     console.log("cat post error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -215,6 +239,8 @@ const unlistcat = async (req, res) => {
     res.redirect("/admin/category");
   } catch (err) {
     console.log("listing error", err);
+    res.render("user/serverError")  
+
   }
 };
 //=========================================    ADMIN LOGOUT    ==================================================
@@ -226,6 +252,8 @@ const adlogout = (req, res) => {
     res.redirect("/admin");
   } catch (err) {
     console.log("LOGOUT ERROR", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -291,6 +319,8 @@ const chartData = async (req, res) => {
     }
   } catch (err) {
     console.log("sale error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -448,6 +478,8 @@ const downloadsales = async (req, res) => {
     res.status(200).end(pdfBuffer);
   } catch (err) {
     console.log(err,"download error");
+    res.render("user/serverError")  
+
     
   }
 };

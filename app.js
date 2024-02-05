@@ -56,6 +56,9 @@ const upload = multer({ storage });
 app.use("/admin", adrouter);
 app.use("/", usrouter);
 
+app.get("*",(req,res)=>{
+  res.render("user/404")
+})
 
 //host
 

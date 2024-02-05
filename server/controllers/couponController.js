@@ -6,11 +6,13 @@ const {alphanumValid,uppercaseAlphanumValid,zerotonine,onlyNumbers,isFutureDate}
 //=====================================     COUPON PAGE RENDERING          ======================================
 const couponList = async (req,res)=>{
     try{
-        const coupons = await couponModel.find({status:true})
+        const coupons = await couponModel.find()
         res.render("admin/couponList",{coupons})
     }
     catch(err){
         console.log("coupon list pagerendering error",err);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -30,6 +32,8 @@ const addCouponPage = async(req,res)=>{
     }
     catch(err){
         console.log("adding coupon error",err);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -104,6 +108,8 @@ const addCouponpost = async(req,res)=>{
     }
     catch(err){
         console.log("adding coupon error",err);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -124,6 +130,8 @@ const editcouponPage = async(req,res)=>{
     }
     catch(err){
         console.log("edit page rendering error",err);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -206,6 +214,8 @@ const editCouponPost = async (req,res)=>{
     }
     catch(err){
         console.log("edit coupon post methor error",err);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -221,6 +231,8 @@ const unlistCoupon = async (req,res)=>{
     }
     catch(err){
         console.log("copon unlisting error",err);
+        res.render("user/serverError")  
+
     }
 }
 

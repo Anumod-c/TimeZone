@@ -28,7 +28,7 @@ const product = async (req, res) => {
         });
     } catch (err) {
         console.log('product rendering error', err);
-        res.status(500).send('Internal server error');
+        res.render("user/serverError")  
     }
 };
 
@@ -36,10 +36,11 @@ const product = async (req, res) => {
 const newproduct = async (req, res) => {
     try {
         const categories = await categoryModel.find();
-        console.log("kkkkkkkkkk", categories);
         res.render('admin/newproduct', { categories: categories });
     } catch (error) {
         console.log('new product page error', error);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -47,7 +48,6 @@ const newproduct = async (req, res) => {
 const addproduct = async (req, res) => {
     try {
         const { productName, categories, images, mrp, discount,price, stock, descriptions, dialcolour, strapcolour, framematerial, strapmaterial, dimensions, manufacture } = req.body;
-        console.log('Received request body:', req.body);
 
         const newproduct = await productModel.create({
             name: productName,
@@ -71,6 +71,8 @@ const addproduct = async (req, res) => {
         res.redirect('/admin/product');
     } catch (err) {
         console.log('add product post error', err);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -79,13 +81,15 @@ const addproduct = async (req, res) => {
 const unlist =async(req,res)=>{
     try{
         const id =req.params.id;
-        const coupon = await couponModel.findOne({_id:id})
-        coupon.status=!coupon.status;
-        await coupon.save();
-        res.redirect('/admin/couponList');
+        const product = await productModel.findOne({_id:id})
+        product.status=!product.status;
+        await product.save();
+        res.redirect('/admin/product');
     }
     catch(err){
         console.log('product listing/unlisting error',err);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -98,6 +102,8 @@ const updateproduct=async(req,res)=>{
     }
     catch(err){
         console.log('update product rendering',err);
+        res.render("user/serverError")  
+
     }
 }
 
@@ -106,12 +112,11 @@ const editimage =async(req,res)=>{
     try{
         const id=req.params.id;
         const products=await productModel.findOne({_id:id});
-        console.log('eduit image pdoduct details');
         res.render('admin/editimage',{products:products})
     }
     catch(err){
         console.log('edit img error',err);
-        res.status(500).send('Internal Server Error')
+        res.render("user/serverError")  
     }
 }
 
@@ -127,6 +132,8 @@ const editimagepost =async(req,res)=>{
     }
     catch(err){
         console.log('edit image post error',err);
+        res.render("user/serverError")  
+
     }
 }
 //========================================           DELETE IMAGE     ====================================
@@ -161,7 +168,6 @@ const delimage=async(req,res)=>{
         try{
             const id=req.params.id;
             const { productName, categories, mrp,discount, price, stock, descriptions, dialcolour, strapcolour, framematerial, strapmaterial, dimensions, manufacture } = req.body;
-            console.log(req.body)
             await productModel.updateOne(
                 { _id: id },
                 {
@@ -187,12 +193,13 @@ const delimage=async(req,res)=>{
             res.redirect('/admin/product');
         } catch (err) {
             console.log('update productpost error', err);
+            res.render("user/serverError")  
+
         }
     }
     //================================DELETE PRODUCT==========================================
     const delproduct =async(req,res)=>{
         try{
-            console.log('delproudtc');
             const id=req.params.id;
             const products=await productModel.deleteOne({_id:id})
             
@@ -200,6 +207,8 @@ const delimage=async(req,res)=>{
         }
         catch(err){
             console.log('delete product error',err);
+            res.render("user/serverError")  
+
         }
     }
 //======================================================== EXPORTING ============================

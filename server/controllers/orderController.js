@@ -21,7 +21,7 @@ const orderPage = async (req, res) => {
         res.render('admin/orderPage', { orderdata: orders.docs, pageCount: orders.totalPages, currentPage: orders.page });
     } catch (err) {
         console.log(err);
-        return res.status(400).send('Error Occurred');
+        res.render("user/serverError")  
     }
 };
 
@@ -34,7 +34,8 @@ const orderDetails=async(req,res)=>{
         const order=await orderModel.findById(id)
         res.render("admin/orderDetail",{orders:order})
     } catch (error) {
-        
+        res.render("user/serverError")  
+
     }
 }
 
@@ -82,50 +83,43 @@ const updateOrderStatus=async(req,res)=>{
     }
     catch (err) {
         console.log(err);
+        res.render("user/serverError")  
+
     }
 }
 
 
 
 
-const filterOrder=async (req,res)=>{
-    try{
-        const status=req.params.status
-        // let condition ={ }
-        if(status=="All"){
-            const orders=await orderModel.find({}).sort({ createdAt: -1 })
-            res.render("admin/orderPage",{orderdata:orders})
+const filterOrder = async (req, res) => {
+    try {
+        const status = req.params.status;
+        const ITEMS_PER_PAGE = 5; // Number of orders per page
+        const page = parseInt(req.query.page) || 1; // Get the current page from query parameters
+
+        let query = {}; // Initialize an empty query object
+
+        if (status !== "All") {
+            query.status = status; // Set the status in the query if it's not "All"
         }
-        else if(status=="Pending" ){
-            const orders=await orderModel.find({status:status}).sort({ createdAt: -1 })
-            res.render("admin/orderPage",{orderdata:orders})
-        }
-        else if(status=="Processing"){
-            const orders=await orderModel.find({status:status}).sort({ createdAt: -1 })
-            res.render("admin/orderPage",{orderdata:orders})
-        }
-        else if(status=="Shipped"){
-            const orders=await orderModel.find({status:status}).sort({ createdAt: -1 })
-            res.render("admin/orderPage",{orderdata:orders})
-        }
-        else if(status=="Delivered"){
-            const orders=await orderModel.find({status:status}).sort({ createdAt: -1 })
-            res.render("admin/orderPage",{orderdata:orders})
-        }
-        else if(status=="Cancelled"){
-            const orders=await orderModel.find({status:status}).sort({ createdAt: -1 })
-            res.render("admin/orderPage",{orderdata:orders})
-        }
-        else if(status=="Returned"){
-            const orders=await orderModel.find({status:status}).sort({ createdAt: -1 })
-            res.render("admin/orderPage",{orderdata:orders})
-        }
-    }
-    catch(err){
+
+        const options = {
+            page: page,
+            limit: ITEMS_PER_PAGE,
+            sort: { createdAt: -1 } // Sort by createdAt in descending order
+        };
+
+        const orders = await orderModel.paginate(query, options);
+
+        res.render('admin/orderPage', { orderdata: orders.docs, pageCount: orders.totalPages, currentPage: orders.page });
+    } catch (err) {
         console.log(err);
-       
+        res.render("user/serverError");
     }
-    }
+};
+
+
+
 
 
 module.exports={

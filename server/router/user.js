@@ -91,17 +91,17 @@ usrouter.get('/deleteAddress/:addressId',auth.islogged,profileController.deletea
 usrouter.get('/pswdmanagement',auth.islogged,profileController.pswdmanagement)
 usrouter.post('/changepassword',auth.islogged,profileController.pswdmanagementpost)
 usrouter.get('/orderHistory',auth.islogged,profileController.orderHistory)
-usrouter.get("/cancelorder/:id",profileController.orderCancelling)
-usrouter.get("/returnorder/:id",profileController.orderreturning)
-usrouter.get("/returnitem/:id/:orderId",profileController.itemreturintg)
+usrouter.get("/cancelorder/:id",auth.islogged,profileController.orderCancelling)
+usrouter.get("/returnorder/:id",auth.islogged,profileController.orderreturning)
+usrouter.get("/returnitem/:id/:orderId",auth.islogged,profileController.itemreturintg)
 usrouter.get('/cancelitem/:id/:orderId',auth.islogged,profileController.itemCancelling)
 usrouter.get('/singleOrder/:id',auth.islogged,profileController.singleOrderPage)
 usrouter.get("/wallet",auth.islogged,profileController.wallet)
-usrouter.post("/walletTopup",profileController.wallettopup)
+usrouter.post("/walletTopup",auth.islogged,profileController.wallettopup)
 usrouter.post('/walletcreate/orderId',auth.islogged,profileController.walletUpi)
-usrouter.get("/rewards",profileController.couponsAndRewards)
+usrouter.get("/rewards",auth.islogged,profileController.couponsAndRewards)
 usrouter.get("/ratepage",ratingController.ratepage)
-usrouter.get("/download-invoice/:orderId",profileController.downloadinvoice)
+usrouter.get("/download-invoice/:orderId",auth.islogged,profileController.downloadinvoice)
 
 
 //=================================     CART    =======================================
@@ -129,8 +129,8 @@ usrouter.post('/placeOrder',auth.islogged,checkoutController.placeOrder);
 usrouter.post('/create/orderId',auth.islogged,checkoutController.upi)
 usrouter.post("/wallettransaction",auth.islogged,checkoutController.wallettransaction)
 
-usrouter.post("/applyCoupon",checkoutController.applyCoupon)
-usrouter.post("/revokeCoupon",checkoutController.revokeCoupon)
+usrouter.post("/applyCoupon",auth.islogged,checkoutController.applyCoupon)
+usrouter.post("/revokeCoupon",auth.islogged,checkoutController.revokeCoupon)
 
 
 

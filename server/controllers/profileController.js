@@ -37,6 +37,8 @@ const userdetials = async (req, res) => {
     });
   } catch (err) {
     console.log("userdetailserror", err);
+    res.render("user/serverError")  
+
   }
 };
 //==================================== EDIT PROFILE GET =============================================
@@ -51,13 +53,14 @@ const editprofile = async (req, res) => {
     });
   } catch (err) {
     console.log("edit profile error", err);
+    res.render("user/serverError")  
+
   }
 };
 //=================================== EDIT PROFILE POST =======================================
 const updateprofile = async (req, res) => {
   try {
     const { firstname, lastname, email, gender, age, phone } = req.body;
-    console.log(firstname, lastname, email, age, phone, gender);
     const userId = req.session.userId;
     const data = await userModel.updateOne(
       { _id: userId },
@@ -71,10 +74,11 @@ const updateprofile = async (req, res) => {
         },
       }
     );
-    console.log(data, "updated details");
     res.redirect("/userdetails");
   } catch (err) {
     console.log("profile post error");
+    res.render("user/serverError")  
+
   }
 };
 
@@ -99,6 +103,8 @@ const addnewaddress = async (req, res) => {
     });
   } catch (err) {
     console.log("add new address page rendering error", err);
+    res.render("user/serverError")  
+
   }
 };
 //================================================NEW ADDRESS POST   =============================
@@ -117,9 +123,7 @@ const addnewaddresspost = async (req, res) => {
       phonenumber,
     } = req.body;
     const userId = req.session.userId;
-    console.log("user_id", userId);
     const existingUser = await userModel.findOne({ _id: userId });
-    console.log(existingUser, "tueeeeeeeeeeeeeee");
     const fullnamevalid = bnameValid(fullname); //
     const saveasvalid = bnameValid(saveas); //
     const adnameValid = bnameValid(adname); //
@@ -131,53 +135,43 @@ const addnewaddresspost = async (req, res) => {
     const phoneValid = adphoneValid(phonenumber);
 
     if (!fullnamevalid) {
-      console.log("fullname valid");
       req.flash("fullnameerror", "Enter a Valid name");
       return res.redirect("/addnewaddress");
     }
     if (!saveasvalid) {
-      console.log("svaes valid");
       req.flash("saveaserror", "Enter a Valid Address Type");
       return res.redirect("/addnewaddress");
     }
     if (!adnameValid) {
-      console.log("adname valid");
       req.flash("adnameerror", "Enter a Valid Name");
       return res.redirect("/addnewaddress");
     }
     if (!streetValid) {
-      console.log("street valid");
       req.flash("streeterror", "Enter a Valid Street");
       return res.redirect("/addnewaddress");
     }
     if (!pinvalid) {
-      console.log("pin valid");
       req.flash("pincodeerror", "Enter a Valid Pin");
       return res.redirect("/addnewaddress");
     }
     if (!cityValid) {
-      console.log("city valid");
       req.flash("cityerror", "Enter a Valid City");
       return res.redirect("/addnewaddress");
     }
     if (!stateValid) {
-      console.log("state valid");
       req.flash("stateerror", "Enter a Valid State");
       return res.redirect("/addnewaddress");
     }
     if (!countryValid) {
-      console.log("contruy valid");
       req.flash("countryerror", "Enter a Valid Country");
       return res.redirect("/addnewaddress");
     }
     if (!phoneValid) {
-      console.log("phone valid");
       req.flash("phoneerror", "Enter a Valid Phone");
       return res.redirect("/addnewaddress");
     }
 
     if (existingUser) {
-      console.log("exsirt user if worked valid");
       const existingAddress = await userModel.findOne({
         _id: userId,
         address: {
@@ -194,7 +188,6 @@ const addnewaddresspost = async (req, res) => {
         },
       });
       if (existingAddress) {
-        console.log("exist adress if worked valid");
         req.flash("addressexsitserror", "Address Alredy Exist");
 
         return res.redirect("/addnewaddress");
@@ -216,6 +209,8 @@ const addnewaddresspost = async (req, res) => {
     res.redirect("/userdetails");
   } catch (err) {
     console.log("add new address post method error", err);
+    res.render("user/serverError")  
+
   }
 };
 //=================================   EDIT ADDRESS ==================================
@@ -233,6 +228,8 @@ const editaddress = async (req, res) => {
     });
   } catch (err) {
     console.log("edit adress error:", err);
+    res.render("user/serverError")  
+
   }
 };
 //==================================  EDIT ADDRESS POST ==========================
@@ -269,7 +266,6 @@ const editaddresspost = async (req, res) => {
         },
       },
     });
-    console.log("address exist workd", isAddressExists);
 
     await userModel.updateOne(
       { _id: userId, "address._id": addressId },
@@ -289,7 +285,7 @@ const editaddresspost = async (req, res) => {
     );
     res.redirect("/userdetails");
   } catch (err) {
-    res.status(500).send("Error Occured");
+    res.render("user/serverError")  
     console.log("edit address post error", err);
   }
 };
@@ -302,10 +298,11 @@ const deleteaddress = async (req, res) => {
       { _id: userId, "address._id": addressId },
       { $pull: { address: { _id: addressId } } }
     );
-    console.log("the data i rendered", data);
     res.redirect("/userdetails");
   } catch (err) {
     console.log("delete address error", err);
+    res.render("user/serverError")  
+
   }
 };
 //========================================= PASSWORD MANAGEMENT   ======================================
@@ -315,6 +312,8 @@ const pswdmanagement = async (req, res) => {
     res.render("user/changePassword", { categories: categories });
   } catch (err) {
     console.log("pswdmanagement error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -333,7 +332,6 @@ const pswdmanagementpost = async (req, res) => {
     const passwordMatch = await bcrypt.compare(oldpassword, user.password);
 
     if (passwordMatch) {
-      console.log("gggggggggggggg", oldpassword, user.password);
       if (!isPasswordValid) {
         res.render("user/changePassword", {
           perror:
@@ -360,7 +358,7 @@ const pswdmanagementpost = async (req, res) => {
       });
     }
   } catch (err) {
-    res.status(500).send("error occured");
+    res.render("user/serverError")  
     console.log("post error in changin passsword from profile", err);
   }
 };
@@ -369,7 +367,6 @@ const pswdmanagementpost = async (req, res) => {
 const orderHistory = async (req, res) => {
   try {
     const userId = req.session.userId;
-    console.log(userId);
     const categories = await categoryModel.find();
     const od = await orderModel.find({ userId: userId });
     const allOrderItems = [];
@@ -414,6 +411,8 @@ const orderHistory = async (req, res) => {
     });
   } catch (err) {
     console.log("order history error", err);
+    res.render("user/serverError")  
+
   }
 };
 // =============================           SINGLE ORDER PAGE        ========================
@@ -427,6 +426,8 @@ const singleOrderPage = async (req, res) => {
     res.render("user/orderDetails", { categories, order });
   } catch (err) {
     console.log("orderDetails page error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -451,10 +452,8 @@ const orderCancelling = async (req, res) => {
       const refund = result.totalPrice;
 
       const currentWallet = user.wallet;
-      console.log(currentWallet);
 
       const newWallet = currentWallet + refund;
-      console.log(newWallet);
       const amountUpdate = await walletModel.updateOne(
         { userId: userId },
         {
@@ -470,7 +469,6 @@ const orderCancelling = async (req, res) => {
       );
     }
 
-    console.log("result data", result);
 
     const items = result.items.map((item) => ({
       productId: item.productId,
@@ -482,16 +480,15 @@ const orderCancelling = async (req, res) => {
       // Skip updating stock for items that are already cancelled
       if (item.status !== "cancelled") {
         const product = await productModel.findOne({ _id: item.productId });
-        console.log("dd");
         product.stock += item.quantity;
-        console.log(product.stock);
         await product.save();
-        console.log("kk");
       }
     }
     res.redirect("/orderHistory");
   } catch (err) {
     console.log("ORDER CANCEL EROOR", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -505,10 +502,8 @@ const orderreturning = async (req, res) => {
       { status: "Returned" }
     );
     const order = await orderModel.findOne({ _id: id });
-    console.log("dddddddddddd", order);
     const user = await walletModel.findOne({ userId: userId });
     const refund = order.totalPrice;
-    console.log("reeeeeeefund", refund);
     const currentWallet = user.wallet;
     const newWallet = currentWallet + refund;
     const amountUpdate = await walletModel.updateOne(
@@ -541,6 +536,8 @@ const orderreturning = async (req, res) => {
     res.redirect("/orderHistory");
   } catch (err) {
     console.log("order returning error", err);
+    res.render("user/serverError")  
+
   }
 };
 //==================== ITEM CANCELLING =======================
@@ -552,7 +549,6 @@ const itemCancelling = async (req, res) => {
 
     const order = await orderModel.findOne({ _id: orderId });
     const singleItem = order.items.find((item) => item.productId == productId);
-    console.log("llllll", singleItem);
 
     if (!singleItem) {
       return res.status(404).send("Item is not found!!");
@@ -600,21 +596,18 @@ const itemCancelling = async (req, res) => {
 
     product.stock += singleItem.quantity;
     await product.save();
-    console.log("reaminging canccel working??");
     const remainingNotCancelled = order.items.filter(
       (item) => item.status !== "cancelled"
     );
-    console.log("items remainging cancel", remainingNotCancelled);
     if (remainingNotCancelled.length < 2) {
       order.status = "Cancelled";
       await order.save();
-      console.log("its working: all items cancelled, main status updated");
     }
 
     res.redirect(`/singleOrder/${orderId}`);
   } catch (error) {
     console.log("error cancelling single product", error);
-    res.status(404).send("error cancelling single product");
+    res.render("user/serverError")  
   }
 };
 
@@ -628,13 +621,11 @@ const itemreturintg = async (req, res) => {
     const order = await orderModel.findOne({ _id: orderId });
     const singleItem = order.items.find((item) => item.productId == productId);
     const user = await walletModel.findOne({ userId: userId });
-    console.log("singel itemeeee", singleItem);
     if (!singleItem) {
       return res.status(404).send("Item not found!");
     }
 
     const refund = singleItem.price ;
-    console.log("refundeeeeee", refund);
 
     const currentWallet = user.wallet;
     const newWallet = currentWallet + refund;
@@ -682,6 +673,8 @@ const itemreturintg = async (req, res) => {
     res.redirect(`/singleOrder/${orderId}`);
   } catch (err) {
     console.log("item returnuing error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -707,6 +700,8 @@ const wallet = async (req, res) => {
     });
   } catch (err) {
     console.log("wallet error", err);
+    res.render("user/serverError")  
+
   }
 };
 
@@ -717,7 +712,6 @@ const wallettopup = async (req, res) => {
     const { razorpay_payment_id, razorpay_order_id } = req.body;
     const wallet = await walletModel.findOne({ userId: userId });
     const Amount = parseFloat(req.body.Amount);
-    console.log(Amount);
 
     wallet.wallet += Amount;
     wallet.walletTransactions.push({
@@ -729,11 +723,12 @@ const wallettopup = async (req, res) => {
     res.redirect("/wallet");
   } catch (err) {
     console.log("wallet topup erorr", err);
+    res.render("user/serverError")  
+
   }
 };
 // ===========================    WALLET UPI INSTANCE     ================
 const walletUpi = async (req, res) => {
-  console.log("body:", req.body);
   var options = {
     amount: 500,
     currency: "INR",
@@ -753,7 +748,6 @@ const couponsAndRewards = async(req,res)=>{
     const userId = req.session.userId;
     const user = await userModel.findOne({_id:userId});
     const uniqueID = user.uniqueID;
-    console.log(uniqueID,"unique id");
     const coupons = await couponModel.find({})
 
     res.render("user/rewardpage",{categories:categories,coupons:coupons,referralCode:uniqueID})
@@ -761,6 +755,8 @@ const couponsAndRewards = async(req,res)=>{
   }
   catch(err){
     console.log("coupons and re4ward page error",err);
+    res.render("user/serverError")  
+
   }
 }
 
@@ -769,12 +765,10 @@ const couponsAndRewards = async(req,res)=>{
 const downloadinvoice = async(req,res)=>{
 try{
   const orderId = req.params.orderId;
-  console.log("orderID:",orderId);
   const order = await orderModel.findOne({ orderId: orderId }).populate({
     path: "items.productId",
     select: "name",
   });
-  console.log("hyy",order);
   const pdfBuffer = await generateInvoice(order);
   res.setHeader("Content-Type", "application/pdf");
   res.setHeader(
@@ -785,6 +779,8 @@ try{
 }
 catch(err){
   console.log("download invoice error",err);
+  res.render("user/serverError")  
+
 }
 } 
 
@@ -829,6 +825,8 @@ const generateInvoice = async(order)=>{
   }
   catch(err){
     console.log("invoice genreating error",err);
+    res.render("user/serverError")  
+
   }
 } 
 module.exports = {

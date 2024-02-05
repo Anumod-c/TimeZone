@@ -56,7 +56,6 @@ const placeOrder = async (req, res) => {
       status: "Pending",
       updatedAt: new Date(),
     });
-    console.log("Items:", items);
 
     await order.save();
     for (const item of items) {
@@ -78,14 +77,14 @@ const placeOrder = async (req, res) => {
     res.render("user/order_confirmation", { order, categories });
   } catch (err) {
     console.log("placeorder error", err);
+    res.render("user/serverError")  
+
   }
 };
 
 const checkoutrelod = async (req, res) => {
   try {
-    console.log("checkout reload worked");
     const cartId = req.body.cartId;
-    console.log(" post address working");
     const {
       saveas,
       fullname,
@@ -150,9 +149,7 @@ const checkoutrelod = async (req, res) => {
 
       return res.redirect(`/checkoutpage?cartId=${cartId}`);
     }
-    console.log("validation of address completed");
     if (userExisted) {
-      console.log("User existed reached");
       // Corrected query to find existing address for the user
       const existingAddress = await userModel.findOne({
         _id: userId,
@@ -172,11 +169,9 @@ const checkoutrelod = async (req, res) => {
       });
 
       if (existingAddress) {
-        console.log("Existing user reached");
 
         return res.redirect("/checkoutpage");
       }
-      console.log("line above the pushing function reached");
       userExisted.address.push({
         saveas,
         fullname,
@@ -188,15 +183,12 @@ const checkoutrelod = async (req, res) => {
         country,
         phonenumber,
       });
-      console.log("line above the userexisted .save");
       await userExisted.save();
-      console.log("usereExisted save worked");
     }
     const categories = await categoryModel.find();
     const addresslist = await userModel.findOne({ _id: userId });
 
     if (!addresslist) {
-      console.log("User not found");
       // Handle the case where the user with the given userId is not found
       return res.status(404).send("User not found");
     }
@@ -205,7 +197,6 @@ const checkoutrelod = async (req, res) => {
 
     // Check if cartId is provided and is valid
     if (!cartId) {
-      console.log("Cart ID not provided");
       return res.status(400).send("Cart ID not provided");
     }
 
@@ -214,7 +205,6 @@ const checkoutrelod = async (req, res) => {
 
     // Check if cart exists
     if (!cart) {
-      console.log("Cart not found");
       return res.status(404).send("Cart not found");
     }
 
@@ -229,7 +219,7 @@ const checkoutrelod = async (req, res) => {
     res.render("user/checkout", { addresses, cartItems, categories, cart,availableCoupons });
   } catch (error) {
     console.log("cant add checkout addr",error);
-    res.status(400).send("checkout addres not workoing",);
+    res.render("user/serverError")  
   }
 };
 
@@ -237,14 +227,12 @@ const checkoutrelod = async (req, res) => {
 const instance = new Razorpay({ key_id: key_id, key_secret: key_secret });
 
 const upi = async (req, res) => {
-  console.log("body:", req.body);
   var options = {
     amount: 500,
     currency: "INR",
     receipt: "order_rcpt",
   };
   instance.orders.create(options, function (err, order) {
-    console.log("order1 :", order);
     res.send({ orderId: order.id });
   });
 };
@@ -272,7 +260,10 @@ const wallettransaction = async (req, res) => {
     } else {
       res.json({ success: false, message: "don't have enought money" });
     }
-  } catch {
+  } catch(err) {
+    console.log(err,"wallettransaction error");
+    res.render("user/serverError")  
+
   }
 };
 
@@ -317,6 +308,8 @@ const applyCoupon = async (req, res) => {
     }
   } catch (err) {
     console.log("coupon error", err);
+    res.render("user/serverError");
+    
   }
 };
 
@@ -353,6 +346,8 @@ const revokeCoupon = async(req,res)=>{
   }
   catch(err){
     console.log("REVOKE EROOR",err);
+    res.render("user/serverError")  
+
   }
 }
 
