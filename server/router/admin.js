@@ -68,36 +68,36 @@ adrouter.post('/updateproductpost/:id',auth.loggedadmin,productController.update
 adrouter.post('/deleteproduct/:id',auth.loggedadmin,productController.delproduct)
 //===================================================orderpage========================================
 
-adrouter.get('/orderPage',orderController.orderPage)
-adrouter.post('/updateOrderStatus',orderController.updateOrderStatus)
-adrouter.get('/filterOrder/:status',orderController.filterOrder)
-adrouter.get("/orderDetails/:id",orderController.orderDetails)
+adrouter.get('/orderPage',auth.loggedadmin,orderController.orderPage)
+adrouter.post('/updateOrderStatus',auth.loggedadmin,orderController.updateOrderStatus)
+adrouter.get('/filterOrder/:status',auth.loggedadmin,orderController.filterOrder)
+adrouter.get("/orderDetails/:id",auth.loggedadmin,orderController.orderDetails)
 
 
 
 
 // =========================================        COUPON     ========================================= 
-adrouter.get("/couponList",couponController.couponList)
-adrouter.get("/newcoupon",couponController.addCouponPage)
-adrouter.post("/add_coupon",couponController.addCouponpost)
-adrouter.get("/editCouponGet/:id",couponController.editcouponPage)
-adrouter.post("/updateCoupon/:id",couponController.editCouponPost)
-adrouter.get("/unlist/:id",couponController.unlistCoupon)
+adrouter.get("/couponList",auth.loggedadmin,couponController.couponList)
+adrouter.get("/newcoupon",auth.loggedadmin,couponController.addCouponPage)
+adrouter.post("/add_coupon",auth.loggedadmin,couponController.addCouponpost)
+adrouter.get("/editCouponGet/:id",auth.loggedadmin,couponController.editcouponPage)
+adrouter.post("/updateCoupon/:id",auth.loggedadmin,couponController.editCouponPost)
+adrouter.get("/unlist/:id",auth.loggedadmin,couponController.unlistCoupon)
  
 
 
 //==================================    BANNER PAGE  ================================================
-adrouter.get('/bannerList',bannerController.bannerList);
-adrouter.get('/addBanner',bannerController.addBanner);
-adrouter.post('/addBanner',upload.single('image'),bannerController.addBannerpost)
-adrouter.get('/deleteBanner/:id',bannerController.deleteBanner);
-adrouter.get("/unlistBanner/:id",bannerController.bannerUnlist)
-adrouter.get('/editBanner/:id',bannerController.editBanner);
-adrouter.post('/updateBannerPost/:id', upload.single('newImage'),bannerController.updateBannerPost)
+adrouter.get('/bannerList',auth.loggedadmin,bannerController.bannerList);
+adrouter.get('/addBanner',auth.loggedadmin,bannerController.addBanner);
+adrouter.post('/addBanner',auth.loggedadmin,upload.single('image'),bannerController.addBannerpost)
+adrouter.get('/deleteBanner/:id',auth.loggedadmin,bannerController.deleteBanner);
+adrouter.get("/unlistBanner/:id",auth.loggedadmin,bannerController.bannerUnlist)
+adrouter.get('/editBanner/:id',auth.loggedadmin,bannerController.editBanner);
+adrouter.post('/updateBannerPost/:id',auth.loggedadmin, upload.single('newImage'),bannerController.updateBannerPost)
 
 //====================================================SALES =======================================================
-adrouter.post('/chartData',adminController.chartData);
-adrouter.post('/downloadsales',adminController.downloadsales)
+adrouter.post('/chartData',auth.loggedadmin,adminController.chartData);
+adrouter.post('/downloadsales',auth.loggedadmin,adminController.downloadsales)
 
 
 //====================================================LOGOUT =======================================================
