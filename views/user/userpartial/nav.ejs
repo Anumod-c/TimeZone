@@ -1,121 +1,80 @@
-<!--? Preloader Start -->
-<div id="preloader-active">
-    <div class="preloader d-flex align-items-center justify-content-center">
-        <div class="preloader-inner position-relative">
-            <div class="preloader-circle"></div>
-            <div class="preloader-img pere-text">
-                <img src="/user_assets/img/logo/logo.png" alt="img">
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Preloader ends -->
+<style>
+    .form-inline {
+        display: flex;
+        align-items: stretch; /* Ensures both items have the same height */
+    }
+
+    .form-control {
+        flex: 1; /* This allows the input to expand and take up remaining space */
+    }
+
+    .search-button {
+        flex: none;
+        width: auto; 
+    }
+    .searchproduct  {
+        width: 400px !important; /* Adjust the width as needed */
+    }
+</style>
+
 <header>
-    <!-- Header Start -->
-    <div class="header-area">
-        <div class="main-header header-sticky">
-            <div class="container-fluid">
-                <div class="menu-wrapper">
-                    <!-- Logo -->
-                    <div class="logo">
-                        <a href="/"><img src="/user_assets/img/logo/logo.png" alt=""></a>
-                    </div>
-                    <!-- Main-menu -->
-                    <div class="main-menu d-none d-lg-block">
-                        <nav>                                                
-                            <ul id="navigation">  
-                                <li><a href="/">Home</a></li>
-                                <li><a href="/newarrival">shop</a></li>
-                                <!-- <li><a href="about.html">about</a></li> -->
-                                <li class="hot"><a href="/">Latest</a>
-                                   
-                                </li>
-                                <!-- <li><a href="blog.html">Blog</a>
-                                    <ul class="submenu">
-
-                                        <li><a href="blog.html">Blog</a></li>
-                                        <li><a href="blog-details.html">Blog Details</a></li>
-                                    </ul>
-                                </li> -->
-
-
-
-                                <!-- <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        Categories
-                                    </a>
-                                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <% categories.filter(category => category.status !== false).forEach(category => { %>
-                                            <li>
-                                                <a class="dropdown-item" href="/shop?category=<%= category._id %>">
-                                                    <%= category.name %>
-                                                </a>
-                                            </li>
-                                        <% }); %>
-                                    </ul>
-                                </li> -->
-
-                                
-                                <li><a href="/">Contact</a></li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <!-- Header Right -->
-                    <div class="header-right">
-                        <ul>
-                            <li>
-                                <div class="nav-search">
-                                    <form action="/search" method="post" class="search-form">
-                                        <input type="text" name="searchproduct" placeholder="Search..." class="search-input">
-                                        <button type="submit" class="search-button">Search</button>
-                                    </form>
-                                </div>
-                            </li>
-                            <li style="padding-left: 22px;"><a href="/profile"><span class="flaticon-user"></span></a></li>
-                            <!-- Sample code in navbar.ejs -->
-                            <li>
-                                <a href="/favourite">
-                                    <span style="padding-left: 31px; padding-right: 0px;" class="flaticon-heart"></span>
-                                   
-                                    <% if (favQuantity > 0) { %>
-                                        <span id="badge" style="background-color: red;color: white; padding: 0px 2px;" class="badge"><%= favQuantity %></span>
-                                    <% } %>
-                                    
-                                </a>
-                            </li>
-                            
-
-<li>
-    <a href="/cart">
-        <span style="padding-left: 31px; padding-right: 0px;" class="flaticon-shopping-cart"></span>
-        
-        <% if (totalQuantity > 0) { %>
-            <span id="cart-badge" class="badge" style="background-color: red;color: white ; padding: 0px 2px;"><%= totalQuantity %></span>
-        <% } %>
-    </a>
-</li>
-
-
-                        </ul>
-                    </div>
-                    
-                </div>
-                <!-- Mobile Menu -->
-                <div class="col-12">
-                    <div class="mobile_menu d-block d-lg-none"></div>
-                </div>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/"><img src="/user_assets/img/logo/logo.png" alt=""></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-between my-3" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link ml-5" href="/"><h5>Home</h5></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ml-2" href="/newarrival"><h5>Shop</h5></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ml-2" href="/"><h5>Latest</h5></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ml-2" href="/"><h5>Contact</h5></a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <form action="/search" method="post" class="form-inline my-2 my-lg-0">
+                        <input class="form-control searchproduct mr-sm-0" type="text" name="searchproduct" placeholder="Search..."
+                            aria-label="Search">
+                        <button class="btn search-button my-2 mr-5 my-lg-0 my-sm-0" name="search-button" type="submit">Search</button>
+                    </form>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link mx-2" href="/profile"><span class="flaticon-user"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2" href="/favourite">
+                        <span class="flaticon-heart"></span>
+                        <% if (favQuantity > 0) { %>
+                            <span class="badge badge-pill badge-danger"><%= favQuantity %></span>
+                        <% } %>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link mx-2" href="/cart">
+                        <span class="flaticon-shopping-cart"></span>
+                        <% if (totalQuantity > 0) { %>
+                            <span class="badge badge-pill badge-danger"><%= totalQuantity %></span>
+                        <% } %>
+                    </a>
+                </li>
+            </ul>
         </div>
+    </nav>
+    <div class="sub-navbar bg-dark">
+        <ul class="list-inline text-center">
+            <% categories.filter(category => category.status !== false).forEach(category => { %>
+            <li class="list-inline-item"><a href="/shop?category=<%= category._id %>"><%= category.name %></a></li>
+            <% }); %>
+        </ul>
     </div>
-    <!-- Header End -->
-
-    <!-- Sub-Navbar Start -->
-<div class="sub-navbar">
-    <ul>
-        <% categories.filter(category => category.status !== false).forEach(category => { %>
-            <li><a href="/shop?category=<%= category._id %>"><%= category.name %></a></li>
-        <% }); %>
-    </ul>
-</div>
-<!-- Sub-Navbar End -->
 </header>
