@@ -9,7 +9,7 @@ const mongoose = require("mongoose");
 const easyinvoice = require("easyinvoice");
 const { ObjectId } = mongoose.Types;
 
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcryptjs');
 const {
   nameValid,
   lnameValid,

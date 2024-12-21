@@ -1,0 +1,31 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: timezone-depl
+spec:
+  replicas : 1
+  selector:
+    matchLabels:
+      app: timezone-app
+  template:
+    metadata:
+      labels:
+        app: timezone-app
+    spec:
+      containers:
+      - name: timezone-app
+        image: anumodc/timezone-app:latest  
+        imagePullPolicy : Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: timezone-srvc
+spec:
+  type: NodePort
+  selector:
+    app: timezone-app
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000

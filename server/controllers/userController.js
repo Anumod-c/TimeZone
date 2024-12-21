@@ -1,6 +1,6 @@
 const mongoose =require("mongoose")
 const userModel =require('../models/usermodel')
-const bcrypt=require('bcrypt')
+const bcrypt=require('bcryptjs')
 const flash = require("express-flash")
 const otpgenerator=require('otp-generator')
 const nodemailer=require('nodemailer');

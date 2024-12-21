@@ -27,11 +27,11 @@ app.use(
 app.use(flash());
 app.use(nocache());
 app.use(express.json());
-// app.use(session({
-//     secret: 'your-secret-key',
-//     resave: false,
-//     saveUninitialized: true,
-//     }));
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true,
+    }));
 
 //static
 
